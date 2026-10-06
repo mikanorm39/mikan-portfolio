@@ -1,0 +1,88 @@
+import type { Metadata, Viewport } from "next";
+import { M_PLUS_Rounded_1c, Zen_Maru_Gothic } from "next/font/google";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { LoadingGate } from "@/components/loading/LoadingGate";
+import { Providers } from "@/components/Providers";
+import { profile, siteUrl } from "@/data/profile";
+import { OPENING } from "@/lib/motion";
+import "./globals.css";
+
+const mplusRounded = M_PLUS_Rounded_1c({
+  variable: "--font-mplus-rounded",
+  weight: ["800"],
+  subsets: ["latin"],
+  display: "swap",
+  // 日本語フォントは文字ごとに 100 個以上のファイルに分かれている。全部 preload すると
+  // 数 MB を先読みして表示が大幅に遅れるので、ページで使う文字の分だけ読み込ませる。
+  // （太字も見出し用のこのフォントで表示する → globals.css）
+  preload: false,
+});
+
+const zenMaru = Zen_Maru_Gothic({
+  variable: "--font-zen-maru",
+  // 本文用は 400 のみ。ウェイトを増やすとファイル数が 120 個ずつ増え、表示が遅くなる
+  weight: ["400"],
+  subsets: ["latin"],
+  display: "swap",
+  preload: false,
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: profile.siteTitle,
+    template: `%s | ${profile.siteTitle}`,
+  },
+  description: profile.catchCopy,
+  openGraph: {
+    type: "website",
+    locale: "ja_JP",
+    siteName: profile.siteTitle,
+    title: profile.siteTitle,
+    description: profile.catchCopy,
+    url: "/",
+  },
+  twitter: { card: "summary_large_image" },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f2f9ff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e1626" },
+  ],
+};
+
+// 描画前に実行し、表示済み（または動きを減らす設定）なら <html data-opening="done"> を付ける。
+// CSS がそれを見てオープニングを最初から非表示にするので、2回目以降に一瞬映ることがない。
+const openingScript = `(function(){var d=document.documentElement;try{if(sessionStorage.getItem("${OPENING.storageKey}")||matchMedia("(prefers-reduced-motion: reduce)").matches)d.dataset.opening="done"}catch(e){d.dataset.opening="done"}})()`;
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
+  return (
+    <html lang="ja" className={`${mplusRounded.variable} ${zenMaru.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: openingScript }} />
+        <noscript>
+          <style>{`[data-opening-overlay]{display:none}`}</style>
+        </noscript>
+      </head>
+      <body className="flex min-h-dvh flex-col">
+        <Providers>
+          <a
+            href="#main"
+            className="sr-only z-50 rounded-full bg-primary px-4 py-2 font-bold text-primary-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          >
+            本文へスキップ
+          </a>
+          {/* ページを開いたときのローディング（ON/OFF は components/loading/loadingConfig.ts） */}
+          <LoadingGate />
+          <Header />
+          <main id="main" className="flex-1 pt-16">
+            {children}
+          </main>
+          <Footer />
+        </Providers>
+      </body>
+    </html>
+  );
+}

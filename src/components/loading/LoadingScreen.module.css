@@ -1,0 +1,225 @@
+/*
+ * ローディング画面専用のスタイル（CSS Modules なのでクラス名はこのコンポーネントの中に閉じる）。
+ * 時間・揺れの角度は loadingConfig.ts から CSS 変数（--ls-*-ms など）として渡している。
+ */
+
+.root {
+  /* ---- 色はここで調整 ---- */
+  --ls-color-base: #7dd3fc; /* 背景の水色 */
+  --ls-color-wifi-empty: rgb(255 255 255 / 0.45); /* WiFi マーク（未充填） */
+  --ls-color-wifi-fill: #0284c7; /* WiFi マーク（充填） */
+  --ls-color-bolt: #fde047; /* 雷マーク */
+  --ls-color-bolt-stroke: #ffffff; /* 雷マークのふち */
+  --ls-color-glow: rgb(255 255 255 / 0.95); /* 光るときの色 */
+
+  /* ---- サイズ ---- */
+  /* 横幅基準。スマホ横向きなど高さが低い画面では高さ基準でも小さくする */
+  --ls-wifi-size: min(40vw, 240px, 50vh);
+  --ls-bolt-size: clamp(22px, 5vw, 36px);
+  --ls-wave-h: clamp(40px, 8vh, 72px);
+
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* 水色の幕。WiFi マーク・雷・下端の波ごと上へ抜けていく */
+.curtain {
+  position: absolute;
+  inset: 0;
+  background: var(--ls-color-base);
+}
+
+.revealing {
+  pointer-events: none;
+}
+
+.revealing .curtain {
+  animation: ls-curtain-up var(--ls-reveal-ms) cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes ls-curtain-up {
+  to {
+    /* 下端の波の高さぶんも上に抜けきるまで動かす */
+    transform: translateY(calc(-100% - var(--ls-wave-h)));
+  }
+}
+
+/* 幕の下端にくっつく波線。横幅 200% の波を -50% まで流してループさせる */
+.wave {
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 0;
+  display: block;
+  width: 200%;
+  height: var(--ls-wave-h);
+  color: var(--ls-color-base);
+  animation: ls-wave-x var(--ls-wave-ms) linear infinite;
+}
+
+@keyframes ls-wave-x {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---- WiFi マーク ---- */
+.center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.wifi {
+  display: block;
+  width: var(--ls-wifi-size);
+  height: auto;
+  overflow: visible;
+}
+
+.wifiEmpty {
+  color: var(--ls-color-wifi-empty);
+}
+
+.wifiFill {
+  color: var(--ls-color-wifi-fill);
+}
+
+/* 塗りの高さ（scaleY 0 → 1）。下端を基準に伸ばす */
+.fillRect {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: transform var(--ls-fill-ms) ease-out;
+}
+
+/* 雷が届くたびの揺れ（根元を中心に素早く往復） */
+.wobbleTarget {
+  transform-origin: 50% 90%;
+}
+
+.wobble {
+  animation: ls-wobble var(--ls-wobble-ms) ease-out;
+}
+
+@keyframes ls-wobble {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(calc(var(--ls-wobble-angle) * -1)) scale(var(--ls-wobble-scale));
+  }
+  50% {
+    transform: rotate(var(--ls-wobble-angle)) scale(var(--ls-wobble-scale));
+  }
+  75% {
+    transform: rotate(calc(var(--ls-wobble-angle) * -0.5)) scale(1.02);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+/* 満タンになったら一瞬パッと光る */
+.full {
+  animation: ls-flash var(--ls-flash-ms) ease-out;
+}
+
+@keyframes ls-flash {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  35% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 16px var(--ls-color-glow)) drop-shadow(0 0 40px var(--ls-color-glow));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+}
+
+/* ---- 雷マーク ---- */
+/* 画面中央を原点にし、そこからのずれ（--ls-from-x / y）で出発地点を決める */
+.boltSlot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.bolt {
+  /* 雷ごとの大きさ = 基本の大きさ × 倍率（loadingConfig.ts の size） */
+  --ls-bolt-w: calc(var(--ls-bolt-size) * var(--ls-bolt-scale, 1));
+
+  position: absolute;
+  top: calc(var(--ls-bolt-w) / -2);
+  left: calc(var(--ls-bolt-w) / -2);
+  width: var(--ls-bolt-w);
+  height: var(--ls-bolt-w);
+  opacity: 0;
+  fill: var(--ls-color-bolt);
+  stroke: var(--ls-color-bolt-stroke);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgb(255 255 255 / 0.8));
+}
+
+.charging .bolt {
+  animation: ls-bolt var(--ls-bolt-travel-ms) ease-in both;
+  animation-delay: var(--ls-bolt-delay);
+}
+
+/* 回転・明滅しながら中央へ → 届いたら小さく光って消える */
+@keyframes ls-bolt {
+  0% {
+    opacity: 0;
+    transform: translate(var(--ls-from-x), var(--ls-from-y)) rotate(-30deg) scale(0.8);
+  }
+  12% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+    transform: translate(calc(var(--ls-from-x) * 0.5), calc(var(--ls-from-y) * 0.5)) rotate(18deg) scale(1);
+  }
+  68% {
+    opacity: 0.55;
+  }
+  85% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(-10deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg) scale(1.9);
+  }
+}
+
+/* ---- 動きを減らす設定：短いフェードアウトだけ ---- */
+.reduced {
+  transition: opacity var(--ls-reduced-fade-ms) ease-out;
+}
+
+.reduced.revealing {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bolt {
+    display: none;
+  }
+
+  .wave,
+  .wobble,
+  .full,
+  .revealing .curtain {
+    animation: none;
+  }
+}

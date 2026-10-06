@@ -1,0 +1,15 @@
+import { careerTagLabels, type CareerTag } from "@/data/career";
+import { cn } from "@/lib/utils";
+
+export function CareerTagBadge({ tag }: { tag: CareerTag }) {
+  return (
+    <span
+      className={cn(
+        "inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold",
+        tag === "award" ? "bg-award text-award-foreground" : "bg-secondary text-secondary-foreground",
+      )}
+    >
+      {careerTagLabels[tag]}
+    </span>
+  );
+}

@@ -1,0 +1,235 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-zen-maru), ui-rounded, "Hiragino Maru Gothic ProN", sans-serif;
+  --font-heading: var(--font-mplus-rounded), var(--font-zen-maru), ui-rounded, sans-serif;
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* ポップなグラデーション用（from-pop-from to-pop-to） */
+  --color-pop-from: var(--pop-from);
+  --color-pop-to: var(--pop-to);
+  --color-pop-foreground: var(--pop-foreground);
+  --color-award: var(--award);
+  --color-award-foreground: var(--award-foreground);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* 色付きのやわらかい影 */
+  --shadow-pop: 0 6px 20px -6px var(--pop-shadow), 0 2px 6px -2px var(--pop-shadow);
+  --shadow-pop-lg: 0 16px 36px -10px var(--pop-shadow-strong), 0 4px 10px -4px var(--pop-shadow);
+}
+
+/* 独自のキーフレーム（animate-float / float-slow / bounce-soft / sparkle / wiggle） */
+@theme {
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-float-slow: float 7s ease-in-out infinite;
+  --animate-bounce-soft: bounce-soft 2.4s ease-in-out infinite;
+  --animate-sparkle: sparkle 2.8s ease-in-out infinite;
+  --animate-wiggle: wiggle 0.5s ease-in-out;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+  @keyframes bounce-soft {
+    0%,
+    100% {
+      transform: translateY(0) scale(1);
+    }
+    50% {
+      transform: translateY(-6px) scale(1.03);
+    }
+  }
+  @keyframes sparkle {
+    0%,
+    100% {
+      opacity: 0.2;
+      transform: scale(0.6) rotate(0deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1) rotate(20deg);
+    }
+  }
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-12deg);
+    }
+    75% {
+      transform: rotate(12deg);
+    }
+  }
+}
+
+:root {
+  --radius: 1rem;
+
+  /* ライト：とても薄い水色の背景 + 濃い紺の文字 */
+  --background: #f2f9ff;
+  --foreground: #0f2342;
+  --card: #ffffff;
+  --card-foreground: #0f2342;
+  --popover: #ffffff;
+  --popover-foreground: #0f2342;
+  --primary: #0277b6;
+  --primary-foreground: #ffffff;
+  --secondary: #e0f2fe;
+  --secondary-foreground: #0c4a6e;
+  --muted: #e8f3fb;
+  --muted-foreground: #4a5d78;
+  --accent: #cffafe;
+  --accent-foreground: #155e75;
+  --destructive: #dc2626;
+  --border: #d3e8f5;
+  --input: #c7e1f2;
+  --ring: #0ea5e9;
+
+  --pop-from: #0277b6;
+  --pop-to: #0b7a99;
+  --pop-foreground: #ffffff;
+  --pop-shadow: rgb(14 165 233 / 0.22);
+  --pop-shadow-strong: rgb(14 165 233 / 0.38);
+
+  --award: #fef3c7;
+  --award-foreground: #92400e;
+}
+
+.dark {
+  /* ダーク：濃い紺〜グレーの背景 + 明るめの水色 */
+  --background: #0e1626;
+  --foreground: #e6f1fb;
+  --card: #152036;
+  --card-foreground: #e6f1fb;
+  --popover: #152036;
+  --popover-foreground: #e6f1fb;
+  --primary: #38bdf8;
+  --primary-foreground: #062033;
+  --secondary: #1b2a44;
+  --secondary-foreground: #cfe8fb;
+  --muted: #1a2740;
+  --muted-foreground: #9fb3cc;
+  --accent: #123446;
+  --accent-foreground: #a5f3fc;
+  --destructive: #f87171;
+  --border: #24344f;
+  --input: #2b3d5b;
+  --ring: #38bdf8;
+
+  --pop-from: #38bdf8;
+  --pop-to: #22d3ee;
+  --pop-foreground: #062033;
+  --pop-shadow: rgb(56 189 248 / 0.18);
+  --pop-shadow-strong: rgb(56 189 248 / 0.32);
+
+  --award: #3b2a0c;
+  --award-foreground: #fcd34d;
+}
+
+/* グラデーション文字 */
+@utility text-pop-gradient {
+  background-image: linear-gradient(to right, var(--pop-from), var(--pop-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* グラデーション背景（ボタン・ピルなど） */
+@utility bg-pop-gradient {
+  background-image: linear-gradient(to right, var(--pop-from), var(--pop-to));
+  color: var(--pop-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    overflow-x: clip;
+  }
+  /* 見出しと太字は M PLUS Rounded 1c（800）で表示する（日本語フォントのウェイト数を抑えて軽くするため） */
+  h1,
+  h2,
+  h3,
+  h4,
+  b,
+  strong,
+  :where(.font-bold, .font-extrabold, .font-semibold, .font-medium) {
+    font-family: var(--font-heading);
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  /* キーボード操作時のフォーカスをはっきり見せる */
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+  }
+}
+
+/* 2回目以降はオープニングを最初から出さない（<head> のスクリプトが data-opening="done" を付ける） */
+html[data-opening="done"] [data-opening-overlay] {
+  display: none;
+}
+
+/*
+ * 出現アニメーションの対象。サーバーの HTML では見える状態で出し（初回はオープニングの幕の下）、
+ * 2回目以降の訪問ではアニメーション開始まで描画前から隠しておく（ちらつき防止）。
+ * Motion が付けるインラインの opacity がこれより優先される。
+ */
+html[data-opening="done"] [data-reveal] {
+  opacity: 0;
+}
+
+/* 動きを減らす設定の人には CSS アニメーションを止める */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
