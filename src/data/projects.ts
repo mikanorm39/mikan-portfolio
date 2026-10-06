@@ -56,7 +56,7 @@ export const projects: Project[] = [
     categories: ["web"],
     team: "solo",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "Motion"],
-    links: { site: "https://nextjs.org/", code: "https://github.com/your-github-id/mikan-portfolio" },
+    links: { site: "https://nextjs.org/", code: "https://github.com/mikanorm39/mikan-portfolio" },
   },
   {
     slug: "planner-note",

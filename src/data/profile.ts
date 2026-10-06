@@ -23,7 +23,7 @@ export const profile = {
   titles: ["ゲームプランナー見習い", "ゲーム開発", "Web もちょっと"],
   avatar: "/images/avatar.svg",
   social: [
-    { id: "github", label: "GitHub", href: "https://github.com/your-github-id", note: "コードを公開しています" },
+    { id: "github", label: "GitHub", href: "https://github.com/mikanorm39", note: "コードを公開しています" },
     { id: "qiita", label: "Qiita", href: "https://qiita.com/your-qiita-id", note: "技術記事を書いています" },
     { id: "x", label: "X", href: "https://x.com/your-x-id", note: "日々の制作ログ" },
   ] satisfies SocialLink[],
