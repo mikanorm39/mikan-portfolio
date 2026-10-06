@@ -17,9 +17,9 @@ export function Links() {
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-4 rounded-2xl bg-card p-5 shadow-pop ring-1 ring-border transition duration-300 hover:-translate-y-1 hover:shadow-pop-lg active:scale-95"
+                className="pixel-box group flex items-center gap-4 bg-card p-5 transition duration-300 hover:-translate-y-1 active:scale-95"
               >
-                <span className="bg-pop-gradient inline-flex size-12 shrink-0 items-center justify-center rounded-full">
+                <span className="pixel-circle bg-pop-gradient inline-flex size-12 shrink-0 items-center justify-center">
                   <Icon className="size-6 group-hover:animate-wiggle" />
                 </span>
                 <span className="min-w-0 flex-1">

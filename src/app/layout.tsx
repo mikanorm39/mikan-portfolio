@@ -6,7 +6,10 @@ import { LoadingGate } from "@/components/loading/LoadingGate";
 import { Providers } from "@/components/Providers";
 import { profile, siteUrl } from "@/data/profile";
 import { OPENING } from "@/lib/motion";
+import { typekitScript } from "@/lib/typekit";
 import "./globals.css";
+// ゲーム風のドット装飾（共通クラスと調整用の CSS 変数）
+import "./pixel.css";
 
 const mplusRounded = M_PLUS_Rounded_1c({
   variable: "--font-mplus-rounded",
@@ -62,11 +65,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="ja" className={`${mplusRounded.variable} ${zenMaru.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: openingScript }} />
+        {/* Adobe Fonts（英字見出し：Strenuous 3D、日本語本文：AB-yanchag）。接続を先に始めて読み込みを早める */}
+        <link rel="preconnect" href="https://use.typekit.net" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
+        <script dangerouslySetInnerHTML={{ __html: typekitScript }} />
         <noscript>
           <style>{`[data-opening-overlay]{display:none}`}</style>
         </noscript>
       </head>
-      <body className="flex min-h-dvh flex-col">
+      <body className="pixel-bg flex min-h-dvh flex-col">
         <Providers>
           <a
             href="#main"

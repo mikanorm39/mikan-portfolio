@@ -14,7 +14,7 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
 
   if (projects.length === 0) {
     return (
-      <p className="rounded-2xl bg-card p-10 text-center font-bold text-muted-foreground ring-1 ring-border">
+      <p className="pixel-box bg-card p-10 text-center font-bold text-muted-foreground">
         この条件の作品はまだありません 🥲
       </p>
     );

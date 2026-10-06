@@ -1,0 +1,349 @@
+/*
+ * ゲーム風のドット（ピクセル）装飾。layout.tsx で globals.css の後に読み込む。
+ *
+ * 軽さのための方針：
+ * - 形は clip-path だけで作る（filter / drop-shadow は使わない）
+ * - 装飾は ::before / ::after だけ（要素は増やさない）
+ * - 常に動き続けるアニメーションは使わない（ホバー時に1回だけ光が横切る）
+ *
+ * 共通クラス：
+ *   .pixel-box     カード・テキスト用の枠（ピクセル角＋ピクセル枠＋隅のドット＋走査線）
+ *   .pixel-button  ボタン（ピクセル角＋枠。ホバーで浮いて光る、押すと沈む）
+ *   .pixel-chip    小さいタグ・ピル（ピクセル角だけ）
+ *   .pixel-circle  丸アイコンをドット絵の丸にする
+ *   .holo-border   枠をホログラム（淡い虹色）にする（.pixel-box / .pixel-button と併用）
+ *   .holo-hover    ホバー中だけ枠をホログラムにする
+ *   .pixel-heading 見出し（左に ▶、右にドットの点線）
+ *   .menu-cursor   ナビ・リンク（選択中／ホバー時に ▶ カーソル）
+ *   .font-pixel    英字見出し用フォント（Adobe Fonts の Strenuous 3D）
+ *   .pixel-bg      ページ背景のドット模様
+ */
+
+/* ===== 調整用の変数（装飾の強さはここで変える） ===== */
+:root {
+  /* 英字見出しのフォント。日本語の文字は無いので、今の見出しフォントで表示される */
+  --px-font: "strenuous-3d", var(--font-heading);
+
+  /* ピクセル角の1段の大きさ（大きいほど角が大きく欠ける） */
+  --px-step-box: 4px;
+  --px-step-button: 3px;
+  --px-step-chip: 2px;
+
+  /* 枠の太さ（下だけ太くして、ゲームの立体的なボタン風にする） */
+  --px-border-box: 3px;
+  --px-border-box-bottom: 5px;
+  --px-border-button: 2px;
+  --px-border-button-bottom: 4px;
+
+  /* 枠の色 */
+  --px-frame-box: color-mix(in srgb, var(--primary) 30%, var(--card));
+  --px-frame-button: color-mix(in srgb, var(--primary) 50%, var(--card));
+  --px-frame-pop: color-mix(in srgb, var(--pop-from) 60%, #0f2342);
+
+  /* 隅のドット（1粒の大きさと色） */
+  --px-dot-size: 3px;
+  --px-dot: color-mix(in srgb, var(--primary) 45%, transparent);
+
+  /* 走査線（細い横縞）の濃さ */
+  --px-scan: color-mix(in srgb, var(--primary) 5%, transparent);
+
+  /* ホログラム（淡い虹色）とホバー時に横切る光 */
+  --holo: linear-gradient(120deg, #7dd3fc, #a5b4fc, #f0abfc, #a5f3fc, #7dd3fc);
+  --holo-shine: rgb(255 255 255 / 0.45);
+
+  /* ページ背景のドット模様（色・間隔） */
+  --px-bg-dot: color-mix(in srgb, var(--primary) 10%, transparent);
+  --px-bg-gap: 18px;
+}
+
+.dark {
+  --px-frame-box: color-mix(in srgb, var(--primary) 30%, var(--card));
+  --px-frame-pop: color-mix(in srgb, var(--pop-from) 45%, #062033);
+  --px-scan: color-mix(in srgb, var(--primary) 6%, transparent);
+  --holo-shine: rgb(255 255 255 / 0.12);
+  --px-bg-dot: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+@layer components {
+  /* ===== ピクセル角の形（clip-path 用の頂点リスト） ===== */
+  /*
+   * 2段の階段状に欠けた四角形。--px-step = 1段の大きさ。
+   * --px-inner は枠の内側（上・左右は --px-b、下は --px-bb だけ内側）。
+   */
+  .pixel-box,
+  .pixel-button,
+  .pixel-chip,
+  .pixel-circle {
+    --s: var(--px-step);
+    --px-outer:
+      calc(2 * var(--s)) 0, calc(100% - 2 * var(--s)) 0, calc(100% - 2 * var(--s)) var(--s),
+      calc(100% - var(--s)) var(--s), calc(100% - var(--s)) calc(2 * var(--s)), 100% calc(2 * var(--s)),
+      100% calc(100% - 2 * var(--s)), calc(100% - var(--s)) calc(100% - 2 * var(--s)),
+      calc(100% - var(--s)) calc(100% - var(--s)), calc(100% - 2 * var(--s)) calc(100% - var(--s)),
+      calc(100% - 2 * var(--s)) 100%, calc(2 * var(--s)) 100%, calc(2 * var(--s)) calc(100% - var(--s)),
+      var(--s) calc(100% - var(--s)), var(--s) calc(100% - 2 * var(--s)), 0 calc(100% - 2 * var(--s)),
+      0 calc(2 * var(--s)), var(--s) calc(2 * var(--s)), var(--s) var(--s), calc(2 * var(--s)) var(--s);
+    clip-path: polygon(var(--px-outer));
+  }
+
+  /* 枠を持つもの（ボックス・ボタン）：::before に「外形 − 内形」の枠を描く */
+  .pixel-box,
+  .pixel-button {
+    --px-inner:
+      calc(var(--px-b) + 2 * var(--s)) var(--px-b), calc(100% - var(--px-b) - 2 * var(--s)) var(--px-b),
+      calc(100% - var(--px-b) - 2 * var(--s)) calc(var(--px-b) + var(--s)),
+      calc(100% - var(--px-b) - var(--s)) calc(var(--px-b) + var(--s)),
+      calc(100% - var(--px-b) - var(--s)) calc(var(--px-b) + 2 * var(--s)),
+      calc(100% - var(--px-b)) calc(var(--px-b) + 2 * var(--s)),
+      calc(100% - var(--px-b)) calc(100% - var(--px-bb) - 2 * var(--s)),
+      calc(100% - var(--px-b) - var(--s)) calc(100% - var(--px-bb) - 2 * var(--s)),
+      calc(100% - var(--px-b) - var(--s)) calc(100% - var(--px-bb) - var(--s)),
+      calc(100% - var(--px-b) - 2 * var(--s)) calc(100% - var(--px-bb) - var(--s)),
+      calc(100% - var(--px-b) - 2 * var(--s)) calc(100% - var(--px-bb)),
+      calc(var(--px-b) + 2 * var(--s)) calc(100% - var(--px-bb)),
+      calc(var(--px-b) + 2 * var(--s)) calc(100% - var(--px-bb) - var(--s)),
+      calc(var(--px-b) + var(--s)) calc(100% - var(--px-bb) - var(--s)),
+      calc(var(--px-b) + var(--s)) calc(100% - var(--px-bb) - 2 * var(--s)),
+      var(--px-b) calc(100% - var(--px-bb) - 2 * var(--s)), var(--px-b) calc(var(--px-b) + 2 * var(--s)),
+      calc(var(--px-b) + var(--s)) calc(var(--px-b) + 2 * var(--s)),
+      calc(var(--px-b) + var(--s)) calc(var(--px-b) + var(--s)),
+      calc(var(--px-b) + 2 * var(--s)) calc(var(--px-b) + var(--s));
+    position: relative;
+    isolation: isolate;
+    /* 外側の影・リングは clip-path で切れてしまうので使わない（枠で輪郭を出す） */
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .pixel-box::before,
+  .pixel-button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: var(--px-frame);
+    /* 外形と内形を1本の線でつなぎ、evenodd で内側をくり抜く */
+    clip-path: polygon(
+      evenodd,
+      var(--px-outer),
+      calc(2 * var(--s)) 0,
+      var(--px-inner),
+      calc(var(--px-b) + 2 * var(--s)) var(--px-b)
+    );
+  }
+
+  /* ===== ボックス（カード・テキスト枠） ===== */
+  .pixel-box {
+    --px-step: var(--px-step-box);
+    --px-b: var(--px-border-box);
+    --px-bb: var(--px-border-box-bottom);
+    --px-frame: var(--px-frame-box);
+    /* 光の位置（100% = 左の外、0% = 右の外） */
+    --px-shine-x: 100%;
+  }
+
+  /* ::after に「横切る光・隅のドット（左上と右下）・走査線」を重ねる（文字より下に敷く） */
+  .pixel-box::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      linear-gradient(105deg, transparent 42%, var(--holo-shine) 50%, transparent 58%) var(--px-shine-x) 0 / 250%
+        100% no-repeat,
+      repeating-linear-gradient(90deg, var(--px-dot) 0 var(--px-dot-size), transparent 0 calc(2 * var(--px-dot-size)))
+        left 14px top 14px / calc(5 * var(--px-dot-size)) var(--px-dot-size) no-repeat,
+      repeating-linear-gradient(90deg, var(--px-dot) 0 var(--px-dot-size), transparent 0 calc(2 * var(--px-dot-size)))
+        right 14px bottom 16px / calc(5 * var(--px-dot-size)) var(--px-dot-size) no-repeat,
+      repeating-linear-gradient(to bottom, transparent 0 3px, var(--px-scan) 3px 4px);
+  }
+
+  /* ===== ボタン ===== */
+  .pixel-button {
+    --px-step: var(--px-step-button);
+    --px-b: var(--px-border-button);
+    --px-bb: var(--px-border-button-bottom);
+    --px-frame: var(--px-frame-button);
+    --px-shine-x: 100%;
+    border-color: transparent;
+    transition:
+      transform 0.15s ease-out,
+      background-color 0.15s;
+  }
+
+  .pixel-button.bg-pop-gradient {
+    --px-frame: var(--px-frame-pop);
+  }
+
+  .pixel-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 40%, var(--holo-shine) 50%, transparent 60%) var(--px-shine-x) 0 /
+      250% 100% no-repeat;
+  }
+
+  /* ホバーで少し浮く。押すと沈んで、下の枠が細くなる（押し込んだ見た目） */
+  .pixel-button:hover {
+    transform: translateY(-2px);
+  }
+
+  .pixel-button:active {
+    --px-bb: var(--px-b);
+    transform: translateY(2px);
+  }
+
+  /* ホバーで光が1回だけ横切る（離したときは戻る動きを見せない） */
+  .pixel-box:hover::after,
+  .pixel-button:hover::after {
+    transition: background-position 0.7s ease-out;
+  }
+
+  .pixel-box:hover,
+  .pixel-button:hover {
+    --px-shine-x: 0%;
+  }
+
+  /* clip-path で外側のフォーカス枠が切れるので、内側に出す */
+  .pixel-box:focus-visible,
+  .pixel-button:focus-visible,
+  .pixel-chip:focus-visible {
+    outline-offset: -6px;
+  }
+
+  /* ===== 小さいタグ・ピル（角だけ） ===== */
+  .pixel-chip {
+    --px-step: var(--px-step-chip);
+    border-radius: 0;
+  }
+
+  /* ===== 丸アイコン → ドット絵の丸 ===== */
+  .pixel-circle {
+    --px-step: 16%;
+    border-radius: 0;
+  }
+
+  /* ===== ホログラム ===== */
+  .holo-border,
+  .holo-hover:hover {
+    --px-frame: var(--holo);
+  }
+
+  /* ===== 見出し：左に ▶、右にドットの点線 ===== */
+  .pixel-heading {
+    position: relative;
+    width: fit-content;
+  }
+
+  .pixel-heading::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -14px;
+    width: 6px;
+    height: 10px;
+    margin-top: -5px;
+    background: var(--primary);
+    clip-path: var(--px-arrow);
+  }
+
+  .pixel-heading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: calc(100% + 14px);
+    width: 3.5rem;
+    height: 4px;
+    margin-top: -2px;
+    background: repeating-linear-gradient(90deg, var(--px-dot) 0 4px, transparent 0 8px);
+  }
+
+  /* ===== ナビ・リンク：選択中／ホバー時に ▶ カーソル ===== */
+  .menu-cursor {
+    position: relative;
+  }
+
+  .menu-cursor::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    width: 5px;
+    height: 8px;
+    margin-top: -4px;
+    background: currentColor;
+    clip-path: var(--px-arrow);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .menu-cursor:hover::before,
+  .menu-cursor[aria-current="page"]::before {
+    opacity: 1;
+  }
+
+  /* ===== 英字見出しのフォント ===== */
+  .font-pixel {
+    font-family: var(--px-font);
+    font-weight: 900;
+    letter-spacing: 0.02em;
+  }
+
+  /* ===== ページ背景のドット模様 ===== */
+  .pixel-bg {
+    background-image: radial-gradient(var(--px-bg-dot) 1px, transparent 1.5px);
+    background-size: var(--px-bg-gap) var(--px-bg-gap);
+  }
+}
+
+/* ドット絵の ▶（3段の階段） */
+:root {
+  --px-arrow: polygon(
+    0 0,
+    34% 0,
+    34% 20%,
+    67% 20%,
+    67% 40%,
+    100% 40%,
+    100% 60%,
+    67% 60%,
+    67% 80%,
+    34% 80%,
+    34% 100%,
+    0 100%
+  );
+}
+
+/* スマホでは装飾を控えめに（角を小さく、隅のドット・走査線・見出し右の点線をなくす） */
+@media (max-width: 639px) {
+  :root {
+    --px-step-box: 3px;
+    --px-dot: transparent;
+    --px-scan: transparent;
+  }
+
+  .pixel-heading::after {
+    display: none;
+  }
+
+  .pixel-heading::before {
+    left: -11px;
+  }
+}
+
+/* 動きを減らす設定では、光の横切り・浮く／沈む動きを止める */
+@media (prefers-reduced-motion: reduce) {
+  .pixel-box:hover,
+  .pixel-button:hover {
+    --px-shine-x: 100%;
+  }
+
+  .pixel-button:hover,
+  .pixel-button:active {
+    transform: none;
+  }
+}

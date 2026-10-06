@@ -6,7 +6,7 @@ export function MoreLink({ href }: { href: string }) {
   return (
     <Link
       href={href}
-      className="group inline-flex items-center gap-1 rounded-full px-3 py-1.5 font-bold text-primary transition hover:-translate-y-0.5 hover:bg-secondary active:scale-95"
+      className="menu-cursor pixel-chip group inline-flex items-center gap-1 px-3 py-1.5 font-bold text-primary transition hover:-translate-y-0.5 hover:bg-secondary active:scale-95"
     >
       More
       <ArrowRight className="size-4 group-hover:animate-wiggle" aria-hidden="true" />

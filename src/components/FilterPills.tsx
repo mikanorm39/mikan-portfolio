@@ -28,16 +28,16 @@ export function FilterPills<T extends string>({ label, options, value, onChange 
               aria-pressed={active}
               onClick={() => onChange(opt.value)}
               className={cn(
-                "relative isolate shrink-0 rounded-full px-4 py-2 text-sm font-bold whitespace-nowrap transition hover:-translate-y-0.5 active:scale-95",
+                "pixel-button shrink-0 px-4 py-2 text-sm font-bold whitespace-nowrap",
                 active
                   ? "text-pop-foreground"
-                  : "bg-card text-foreground ring-1 ring-border hover:text-primary hover:shadow-pop",
+                  : "bg-card text-foreground hover:text-primary",
               )}
             >
               {active && (
                 <motion.span
                   layoutId={`filter-pill-${label}`}
-                  className="bg-pop-gradient absolute inset-0 -z-10 rounded-full shadow-pop"
+                  className="pixel-chip bg-pop-gradient absolute inset-0 -z-10"
                   transition={navPillTransition}
                 />
               )}

@@ -15,7 +15,7 @@ export function CareerTimeline({ items }: { items: CareerItem[] }) {
 
   if (items.length === 0) {
     return (
-      <p className="rounded-2xl bg-card p-10 text-center font-bold text-muted-foreground ring-1 ring-border">
+      <p className="pixel-box bg-card p-10 text-center font-bold text-muted-foreground">
         この条件の活動はまだありません 🥲
       </p>
     );
@@ -52,8 +52,8 @@ export function CareerTimeline({ items }: { items: CareerItem[] }) {
                 <span className={cn("absolute top-0 w-0.5 bg-border", last ? "h-6" : "h-full")} />
                 <span
                   className={cn(
-                    "relative mt-4 inline-flex items-center justify-center rounded-full",
-                    award ? "size-8 bg-award text-base shadow-pop ring-2 ring-amber-400" : "bg-pop-gradient size-4 mt-6 shadow-pop",
+                    "pixel-circle relative mt-4 inline-flex items-center justify-center",
+                    award ? "size-8 bg-award text-base" : "bg-pop-gradient size-4 mt-6",
                   )}
                 >
                   {award && "🏆"}
@@ -63,8 +63,8 @@ export function CareerTimeline({ items }: { items: CareerItem[] }) {
               {/* カード */}
               <article
                 className={cn(
-                  "mb-6 rounded-2xl bg-card p-5 shadow-pop ring-1 ring-border transition duration-300 hover:-translate-y-1 hover:shadow-pop-lg sm:p-6",
-                  award && "bg-linear-to-br from-award/70 to-card ring-2 ring-amber-400/80",
+                  "pixel-box mb-6 bg-card p-5 transition duration-300 hover:-translate-y-1 sm:p-6",
+                  award && "holo-border bg-linear-to-br from-award/70 to-card",
                 )}
               >
                 <time dateTime={item.date} className="text-sm font-bold text-muted-foreground sm:hidden">

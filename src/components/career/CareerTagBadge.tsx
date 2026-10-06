@@ -5,7 +5,7 @@ export function CareerTagBadge({ tag }: { tag: CareerTag }) {
   return (
     <span
       className={cn(
-        "inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold",
+        "pixel-chip inline-flex px-2.5 py-0.5 text-xs font-bold",
         tag === "award" ? "bg-award text-award-foreground" : "bg-secondary text-secondary-foreground",
       )}
     >

@@ -17,11 +17,11 @@ export function SectionHeading({ title, emoji, description, action, as: Tag = "h
       <div>
         <Tag
           className={cn(
-            "font-heading font-extrabold tracking-wide",
+            "pixel-heading font-heading font-extrabold tracking-wide",
             Tag === "h1" ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl",
           )}
         >
-          <span className="text-pop-gradient">{title}</span>
+          <span className="text-pop-gradient font-pixel">{title}</span>
           {emoji && (
             <span className="ml-2 inline-block hover:animate-wiggle" aria-hidden="true">
               {emoji}

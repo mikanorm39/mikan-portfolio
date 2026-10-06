@@ -42,7 +42,7 @@ export function Header() {
             height={36}
             className="size-9 shrink-0 rounded-full shadow-pop"
           />
-          <span className="text-pop-gradient truncate font-heading text-lg font-extrabold sm:text-xl">
+          <span className="text-pop-gradient truncate font-pixel text-lg sm:text-xl">
             {profile.siteTitle}
           </span>
         </Link>
@@ -58,14 +58,14 @@ export function Header() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "relative isolate inline-flex items-center rounded-full px-4 py-2 font-bold transition hover:-translate-y-0.5 active:scale-95",
+                        "menu-cursor font-pixel relative isolate inline-flex items-center px-4 py-2 font-bold transition hover:-translate-y-0.5 active:scale-95",
                         active ? "text-pop-foreground" : "text-foreground hover:text-primary",
                       )}
                     >
                       {active && (
                         <motion.span
                           layoutId="nav-pill"
-                          className="bg-pop-gradient absolute inset-0 -z-10 rounded-full shadow-pop"
+                          className="pixel-chip bg-pop-gradient absolute inset-0 -z-10"
                           transition={navPillTransition}
                         />
                       )}

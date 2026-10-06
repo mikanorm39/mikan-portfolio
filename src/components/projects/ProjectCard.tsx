@@ -15,7 +15,7 @@ type Props = { project: Project; headingLevel?: "h2" | "h3"; priority?: boolean 
 export function ProjectCard({ project, headingLevel = "h3", priority = false }: Props) {
   const Heading = headingLevel;
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl bg-card shadow-pop ring-1 ring-border transition duration-300 hover:-translate-y-1 hover:shadow-pop-lg">
+    <article className="pixel-box holo-hover group flex h-full flex-col overflow-hidden bg-card transition duration-300 hover:-translate-y-1">
       <ProjectThumbnail project={project} priority={priority} />
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex flex-wrap items-center gap-2">
@@ -23,11 +23,11 @@ export function ProjectCard({ project, headingLevel = "h3", priority = false }: 
             {formatYearMonth(project.date)}
           </time>
           {project.categories.map((c) => (
-            <Badge key={c} className="rounded-full bg-primary px-2.5 text-primary-foreground">
+            <Badge key={c} className="pixel-chip rounded-none bg-primary px-2.5 text-primary-foreground">
               {projectCategoryLabels[c]}
             </Badge>
           ))}
-          <Badge variant="secondary" className="rounded-full px-2.5">
+          <Badge variant="secondary" className="pixel-chip rounded-none px-2.5">
             {projectTeamLabels[project.team]}
           </Badge>
         </div>
@@ -37,7 +37,7 @@ export function ProjectCard({ project, headingLevel = "h3", priority = false }: 
 
         <ul className="flex flex-wrap gap-1.5" aria-label="使った技術">
           {project.tech.map((t) => (
-            <li key={t} className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-accent-foreground">
+            <li key={t} className="pixel-chip bg-accent px-2.5 py-0.5 text-xs font-bold text-accent-foreground">
               {t}
             </li>
           ))}
@@ -54,7 +54,7 @@ export function ProjectCard({ project, headingLevel = "h3", priority = false }: 
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${project.title} の${label}を開く（新しいタブ）`}
-                className="group/link inline-flex items-center gap-1.5 rounded-full border border-primary/30 px-3.5 py-1.5 text-sm font-bold text-primary transition hover:-translate-y-0.5 hover:bg-secondary active:scale-95"
+                className="pixel-button group/link inline-flex items-center gap-1.5 border px-3.5 py-1.5 text-sm font-bold text-primary hover:bg-secondary"
               >
                 <Icon className="size-4 group-hover/link:animate-wiggle" aria-hidden="true" />
                 {label}

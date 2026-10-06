@@ -41,7 +41,7 @@ export function Hero() {
         animate={heroAnimate}
       >
         <div>
-          <h1 className="font-heading text-4xl leading-tight font-extrabold sm:text-6xl">
+          <h1 className="font-pixel text-4xl leading-tight font-extrabold sm:text-6xl">
             <motion.span data-reveal className="block" variants={item}>
               <span className="text-pop-gradient">{profile.displayName}</span>&apos;s
             </motion.span>
@@ -59,14 +59,14 @@ export function Hero() {
           <motion.div data-reveal className="mt-8 flex flex-wrap gap-3" variants={item}>
             <Link
               href="/work"
-              className="bg-pop-gradient group inline-flex items-center gap-2 rounded-full px-6 py-3 font-bold shadow-pop transition hover:-translate-y-0.5 hover:shadow-pop-lg active:scale-95"
+              className="pixel-button bg-pop-gradient group inline-flex items-center gap-2 px-6 py-3 font-bold"
             >
               View Work
               <ArrowRight className="size-4 group-hover:animate-wiggle" aria-hidden="true" />
             </Link>
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 rounded-full border-2 border-primary/40 bg-card px-6 py-3 font-bold text-primary transition hover:-translate-y-0.5 hover:shadow-pop active:scale-95"
+              className="pixel-button inline-flex items-center gap-2 border-2 bg-card px-6 py-3 font-bold text-primary"
             >
               About Me
             </Link>

@@ -13,7 +13,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       type="button"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
       className={cn(
-        "group inline-flex size-10 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:-translate-y-0.5 hover:shadow-pop active:scale-95",
+        "group pixel-button inline-flex size-10 items-center justify-center bg-secondary text-secondary-foreground",
         className,
       )}
       aria-label="ライトモードとダークモードを切り替える"

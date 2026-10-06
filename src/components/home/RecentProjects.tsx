@@ -24,9 +24,9 @@ export function RecentProjects() {
         <RevealItem as="li">
           <Link
             href="/work"
-            className="group flex h-full min-h-56 flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-primary/40 bg-card/50 p-6 text-primary transition duration-300 hover:-translate-y-1 hover:bg-card hover:shadow-pop-lg active:scale-95"
+            className="group flex h-full min-h-56 flex-col items-center justify-center gap-3 border-2 border-dashed border-primary/40 bg-card/50 p-6 text-primary transition duration-300 hover:-translate-y-1 hover:bg-card active:scale-95"
           >
-            <span className="bg-pop-gradient inline-flex size-14 items-center justify-center rounded-full shadow-pop">
+            <span className="pixel-circle bg-pop-gradient inline-flex size-14 items-center justify-center">
               <Plus className="size-7 group-hover:animate-wiggle" aria-hidden="true" />
             </span>
             <span className="font-heading text-lg font-extrabold">More</span>

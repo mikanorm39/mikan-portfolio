@@ -16,7 +16,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${s.label}（新しいタブで開く）`}
-                  className="group inline-flex size-11 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition hover:-translate-y-0.5 hover:shadow-pop active:scale-95"
+                  className="group pixel-button inline-flex size-11 items-center justify-center bg-secondary text-secondary-foreground"
                 >
                   <Icon className="size-5 group-hover:animate-wiggle" />
                 </a>

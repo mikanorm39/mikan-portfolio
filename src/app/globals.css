@@ -7,7 +7,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-zen-maru), ui-rounded, "Hiragino Maru Gothic ProN", sans-serif;
+  /* 本文：Adobe Fonts の AB-yanchag。読み込み前や、まだ読み込んでいない文字は Zen Maru Gothic で表示 */
+  --font-sans: "ab-yanchag-open", var(--font-zen-maru), ui-rounded, "Hiragino Maru Gothic ProN", sans-serif;
   --font-heading: var(--font-mplus-rounded), var(--font-zen-maru), ui-rounded, sans-serif;
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -181,20 +182,19 @@
   }
   html {
     @apply font-sans;
+    /* 本文フォント（AB-yanchag）は太さが1種類だけ。太字を疑似的に太らせると小さい文字がつぶれるので、太らせない */
+    font-synthesis-weight: none;
     scroll-padding-top: 5rem;
   }
   body {
     @apply bg-background text-foreground antialiased;
     overflow-x: clip;
   }
-  /* 見出しと太字は M PLUS Rounded 1c（800）で表示する（日本語フォントのウェイト数を抑えて軽くするため） */
+  /* 見出しは M PLUS Rounded 1c（800）。それ以外（太字のラベル・ボタンなども）は本文フォント（AB-yanchag） */
   h1,
   h2,
   h3,
-  h4,
-  b,
-  strong,
-  :where(.font-bold, .font-extrabold, .font-semibold, .font-medium) {
+  h4 {
     font-family: var(--font-heading);
   }
   button:not(:disabled),
