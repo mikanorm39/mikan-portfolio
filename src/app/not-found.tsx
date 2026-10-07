@@ -40,7 +40,7 @@ export default function NotFound() {
       <div className="animate-float">
         <LostMikan />
       </div>
-      <p className="text-pop-gradient mt-8 font-pixel text-6xl font-extrabold">404</p>
+      <p className="text-pop-gradient mt-8 font-pixel text-6xl">404</p>
       <h1 className="mt-3 font-heading text-2xl font-extrabold sm:text-3xl">ページが見つかりませんでした</h1>
       <p className="mt-3 text-muted-foreground">
         URL が間違っているか、ページが移動・削除されたのかもしれません。

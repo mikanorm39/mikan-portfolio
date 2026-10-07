@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { House } from "lucide-react";
 import { profile } from "@/data/profile";
 import { cn } from "@/lib/utils";
 import { navPillTransition } from "@/lib/motion";
@@ -31,20 +31,19 @@ export function Header() {
       )}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
+        {/* 左上のホームボタン（家マーク＋サイト名）。ヘッダーは固定なので、どのページからでも押せばトップに戻れる */}
         <Link
           href="/"
-          className="group flex min-w-0 items-center gap-2 rounded-full transition-transform duration-300 hover:-rotate-1 hover:scale-105"
+          aria-label={`${profile.siteTitle}（ホームに戻る）`}
+          className="group flex min-w-0 items-center gap-2"
         >
-          <Image
-            src={profile.avatar}
-            alt=""
-            width={36}
-            height={36}
-            className="size-9 shrink-0 rounded-full shadow-pop"
-          />
-          <span className="text-pop-gradient truncate font-pixel text-lg sm:text-xl">
-            {profile.siteTitle}
+          <span
+            className="pixel-button inline-flex size-9 shrink-0 items-center justify-center bg-secondary text-secondary-foreground"
+            aria-hidden="true"
+          >
+            <House className="size-5 group-hover:animate-wiggle" />
           </span>
+          <span className="text-pop-gradient truncate font-pixel text-lg sm:text-xl">{profile.siteTitle}</span>
         </Link>
 
         <div className="flex items-center gap-2">
@@ -59,13 +58,14 @@ export function Header() {
                       aria-current={active ? "page" : undefined}
                       className={cn(
                         "menu-cursor font-pixel relative isolate inline-flex items-center px-4 py-2 font-bold transition hover:-translate-y-0.5 active:scale-95",
-                        active ? "text-pop-foreground" : "text-foreground hover:text-primary",
+                        // 選択中は淡い水色の背景に青い文字（立体文字は中が空洞なので、濃い背景だと文字の中に色が透けて読みにくい）
+                        active ? "text-primary" : "text-foreground hover:text-primary",
                       )}
                     >
                       {active && (
                         <motion.span
                           layoutId="nav-pill"
-                          className="pixel-chip bg-pop-gradient absolute inset-0 -z-10"
+                          className="pixel-chip bg-secondary absolute inset-0 -z-10"
                           transition={navPillTransition}
                         />
                       )}

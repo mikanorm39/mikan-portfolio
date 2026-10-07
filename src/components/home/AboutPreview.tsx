@@ -23,9 +23,9 @@ export function AboutPreview() {
           </ul>
           <Link
             href="/about"
-            className="pixel-button bg-pop-gradient group inline-flex items-center gap-2 px-6 py-3 font-bold"
+            className="pixel-button bg-pop-gradient font-pixel group inline-flex items-center gap-2 px-6 py-3"
           >
-            More
+            MORE
             <ArrowRight className="size-4 group-hover:animate-wiggle" aria-hidden="true" />
           </Link>
         </div>

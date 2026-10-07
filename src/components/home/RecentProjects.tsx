@@ -29,7 +29,7 @@ export function RecentProjects() {
             <span className="pixel-circle bg-pop-gradient inline-flex size-14 items-center justify-center">
               <Plus className="size-7 group-hover:animate-wiggle" aria-hidden="true" />
             </span>
-            <span className="font-heading text-lg font-extrabold">More</span>
+            <span className="font-pixel text-lg">MORE</span>
           </Link>
         </RevealItem>
       </RevealGroup>

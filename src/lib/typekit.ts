@@ -1,7 +1,7 @@
 /**
  * Adobe Fonts（Typekit）のキット。
  * - strenuous-3d：英字のタイトル・見出し
- * - ab-yanchag-open：日本語の本文（ダイナミックサブセット＝ページにある文字だけ読み込む）
+ * - ta-kotodama-r：日本語の本文（ダイナミックサブセット＝ページにある文字だけ読み込む）
  * 日本語フォントのダイナミックサブセットは CSS の <link> では使えないので、公式の JS 埋め込みコードで読み込む。
  */
 export const TYPEKIT_KIT_ID = "kfd7xzg";

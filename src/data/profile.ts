@@ -11,8 +11,6 @@ export const profile = {
   displayName: "Mikan",
   siteTitle: "Mikan's Portfolio",
   catchCopy: "作ることが好きなゲームプランナ―を目指す学生です",
-  greeting:
-    "はじめまして、みかんです！ゲームを中心に、ときどき Web も作っています。遊んだ人が「もう一回！」と言いたくなるものを目指して、企画から実装までコツコツ手を動かしています。",
   affiliation: "情報工業大学 情報学部 2年",
   club: "情報技術研究部（通称：じょぎ）",
   intro:

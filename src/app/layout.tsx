@@ -65,7 +65,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="ja" className={`${mplusRounded.variable} ${zenMaru.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: openingScript }} />
-        {/* Adobe Fonts（英字見出し：Strenuous 3D、日本語本文：AB-yanchag）。接続を先に始めて読み込みを早める */}
+        {/* Adobe Fonts（英字見出し：Strenuous、日本語本文：TA-ことだま）。接続を先に始めて読み込みを早める */}
         <link rel="preconnect" href="https://use.typekit.net" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: typekitScript }} />

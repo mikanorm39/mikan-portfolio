@@ -7,8 +7,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  /* 本文：Adobe Fonts の AB-yanchag。読み込み前や、まだ読み込んでいない文字は Zen Maru Gothic で表示 */
-  --font-sans: "ab-yanchag-open", var(--font-zen-maru), ui-rounded, "Hiragino Maru Gothic ProN", sans-serif;
+  /* 本文：Adobe Fonts の TA-ことだま。読み込み前や、まだ読み込んでいない文字は Zen Maru Gothic で表示 */
+  --font-sans: "ta-kotodama-r", var(--font-zen-maru), ui-rounded, "Hiragino Maru Gothic ProN", sans-serif;
   --font-heading: var(--font-mplus-rounded), var(--font-zen-maru), ui-rounded, sans-serif;
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -47,12 +47,9 @@
   --shadow-pop-lg: 0 16px 36px -10px var(--pop-shadow-strong), 0 4px 10px -4px var(--pop-shadow);
 }
 
-/* 独自のキーフレーム（animate-float / float-slow / bounce-soft / sparkle / wiggle） */
+/* 独自のキーフレーム（animate-float / wiggle） */
 @theme {
   --animate-float: float 4s ease-in-out infinite;
-  --animate-float-slow: float 7s ease-in-out infinite;
-  --animate-bounce-soft: bounce-soft 2.4s ease-in-out infinite;
-  --animate-sparkle: sparkle 2.8s ease-in-out infinite;
   --animate-wiggle: wiggle 0.5s ease-in-out;
 
   @keyframes float {
@@ -62,26 +59,6 @@
     }
     50% {
       transform: translateY(-12px);
-    }
-  }
-  @keyframes bounce-soft {
-    0%,
-    100% {
-      transform: translateY(0) scale(1);
-    }
-    50% {
-      transform: translateY(-6px) scale(1.03);
-    }
-  }
-  @keyframes sparkle {
-    0%,
-    100% {
-      opacity: 0.2;
-      transform: scale(0.6) rotate(0deg);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1) rotate(20deg);
     }
   }
   @keyframes wiggle {
@@ -182,7 +159,7 @@
   }
   html {
     @apply font-sans;
-    /* 本文フォント（AB-yanchag）は太さが1種類だけ。太字を疑似的に太らせると小さい文字がつぶれるので、太らせない */
+    /* 本文フォント（TA-ことだま）は太さが1種類だけ。太字を疑似的に太らせると小さい文字がつぶれるので、太らせない */
     font-synthesis-weight: none;
     scroll-padding-top: 5rem;
   }
@@ -190,7 +167,7 @@
     @apply bg-background text-foreground antialiased;
     overflow-x: clip;
   }
-  /* 見出しは M PLUS Rounded 1c（800）。それ以外（太字のラベル・ボタンなども）は本文フォント（AB-yanchag） */
+  /* 見出しは M PLUS Rounded 1c（800）。それ以外（太字のラベル・ボタンなども）は本文フォント（TA-ことだま） */
   h1,
   h2,
   h3,
