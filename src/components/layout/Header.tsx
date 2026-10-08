@@ -37,7 +37,8 @@ export function Header() {
           className="group flex min-w-0 items-center gap-2"
         >
           <span
-            className="pixel-button inline-flex size-9 shrink-0 items-center justify-center bg-secondary text-secondary-foreground"
+            // 黄色のボタン（サイト共通の黄色いボタンと同じ bg-pop-gradient）に濃い紫の家マーク
+            className="pixel-button bg-pop-gradient inline-flex size-9 shrink-0 items-center justify-center"
             aria-hidden="true"
           >
             <House className="size-5 group-hover:animate-wiggle" />

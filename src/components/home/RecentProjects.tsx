@@ -12,9 +12,10 @@ const RECENT_COUNT = 5;
 export function RecentProjects() {
   const recent = getSortedProjects().slice(0, RECENT_COUNT);
 
+  // id="work"：トップのメニューの WORK からここへスクロールする
   return (
-    <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
-      <SectionHeading title="Work" action={<MoreLink href="/work" />} />
+    <section id="work" className="mx-auto max-w-6xl px-4 py-section sm:px-6">
+      <SectionHeading title="Work" ink={{ id: "work", color: "pink" }} action={<MoreLink href="/work" />} />
       <RevealGroup as="ul" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {recent.map((p) => (
           <RevealItem as="li" key={p.slug}>

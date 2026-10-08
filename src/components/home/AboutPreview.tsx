@@ -7,9 +7,10 @@ import { MoreLink } from "./MoreLink";
 
 /** トップ用の短い自己紹介。詳しい内容は /about にまとめる */
 export function AboutPreview() {
+  // id="about"：トップのメニューの ABOUT からここへスクロールする
   return (
-    <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
-      <SectionHeading title="About" action={<MoreLink href="/about" />} />
+    <section id="about" className="mx-auto max-w-6xl px-4 py-section sm:px-6">
+      <SectionHeading title="About" ink={{ id: "about", color: "mint" }} action={<MoreLink href="/about" />} />
       <Reveal className="pixel-box bg-card p-6 sm:p-8">
         <p className="font-heading text-h3 font-bold text-primary">{profile.affiliation}</p>
         <p className="mt-3 leading-loose">{profile.catchCopy}</p>

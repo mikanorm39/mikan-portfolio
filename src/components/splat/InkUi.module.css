@@ -35,9 +35,10 @@
     opacity 0.2s ease-in;
 }
 
-/* ホバー・キーボードのフォーカス・選択中（data-selected）で、ぴちゃっと着弾 */
+/* ホバー・キーボードのフォーカス・押した瞬間・選択中（data-selected）で、ぴちゃっと着弾 */
 :global(.ink-cursor-host):hover .behind,
 :global(.ink-cursor-host):focus-visible .behind,
+:global(.ink-cursor-host):active .behind,
 :global(.ink-cursor-host)[data-selected="true"] .behind {
   transform: scale(1);
   opacity: 1;
@@ -84,6 +85,7 @@
 
 :global(.ink-cursor-host):hover .behind [data-ink-drop],
 :global(.ink-cursor-host):focus-visible .behind [data-ink-drop],
+:global(.ink-cursor-host):active .behind [data-ink-drop],
 :global(.ink-cursor-host)[data-selected="true"] .behind [data-ink-drop],
 .navInkOn [data-ink-drop] {
   opacity: 1;

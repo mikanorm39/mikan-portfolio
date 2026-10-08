@@ -23,7 +23,8 @@ export default function AboutPage() {
   return (
     <>
       <div className="mx-auto max-w-6xl px-4 pt-section sm:px-6">
-        <SectionHeading as="h1" title="About" description={description} className="mb-0" />
+        {/* ページを開いたら、大見出しにミントのインクが着弾する */}
+        <SectionHeading as="h1" title="About" description={description} className="mb-0" ink={{ id: "about-page", color: "mint" }} />
       </div>
       <Profile />
       <Vision />

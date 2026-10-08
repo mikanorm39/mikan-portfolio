@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/motion/Reveal";
+import { HeadingInk } from "@/components/splat/HeadingInk";
+import type { InkColor } from "@/components/splat/splatConfig";
 
 type Props = {
   title: string;
@@ -8,10 +10,12 @@ type Props = {
   action?: React.ReactNode;
   as?: "h1" | "h2";
   className?: string;
+  /** 指定すると、見出しが画面に入ったとき（またはトップのメニューから飛んできたとき）に文字の後ろへインクが着弾する。id はセクションの id */
+  ink?: { id: string; color: InkColor };
 };
 
 /** 章見出し。文字サイズ（text-h1 / text-h2）と下の余白（mb-heading）は globals.css のタイプスケールを使う */
-export function SectionHeading({ title, description, action, as: Tag = "h2", className }: Props) {
+export function SectionHeading({ title, description, action, as: Tag = "h2", className, ink }: Props) {
   return (
     <Reveal className={cn("mb-heading flex flex-wrap items-end justify-between gap-4", className)}>
       <div>
@@ -21,7 +25,15 @@ export function SectionHeading({ title, description, action, as: Tag = "h2", cla
             Tag === "h1" ? "text-h1" : "text-h2",
           )}
         >
-          <span className="ink-heading font-section">{title}</span>
+          {ink ? (
+            // インクを文字の後ろに重ねるための入れ物
+            <span className="relative isolate inline-block">
+              <HeadingInk id={ink.id} color={ink.color} />
+              <span className="ink-heading font-section">{title}</span>
+            </span>
+          ) : (
+            <span className="ink-heading font-section">{title}</span>
+          )}
         </Tag>
         {description && <p className="mt-2 text-on-bg-muted">{description}</p>}
       </div>

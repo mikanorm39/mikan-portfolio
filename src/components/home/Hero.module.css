@@ -5,7 +5,8 @@
 
 .hero {
   /* ---- タイトルの色：濃い紫1色＋文字の形に沿った白いふち（ライト・ダーク共通） ---- */
-  --hero-title-color: var(--ink-deep);
+  /* 文字の色（紫。明るくするなら #6d28d9、暗くするなら var(--ink-deep) = #3B1680） */
+  --hero-title-color: #5b21b6;
   --hero-title-outline: var(--ink-highlight);
   /* 白いふちの太さ（文字の大きさに対する割合。外側に見えるのはこの半分） */
   --hero-title-outline-width: 0.12em;
@@ -18,11 +19,14 @@
   /* ---- サイズ ---- */
   /* サイト共通のタイプスケール（globals.css の --fs-○○）を使う */
   --hero-title-size: var(--fs-title);
-  --hero-sub-size: var(--fs-lead);
+  /* サブタイトル「> Portfolio <」：メニューより一段大きく（スマホ 24px 〜 PC 36px） */
+  --hero-sub-size: clamp(1.5rem, 1.2rem + 1.6vw, 2.25rem);
+  /* サブタイトルとメニュー（HOME）の間 */
+  --hero-menu-gap: 1rem;
   --hero-item-size: var(--fs-h3);
 
-  /* ---- アニメーション時間 ---- */
-  --hero-blink-ms: 1.2s; /* 「> <」の点滅 */
+  /* サブタイトルの下のインクのアンダーバーの色 */
+  --hero-underline-color: var(--ink-yellow);
 
   position: relative;
   isolation: isolate;
@@ -80,15 +84,24 @@
   color: var(--hero-sub);
 }
 
-.chevron {
+/* 文字とアンダーバーの入れ物（アンダーバーは文字の後ろ・下に重ねる） */
+.subtitleText {
+  position: relative;
+  isolation: isolate;
   display: inline-block;
-  animation: hero-blink var(--hero-blink-ms) steps(1) infinite;
 }
 
-@keyframes hero-blink {
-  50% {
-    opacity: 0.25;
-  }
+/* インクのアンダーバー：文字より少し長く、文字の下端に少しかかる位置 */
+.underline {
+  position: absolute;
+  left: 50%;
+  top: calc(100% - 0.45em);
+  z-index: -1;
+  width: 115%;
+  height: auto;
+  overflow: visible;
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 /* ===== 3. メニュー ===== */
@@ -97,7 +110,7 @@
   flex-direction: column;
   align-items: stretch;
   gap: 0.5rem;
-  margin: 2.5rem auto 0;
+  margin: var(--hero-menu-gap) auto 0;
   padding: 0;
   list-style: none;
 }
@@ -121,8 +134,10 @@
   outline-offset: -2px;
 }
 
-/* 選択中：文字の後ろにインク、文字はインクの上で読みやすい濃い紫に */
-.item[data-selected="true"] {
+/* カーソルを合わせている間・キーボードで選んだとき・押した瞬間：文字の後ろにインク、文字はインクの上で読みやすい濃い紫に */
+.item:hover,
+.item:focus-visible,
+.item:active {
   color: var(--hero-item-active);
 }
 
@@ -132,9 +147,3 @@
   white-space: nowrap;
 }
 
-/* ===== 動きを減らす設定：ループするアニメーションを止める ===== */
-@media (prefers-reduced-motion: reduce) {
-  .chevron {
-    animation: none;
-  }
-}

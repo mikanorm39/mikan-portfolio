@@ -19,7 +19,8 @@ export default function WorkPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-section sm:px-6">
-      <SectionHeading as="h1" title="Work" description={description} />
+      {/* ページを開いたら、大見出しにピンクのインクが着弾する */}
+      <SectionHeading as="h1" title="Work" description={description} ink={{ id: "work-page", color: "pink" }} />
       {/* クエリ（?category=）を読むのはクライアント側。静的生成時は全件を出しておく */}
       <Suspense fallback={<ProjectGrid projects={projects} />}>
         <ProjectsExplorer projects={projects} />

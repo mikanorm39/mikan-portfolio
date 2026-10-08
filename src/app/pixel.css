@@ -13,7 +13,7 @@
  *   .pixel-circle  丸アイコンをドット絵の丸にする
  *   .holo-border   枠をホログラム（淡い虹色）にする（.pixel-box / .pixel-button と併用）
  *   .holo-hover    ホバー中だけ枠をホログラムにする
- *   .pixel-heading 見出し（左に ▶）
+ *   .pixel-heading 章見出し（幅を文字に合わせる）
  *   .font-pixel    ヘッダー・メニュー・MORE などのフォント（Bello Caps）
  *   .font-section  章見出し用フォント（Bello Caps）
  *   .pixel-bg      ページ背景のドット模様
@@ -242,22 +242,10 @@
     --px-frame: var(--holo);
   }
 
-  /* ===== 見出し：左に ▶ ===== */
+  /* ===== 章見出し ===== */
   .pixel-heading {
     position: relative;
     width: fit-content;
-  }
-
-  .pixel-heading::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: -14px;
-    width: 6px;
-    height: 10px;
-    margin-top: -5px;
-    background: var(--ink-yellow);
-    clip-path: var(--px-arrow);
   }
 
 
@@ -293,34 +281,12 @@
   }
 }
 
-/* ドット絵の ▶（3段の階段） */
-:root {
-  --px-arrow: polygon(
-    0 0,
-    34% 0,
-    34% 20%,
-    67% 20%,
-    67% 40%,
-    100% 40%,
-    100% 60%,
-    67% 60%,
-    67% 80%,
-    34% 80%,
-    34% 100%,
-    0 100%
-  );
-}
-
 /* スマホでは装飾を控えめに（角を小さく、隅のドット・走査線をなくす） */
 @media (max-width: 639px) {
   :root {
     --px-step-box: 3px;
     --px-dot: transparent;
     --px-scan: transparent;
-  }
-
-  .pixel-heading::before {
-    left: -11px;
   }
 }
 
