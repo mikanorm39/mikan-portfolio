@@ -8,6 +8,8 @@ export type SocialLink = {
 
 export const profile = {
   name: "mikan",
+  /** 連絡先（フッターの Contact に表示） */
+  email: "mikanorm@outlook.jp",
   displayName: "Mikan",
   siteTitle: "Mikan's Portfolio",
   catchCopy: "作ることが好きなゲームプランナ―を目指す学生です",

@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useOpening } from "@/components/opening/OpeningContext";
 import { cn } from "@/lib/utils";
+import { computeNudges, type Nudges } from "./avoidInks";
 import { InkSplat } from "./InkSplat";
 import { PixelSymbol } from "./PixelSymbol";
 import { SPLATS, SPLAT_TIMING as T, SYMBOLS } from "./splatConfig";
@@ -35,6 +36,29 @@ function SplatLayer({ isHome }: { isHome: boolean }) {
   // 着弾したもの（id → 着弾の遅れ ms）。一度着弾したら、上にスクロールし直しても消さない
   const [hits, setHits] = useState<Map<string, number>>(() => new Map());
   const layer = useRef<HTMLDivElement>(null);
+  // ドット絵の記号をインクと重ならない位置へずらす量（表示したあと・画面サイズが変わったときに計算し直す）
+  const [nudges, setNudges] = useState<Nudges>({});
+  const nudgesRef = useRef<Nudges>({});
+
+  useEffect(() => {
+    const root = layer.current;
+    if (!root) return;
+    let raf = 0;
+    const update = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const next = computeNudges(root, nudgesRef.current);
+        nudgesRef.current = next;
+        setNudges(next);
+      });
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
   useEffect(() => {
     const root = layer.current;
@@ -104,7 +128,12 @@ function SplatLayer({ isHome }: { isHome: boolean }) {
             data-splat-id={s.id}
             data-kind="symbol"
             className={cn(styles.slot, !s.mobile && styles.desktopOnly)}
-            style={place(s)}
+            style={{
+              ...place(s),
+              // インクと重ならない位置へずらす（どこへ動かしても重なるときは出さない）
+              translate: nudges[s.id] ? `${nudges[s.id]!.x}px ${nudges[s.id]!.y}px` : undefined,
+              visibility: nudges[s.id] === null ? "hidden" : undefined,
+            }}
           >
             <div
               className={cn(styles.symbol, delay !== undefined && styles.hit)}

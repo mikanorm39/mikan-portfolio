@@ -58,6 +58,10 @@
   /* ページ背景のドット模様（色・間隔）。紫の背景より少し濃い紫の点 */
   --px-bg-dot: color-mix(in srgb, var(--ink-deep) 22%, transparent);
 
+  /* 見出しにカーソルを合わせたときの揺れ（角度・時間） */
+  --heading-wobble-deg: 5deg;
+  --heading-wobble-ms: 0.6s;
+
   /* 紫の背景にのる見出しの硬い影（ぼかしなし） */
   --px-heading-shadow: 3px 3px 0 var(--ink-deep);
   --px-bg-gap: 18px;
@@ -248,6 +252,35 @@
     width: fit-content;
   }
 
+  /* カーソルを合わせると、時計回り → 反時計回りを交互に2回くり返して揺れる（インクも一緒に揺れる） */
+  .heading-wobble {
+    display: inline-block;
+    transform-origin: 50% 55%;
+  }
+
+  .heading-wobble:hover {
+    animation: heading-wobble var(--heading-wobble-ms) ease-in-out;
+  }
+
+  @keyframes heading-wobble {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    15% {
+      transform: rotate(var(--heading-wobble-deg));
+    }
+    37% {
+      transform: rotate(calc(var(--heading-wobble-deg) * -1));
+    }
+    60% {
+      transform: rotate(calc(var(--heading-wobble-deg) * 0.75));
+    }
+    80% {
+      transform: rotate(calc(var(--heading-wobble-deg) * -0.6));
+    }
+  }
+
 
   /* ===== 英字見出しのフォント ===== */
   .font-pixel {
@@ -290,8 +323,12 @@
   }
 }
 
-/* 動きを減らす設定では、光の横切り・浮く／沈む動きを止める */
+/* 動きを減らす設定では、光の横切り・浮く／沈む動き・見出しの揺れを止める */
 @media (prefers-reduced-motion: reduce) {
+  .heading-wobble:hover {
+    animation: none;
+  }
+
   .pixel-box:hover,
   .pixel-button:hover {
     --px-shine-x: 100%;

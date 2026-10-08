@@ -1,10 +1,7 @@
-import Link from "next/link";
-import { Plus } from "lucide-react";
-import { ProjectCard } from "@/components/projects/ProjectCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getSortedProjects } from "@/data/projects";
-import { RevealGroup, RevealItem } from "@/components/motion/RevealGroup";
-import { MoreLink } from "./MoreLink";
+import { MoreButton } from "./MoreButton";
+import { ProjectCarousel } from "./ProjectCarousel";
 
 /** トップに出す作品の数。これより古いものは /work で見てもらう */
 const RECENT_COUNT = 5;
@@ -15,25 +12,9 @@ export function RecentProjects() {
   // id="work"：トップのメニューの WORK からここへスクロールする
   return (
     <section id="work" className="mx-auto max-w-6xl px-4 py-section sm:px-6">
-      <SectionHeading title="Work" ink={{ id: "work", color: "pink" }} action={<MoreLink href="/work" />} />
-      <RevealGroup as="ul" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {recent.map((p) => (
-          <RevealItem as="li" key={p.slug}>
-            <ProjectCard project={p} />
-          </RevealItem>
-        ))}
-        <RevealItem as="li">
-          <Link
-            href="/work"
-            className="group flex h-full min-h-56 flex-col items-center justify-center gap-3 border-2 border-dashed border-primary/40 bg-card/50 p-6 text-primary transition duration-300 hover:-translate-y-1 hover:bg-card active:scale-95"
-          >
-            <span className="pixel-circle bg-pop-gradient inline-flex size-14 items-center justify-center">
-              <Plus className="size-7 group-hover:animate-wiggle" aria-hidden="true" />
-            </span>
-            <span className="font-pixel text-h3">MORE</span>
-          </Link>
-        </RevealItem>
-      </RevealGroup>
+      <SectionHeading title="Work" ink={{ id: "work", color: "pink" }} />
+      {/* 作品は横スクロールで見る（最後に「＋ MORE」カード）。右下に、作品一覧ページへの「MORE →」 */}
+      <ProjectCarousel projects={recent} moreHref="/work" cardHref="/work" footer={<MoreButton href="/work" className="flex" />} />
     </section>
   );
 }

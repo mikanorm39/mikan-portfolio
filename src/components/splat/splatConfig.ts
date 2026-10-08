@@ -108,8 +108,8 @@ export const SYMBOLS: SymbolItem[] = [
 
   // ---- スクロールすると出てくるもの（左右の余白に） ----
   { id: "z1", kind: "coin", color: "yellow", top: "150vh", left: "3vw", size: "26px", rotate: 0 },
-  { id: "z2", kind: "heart", color: "pink", top: "232vh", right: "3vw", size: "30px", rotate: 0 },
+  { id: "z2", kind: "heart", color: "pink", top: "272vh", right: "3vw", size: "30px", rotate: 0 },
   { id: "z3", kind: "chara", color: "mint", top: "312vh", left: "3vw", size: "34px", rotate: 0 },
   { id: "z4", kind: "triangle", color: "yellow", top: "382vh", right: "3vw", size: "36px", rotate: -10 },
-  { id: "z5", kind: "wave", color: "pink", top: "455vh", left: "3vw", size: "44px", rotate: 10 },
+  { id: "z5", kind: "wave", color: "pink", top: "418vh", left: "3vw", size: "44px", rotate: 10 },
 ];

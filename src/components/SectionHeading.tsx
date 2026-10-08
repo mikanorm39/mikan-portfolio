@@ -27,12 +27,13 @@ export function SectionHeading({ title, description, action, as: Tag = "h2", cla
         >
           {ink ? (
             // インクを文字の後ろに重ねるための入れ物
-            <span className="relative isolate inline-block">
+            <span className="heading-wobble relative isolate inline-block">
               <HeadingInk id={ink.id} color={ink.color} />
               <span className="ink-heading font-section">{title}</span>
             </span>
           ) : (
-            <span className="ink-heading font-section">{title}</span>
+            // カーソルを合わせると、時計回り・反時計回りに交互に揺れる（pixel.css の .heading-wobble）
+            <span className="heading-wobble ink-heading font-section">{title}</span>
           )}
         </Tag>
         {description && <p className="mt-2 text-on-bg-muted">{description}</p>}

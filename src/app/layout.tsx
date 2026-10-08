@@ -74,7 +74,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <style>{`[data-opening-overlay]{display:none}`}</style>
         </noscript>
       </head>
-      <body className="pixel-bg relative flex min-h-dvh flex-col">
+      {/* 背景の点の模様を戻すときは className に "pixel-bg" を足す（pixel.css） */}
+      <body className="relative flex min-h-dvh flex-col">
         <Providers>
           <a
             href="#main"
