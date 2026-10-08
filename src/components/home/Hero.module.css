@@ -4,10 +4,11 @@
  */
 
 .hero {
-  /* ---- タイトルの色：濃い紫の縦グラデーション（上が少し明るく、下に向かって濃く） ---- */
-  --hero-title-top: #5b21b6;
-  --hero-title-mid: #4c1d95;
-  --hero-title-bottom: var(--ink-deep);
+  /* ---- タイトルの色：濃い紫1色＋文字の形に沿った白いふち（ライト・ダーク共通） ---- */
+  --hero-title-color: var(--ink-deep);
+  --hero-title-outline: var(--ink-highlight);
+  /* 白いふちの太さ（文字の大きさに対する割合。外側に見えるのはこの半分） */
+  --hero-title-outline-width: 0.12em;
 
   /* ---- サブタイトル・メニューの色（紫の背景の上なので白。選択中は後ろのインクの上で読める濃い紫） ---- */
   --hero-sub: var(--on-bg);
@@ -34,13 +35,6 @@
   text-align: center;
 }
 
-/* ダークは背景も深い紫なので、タイトルは明るいラベンダーにして読めるようにする */
-:global(.dark) .hero {
-  --hero-title-top: #f3e8ff;
-  --hero-title-mid: #d8b4fe;
-  --hero-title-bottom: #b794f6;
-}
-
 /* ごく薄い走査線（背景のドット模様は body の .pixel-bg） */
 .hero::before {
   content: "";
@@ -63,19 +57,11 @@
   letter-spacing: 0;
 }
 
-/* タイトルの文字に縦グラデーションをかける（文字で切り抜く）。2行に折り返しても各行に同じグラデーションをかける */
+/* タイトルの文字：濃い紫1色。白い輪郭線を先に描いてから文字を重ねるので、ふちは文字の外側にだけ出る（文字は細くならない） */
 .titleText {
-  background-image: linear-gradient(
-    to bottom,
-    var(--hero-title-top),
-    var(--hero-title-mid) 55%,
-    var(--hero-title-bottom)
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
+  color: var(--hero-title-color);
+  -webkit-text-stroke: var(--hero-title-outline-width) var(--hero-title-outline);
+  paint-order: stroke fill;
 }
 
 /* 「Mikan」「Nishioka」は単語の途中で折り返さない（入りきらないときは2行になる） */

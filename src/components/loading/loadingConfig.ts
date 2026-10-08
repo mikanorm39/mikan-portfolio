@@ -6,6 +6,13 @@
 /** 開発中に待ちたくないときは false にする（ローディングを出さずに本体をすぐ表示） */
 export const SHOW_LOADING = true;
 
+/**
+ * どちらのローディング画面を使うか。
+ * - "wifi"：雷が集まって WiFi マークが溜まる（LoadingScreen）
+ * - "ink" ：インクが飛んできて白い画面に穴が空いていく（InkLoadingScreen。設定は inkLoadingConfig.ts）
+ */
+export const LOADING_VARIANT: "wifi" | "ink" = "wifi";
+
 /** 時間（ミリ秒） */
 export const LOADING_TIMING = {
   /** 表示してから最初の雷が出るまで */

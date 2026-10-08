@@ -11,17 +11,20 @@ import styles from "./InkUi.module.css";
 export function InkBehind({
   color,
   shape = 0,
+  faint = false,
   children,
   className,
 }: {
   color: InkColor;
   shape?: number;
+  /** true = ナビの選択されていない項目と同じく、小さく半透明で出す（選択中の状態がない外部リンクなど） */
+  faint?: boolean;
   children: React.ReactNode;
   className?: string;
 }) {
   return (
     <span className={cn(styles.root, styles.wrap, className)}>
-      <span className={styles.behind} aria-hidden="true">
+      <span className={cn(styles.behind, faint && styles.faint)} aria-hidden="true">
         <InkSplat size="sm" crop stretch shape={shape} color={color} />
       </span>
       {children}

@@ -72,8 +72,10 @@ export function MobileNav({ pathname }: { pathname: string }) {
                   <span className="relative z-10 inline-grid size-7 shrink-0 place-items-center" aria-hidden="true">
                     {link.icon}
                   </span>
-                  {/* ホバー・フォーカスで文字の後ろにインクが着弾する */}
-                  <InkBehind color={link.ink}>{link.label}</InkBehind>
+                  {/* ホバー・フォーカスで文字の後ろにインクを薄めに出す（上のページ一覧の、選択されていない項目と同じ） */}
+                  <InkBehind color={link.ink} faint>
+                    {link.label}
+                  </InkBehind>
                   <span className="sr-only">（新しいタブで開く）</span>
                 </a>
               </li>

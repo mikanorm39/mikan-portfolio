@@ -3,7 +3,7 @@
  * ink は選択中・カーソルに出すインクの色（globals.css の --ink-○○）。
  */
 export const navItems = [
-  { href: "/", label: "Top", menuLabel: "Home", ink: "yellow" },
+  { href: "/", label: "Home", menuLabel: "Home", ink: "yellow" },
   { href: "/work", label: "Work", menuLabel: "Work", ink: "pink" },
   { href: "/about", label: "About", menuLabel: "About", ink: "mint" },
 ] as const;

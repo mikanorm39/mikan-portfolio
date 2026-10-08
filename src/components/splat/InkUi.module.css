@@ -46,6 +46,13 @@
     opacity 0.1s;
 }
 
+/* faint：小さく半透明で出す（ナビの選択されていない項目のプレビューと同じ見た目） */
+:global(.ink-cursor-host):hover .behind.faint,
+:global(.ink-cursor-host):focus-visible .behind.faint {
+  transform: scale(0.75);
+  opacity: 0.45;
+}
+
 /* ===== ナビの選択中（今いるページ）：着弾して残る ===== */
 .navInkOn {
   transform: scale(1);

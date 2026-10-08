@@ -1,0 +1,29 @@
+/* インク発射型ローディング（InkLoadingScreen）専用のスタイル */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  /* キャンバスが描かれるまでの白（サーバーの HTML の時点で、ページを隠しておく） */
+  background: var(--ink-highlight);
+  /* ローディング中はページをクリックさせない */
+  pointer-events: auto;
+  transition: opacity var(--ink-fade-ms) ease-out;
+}
+
+/* キャンバスが描けたら、白はキャンバス側だけにする（穴からページが見えるように） */
+.ready {
+  background: transparent;
+}
+
+/* 最後：ふち取りや残った白をまとめてふわっと消す */
+.fading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
