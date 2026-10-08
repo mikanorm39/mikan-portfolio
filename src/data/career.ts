@@ -24,6 +24,8 @@ export const careerTags = Object.keys(careerTagLabels) as CareerTag[];
 /**
  * 経歴を追加するときは、この配列に1件足すだけでOK（並び順は日付で自動ソート）。
  * description（説明文）は書かなくてもよい。tags は "circle" / "event" / "dev" / "award" / "other" から選ぶ。
+ * ターミナルで `npm run career` を実行すると、質問に答えるだけで1件追加できる（scripts/add-career.mjs）。
+ * VS Code では、配列の中で「career」と打って Tab を押すとひな形が出る（.vscode/career.code-snippets）。
  */
 export const career: CareerItem[] = [
   {
@@ -39,14 +41,15 @@ export const career: CareerItem[] = [
   },
   {
     date: "2025-05-09",
-    title: "部内ハッカソン 初参加",
+    title: "部内ハッカソン 参加",
     description: "サークル主催2日間開催のハッカソンに参加しました。",
     tags: ["circle", "event", "dev"],
   },
   {
     date: "2025-06-21",
-    title: "ハックツハッカソン（ギガノトカップ） 初参加",
-    description: "ハックツ主催、2日間開催のハッカソンに参加しました。企業賞（ヌーラボ賞）受賞しました。",
+    title: "ハックツハッカソン（ギガノトカップ） 参加",
+    description:
+      "ハックツ主催、2日間開催のハッカソンに参加しました。企業賞（ヌーラボ賞）受賞しました。",
     tags: ["event", "dev", "award"],
   },
   {
@@ -69,7 +72,8 @@ export const career: CareerItem[] = [
   {
     date: "2026-01-17",
     title: "技育キャンプ 参加",
-    description: "サポーターズ主催、2日間開催、オンラインのハッカソンに参加しました。",
+    description:
+      "サポーターズ主催、2日間開催、オンラインのハッカソンに参加しました。",
     tags: ["event", "dev"],
   },
   {
@@ -81,13 +85,15 @@ export const career: CareerItem[] = [
   {
     date: "2026-02-25",
     title: "ハックツハッカソン（Nulabカップ） 参加",
-    description: "ハックツ主催、2日間開催のハッカソンに参加しました。ヌーラボメンバーに挑戦し、勝利賞を受賞しました。",
+    description:
+      "ハックツ主催、2日間開催のハッカソンに参加しました。ヌーラボメンバーに挑戦し、勝利賞を受賞しました。",
     tags: ["event", "dev", "award"],
   },
   {
     date: "2026-05-23",
     title: "部内ハッカソン（DDD） 参加",
-    description: "サークル主催、2日間開催のハッカソンに参加しました。初心者部門最優秀賞を受賞しました。",
+    description:
+      "サークル主催、2日間開催のハッカソンに参加しました。初心者部門最優秀賞を受賞しました。",
     tags: ["circle", "event", "dev", "award"],
   },
   {
@@ -111,7 +117,8 @@ export const career: CareerItem[] = [
   {
     date: "2026-09-26",
     title: "KitaQDXミライバトンラボ 参加",
-    description: "北九州市主催、9.26～11.28開催のDXリーダー育成プログラムに参加しました。",
+    description:
+      "北九州市主催、9.26～11.28開催のDXリーダー育成プログラムに参加しました。",
     tags: ["event"],
   },
 ];

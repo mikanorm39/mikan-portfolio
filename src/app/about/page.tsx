@@ -5,10 +5,13 @@ import { Profile } from "@/components/about/Profile";
 import { Vision } from "@/components/about/Vision";
 import { CareerExplorer } from "@/components/career/CareerExplorer";
 import { CareerTimeline } from "@/components/career/CareerTimeline";
+import { Reveal } from "@/components/motion/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getSortedCareer } from "@/data/career";
 
 const description = "プロフィール・目指していること・これまでの活動をまとめています。";
+/** ページに表示する紹介文（句点なし） */
+const intro = "プロフィール・目指していること・これまでの活動をまとめています";
 
 export const metadata: Metadata = {
   title: "About",
@@ -24,7 +27,11 @@ export default function AboutPage() {
     <>
       <div className="mx-auto max-w-6xl px-4 pt-section sm:px-6">
         {/* ページを開いたら、大見出しにミントのインクが着弾する */}
-        <SectionHeading as="h1" title="About" description={description} className="mb-0" ink={{ id: "about-page", color: "mint" }} />
+        <SectionHeading as="h1" title="About" ink={{ id: "about-page", color: "mint" }} />
+        {/* 紹介文は、ほかのセクションと同じ白い枠の中に（大きめ・太字） */}
+        <Reveal className="pixel-box bg-card p-6 sm:p-8">
+          <p className="text-lg font-bold sm:text-xl">{intro}</p>
+        </Reveal>
       </div>
       <Profile />
       <Vision />
