@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { M_PLUS_Rounded_1c, Zen_Maru_Gothic } from "next/font/google";
+import { FloatingTopButton } from "@/components/layout/FloatingTopButton";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { LoadingGate } from "@/components/loading/LoadingGate";
@@ -92,6 +93,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
           </main>
           <Footer />
+          {/* 画面右下の「↑」ボタン（スクロールしたら現れ、押すと一番上へ戻る） */}
+          <FloatingTopButton />
         </Providers>
       </body>
     </html>

@@ -1,11 +1,10 @@
 import { socialIcons } from "@/components/icons/BrandIcons";
 import { profile } from "@/data/profile";
-import { ScrollTopButton } from "./ScrollTopButton";
 
 export function Footer() {
   return (
     <footer className="mt-24 border-t bg-card/60">
-      {/* スマホは縦に中央ぞろえ。PC は「左 / 真ん中 / 右」の3列にして、連絡先をページの真ん中にそろえる */}
+      {/* スマホは縦に中央ぞろえ。PC は「左 / 真ん中 / 右（空き）」の3列にして、連絡先をページの真ん中にそろえる（トップへ戻るのは画面右下の ↑ ボタン） */}
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-10 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:px-6">
         <ul className="flex items-center gap-3 sm:justify-self-start">
           {profile.social.map((s) => {
@@ -37,9 +36,6 @@ export function Footer() {
           >
             {profile.email}
           </a>
-        </div>
-        <div className="sm:justify-self-end">
-          <ScrollTopButton />
         </div>
       </div>
     </footer>

@@ -17,7 +17,9 @@ type Props<T extends string> = {
 /** 横スクロールできるピル型ボタンの列 */
 export function FilterPills<T extends string>({ label, options, value, onChange }: Props<T>) {
   return (
-    <div role="group" aria-label={label} className="-mx-4 overflow-x-auto px-4 pb-2 [scrollbar-width:thin] sm:mx-0 sm:px-0">
+    // 横スクロールの入れ物は上下のはみ出しも隠すので、ホバーで浮いた分（2px）が切れないよう上に余白（pt-1）を足し、
+    // 同じ分だけ上にずらして（-mt-1）配置は変えない
+    <div role="group" aria-label={label} className="-mx-4 -mt-1 overflow-x-auto px-4 pt-1 pb-2 [scrollbar-width:thin] sm:mx-0 sm:px-0">
       <div className="flex w-max gap-2">
         {options.map((opt) => {
           const active = opt.value === value;
