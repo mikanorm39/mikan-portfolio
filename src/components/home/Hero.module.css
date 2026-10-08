@@ -9,20 +9,19 @@
   --hero-title-mid: #4c1d95;
   --hero-title-bottom: var(--ink-deep);
 
-  /* ---- サブタイトル・メニューの色（紫の背景の上なので白。選択中はインクの黄色） ---- */
+  /* ---- サブタイトル・メニューの色（紫の背景の上なので白。選択中は後ろのインクの上で読める濃い紫） ---- */
   --hero-sub: var(--on-bg);
   --hero-item: var(--on-bg-muted);
-  --hero-item-active: var(--ink-yellow);
+  --hero-item-active: var(--pop-foreground);
 
   /* ---- サイズ ---- */
-  /* スマホでは大きめにして「Mikan / Nishioka」の2行に折り返す */
-  --hero-title-size: clamp(2.5rem, 8vw, 5.5rem);
-  --hero-sub-size: clamp(1rem, 2.6vw, 1.5rem);
-  --hero-item-size: clamp(1rem, 2.4vw, 1.25rem);
+  /* サイト共通のタイプスケール（globals.css の --fs-○○）を使う */
+  --hero-title-size: var(--fs-title);
+  --hero-sub-size: var(--fs-lead);
+  --hero-item-size: var(--fs-h3);
 
   /* ---- アニメーション時間 ---- */
   --hero-blink-ms: 1.2s; /* 「> <」の点滅 */
-  --hero-cursor-ms: 0.8s; /* ➤ の左右の揺れ */
 
   position: relative;
   isolation: isolate;
@@ -118,15 +117,13 @@
 }
 
 .item {
-  /* ➤ の列を最初から確保しておくので、➤ が出ても文字の位置はずれない */
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-columns: 1.6em 1fr 1.6em;
+  /* 文字は中央。インクは文字の後ろに重なるだけなので、出ても位置はずれない */
+  justify-items: center;
   align-items: center;
   padding: 0.5rem 0.75rem;
-  /* 共通の .pixel-chip（ピクセル角）を少し大きめの段で使う */
-  --px-step: 4px;
   font-size: var(--hero-item-size);
   font-weight: 900;
   color: var(--hero-item);
@@ -138,24 +135,9 @@
   outline-offset: -2px;
 }
 
-/* 選択中：文字を明るくし、ホログラムの淡い光を後ろに敷く（角はピクセル角） */
+/* 選択中：文字の後ろにインク、文字はインクの上で読みやすい濃い紫に */
 .item[data-selected="true"] {
   color: var(--hero-item-active);
-  text-shadow: 0 0 10px color-mix(in srgb, var(--ink-yellow) 60%, transparent);
-}
-
-.item::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--holo);
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-
-.item[data-selected="true"]::after {
-  opacity: 0.28;
 }
 
 .label {
@@ -164,27 +146,9 @@
   white-space: nowrap;
 }
 
-.cursor {
-  font-family: "Segoe UI Symbol", "Apple Symbols", sans-serif;
-  visibility: hidden;
-}
-
-.item[data-selected="true"] .cursor {
-  visibility: visible;
-  animation: hero-cursor var(--hero-cursor-ms) steps(2) infinite;
-}
-
-/* ➤ を左右に小さく動かす（steps でカクカク＝ドット絵らしく） */
-@keyframes hero-cursor {
-  50% {
-    transform: translateX(4px);
-  }
-}
-
 /* ===== 動きを減らす設定：ループするアニメーションを止める ===== */
 @media (prefers-reduced-motion: reduce) {
-  .chevron,
-  .item[data-selected="true"] .cursor {
+  .chevron {
     animation: none;
   }
 }

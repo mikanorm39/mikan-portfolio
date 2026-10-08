@@ -77,7 +77,7 @@ function SplatLayer({ isHome }: { isHome: boolean }) {
 
   return (
     <div ref={layer} className={styles.layer} style={timingVars} aria-hidden="true">
-      {SPLATS.map((s) => {
+      {SPLATS.filter((s) => (isHome ? !s.subOnly : !s.homeOnly)).map((s) => {
         const delay = hits.get(s.id);
         return (
           <div

@@ -6,8 +6,8 @@ import { RevealGroup, RevealItem } from "@/components/motion/RevealGroup";
 
 export function Links() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <SectionHeading title="Links" emoji="🔗" />
+    <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
+      <SectionHeading title="Links" />
       <RevealGroup as="ul" className="grid gap-4 sm:grid-cols-3">
         {profile.social.map((s) => {
           const Icon = socialIcons[s.id];
@@ -23,7 +23,7 @@ export function Links() {
                   <Icon className="size-6 group-hover:animate-wiggle" />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block font-heading text-lg font-extrabold">{s.label}</span>
+                  <span className="block font-heading text-h3 font-extrabold">{s.label}</span>
                   <span className="block text-sm text-muted-foreground">{s.note}</span>
                 </span>
                 <ArrowUpRight className="size-5 shrink-0 text-primary" aria-hidden="true" />

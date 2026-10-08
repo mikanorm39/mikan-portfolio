@@ -3,11 +3,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu } from "lucide-react";
-import { motion } from "motion/react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { profile } from "@/data/profile";
 import { cn } from "@/lib/utils";
-import { navPillTransition } from "@/lib/motion";
+import { InkBehind, NavInk } from "@/components/splat/InkUi";
 import { externalLinks } from "./externalLinks";
 import { isActivePath, navItems } from "./nav";
 
@@ -42,18 +41,15 @@ export function MobileNav({ pathname }: { pathname: string }) {
                     onClick={() => setOpen(false)}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "menu-cursor pixel-chip font-pixel relative isolate flex items-center px-5 py-3 text-base font-bold transition active:scale-95",
-                      active ? "text-primary" : "text-foreground hover:bg-secondary",
+                      "ink-nav-host font-pixel relative flex items-center px-5 py-3 text-base font-bold transition active:scale-95",
+                      active ? "text-pop-foreground" : "text-foreground",
                     )}
                   >
-                    {active && (
-                      <motion.span
-                        layoutId="mobile-nav-pill"
-                        className="pixel-chip bg-secondary absolute inset-0 -z-10"
-                        transition={navPillTransition}
-                      />
-                    )}
-                    {item.menuLabel}
+                    {/* 文字の後ろに、選択中だけインクがびちゃっと付く */}
+                    <span className="relative isolate">
+                      <NavInk color={item.ink} active={active} shape={item.href.length} />
+                      {item.menuLabel}
+                    </span>
                   </Link>
                 </li>
               );
@@ -70,12 +66,14 @@ export function MobileNav({ pathname }: { pathname: string }) {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="menu-cursor pixel-chip font-pixel flex items-center gap-3 px-5 py-2.5 text-base text-foreground transition hover:bg-secondary hover:text-primary active:scale-95"
+                  className="ink-cursor-host font-pixel relative flex items-center gap-3 px-5 py-2.5 text-base text-foreground transition active:scale-95"
                 >
-                  <span className="inline-grid size-7 shrink-0 place-items-center" aria-hidden="true">
+                  {/* アイコンはインクより手前に出す */}
+                  <span className="relative z-10 inline-grid size-7 shrink-0 place-items-center" aria-hidden="true">
                     {link.icon}
                   </span>
-                  {link.label}
+                  {/* ホバー・フォーカスで文字の後ろにインクが着弾する */}
+                  <InkBehind color={link.ink}>{link.label}</InkBehind>
                   <span className="sr-only">（新しいタブで開く）</span>
                 </a>
               </li>

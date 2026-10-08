@@ -32,7 +32,7 @@ export function ProjectCard({ project, headingLevel = "h3", priority = false }: 
           </Badge>
         </div>
 
-        <Heading className="font-heading text-lg font-extrabold">{project.title}</Heading>
+        <Heading className="font-heading text-h3 font-extrabold">{project.title}</Heading>
         <p className="text-sm leading-relaxed text-muted-foreground">{project.description}</p>
 
         <ul className="flex flex-wrap gap-1.5" aria-label="使った技術">

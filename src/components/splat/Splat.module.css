@@ -25,6 +25,14 @@
   overflow: visible;
 }
 
+/* 小さいインク（中心だけの範囲）：入れ物いっぱいに表示し、枝や水滴ははみ出して見せる */
+.svgCrop {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
 /* ===== インク ===== */
 .splat {
   /* 着弾前は見えない */

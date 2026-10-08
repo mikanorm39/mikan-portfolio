@@ -1,26 +1,41 @@
 import type { InkColor } from "./splatConfig";
-import { SPLAT_CX, SPLAT_CY, SPLAT_SHAPES, SPLAT_VIEWBOX } from "./splatShapes";
+import { SPLAT_CX, SPLAT_CY, SPLAT_SHAPES, SPLAT_SHAPES_SM, SPLAT_VIEWBOX, SPLAT_VIEWBOX_CROP } from "./splatShapes";
 import styles from "./Splat.module.css";
 
 type Props = {
   /** 形の番号（splatShapes.ts） */
   shape: number;
   color: InkColor;
-  rotate: number;
+  rotate?: number;
+  /** "sm" = 小さいインク用の形（枝が少なく太い。カーソル・ナビの背景用） */
+  size?: "md" | "sm";
+  /** true = 中心の塊がちょうど収まる範囲で表示（枝や水滴は外にはみ出す） */
+  crop?: boolean;
+  /** true = 縦横の比率を無視して入れ物いっぱいに伸ばす（横長の文字の背景用） */
+  stretch?: boolean;
 };
 
-const VB = `${SPLAT_VIEWBOX.x} ${SPLAT_VIEWBOX.y} ${SPLAT_VIEWBOX.w} ${SPLAT_VIEWBOX.h}`;
+const toViewBox = (v: { x: number; y: number; w: number; h: number }) => `${v.x} ${v.y} ${v.w} ${v.h}`;
+const VB = toViewBox(SPLAT_VIEWBOX);
+const VB_CROP = toViewBox(SPLAT_VIEWBOX_CROP);
 
 /**
  * インク1つ分の SVG。ベタ塗り＋白いツヤ。
  * 水滴（.drop）とドリップ（.drip）は、親に .hit が付いたときに飛び出す／垂れるアニメーションをする（Splat.module.css）。
  */
-export function InkSplat({ shape, color, rotate }: Props) {
-  const s = SPLAT_SHAPES[shape % SPLAT_SHAPES.length];
+export function InkSplat({ shape, color, rotate = 0, size = "md", crop = false, stretch = false }: Props) {
+  const shapes = size === "sm" ? SPLAT_SHAPES_SM : SPLAT_SHAPES;
+  const s = shapes[shape % shapes.length];
   const fill = `var(--ink-${color})`;
 
   return (
-    <svg viewBox={VB} className={styles.svg} style={{ transform: `rotate(${rotate}deg)` }} aria-hidden="true">
+    <svg
+      viewBox={crop ? VB_CROP : VB}
+      preserveAspectRatio={stretch ? "none" : undefined}
+      className={crop ? styles.svgCrop : styles.svg}
+      style={rotate ? { transform: `rotate(${rotate}deg)` } : undefined}
+      aria-hidden="true"
+    >
       {/* 本体：中心の塊＋枝（同じ色なのでつながって1つのインクに見える） */}
       <g fill={fill}>
         <path d={s.core} />
@@ -61,6 +76,8 @@ export function InkSplat({ shape, color, rotate }: Props) {
         <g
           key={i}
           className={styles.drop}
+          // 小さいインク（カーソル・ナビ）でも水滴を飛ばすための目印（InkUi.module.css）
+          data-ink-drop=""
           style={
             {
               "--dx": `${Math.round((SPLAT_CX - d.cx) * 0.85)}px`,

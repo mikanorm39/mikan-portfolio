@@ -13,8 +13,7 @@
  *   .pixel-circle  丸アイコンをドット絵の丸にする
  *   .holo-border   枠をホログラム（淡い虹色）にする（.pixel-box / .pixel-button と併用）
  *   .holo-hover    ホバー中だけ枠をホログラムにする
- *   .pixel-heading 見出し（左に ▶、右にドットの点線）
- *   .menu-cursor   ナビ・リンク（選択中／ホバー時に ▶ カーソル）
+ *   .pixel-heading 見出し（左に ▶）
  *   .font-pixel    ヘッダー・メニュー・MORE などのフォント（Bello Caps）
  *   .font-section  章見出し用フォント（Bello Caps）
  *   .pixel-bg      ページ背景のドット模様
@@ -243,7 +242,7 @@
     --px-frame: var(--holo);
   }
 
-  /* ===== 見出し：左に ▶、右にドットの点線 ===== */
+  /* ===== 見出し：左に ▶ ===== */
   .pixel-heading {
     position: relative;
     width: fit-content;
@@ -261,41 +260,6 @@
     clip-path: var(--px-arrow);
   }
 
-  .pixel-heading::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: calc(100% + 14px);
-    width: 3.5rem;
-    height: 4px;
-    margin-top: -2px;
-    background: repeating-linear-gradient(90deg, var(--on-bg-muted) 0 4px, transparent 0 8px);
-    opacity: 0.7;
-  }
-
-  /* ===== ナビ・リンク：選択中／ホバー時に ▶ カーソル ===== */
-  .menu-cursor {
-    position: relative;
-  }
-
-  .menu-cursor::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 4px;
-    width: 5px;
-    height: 8px;
-    margin-top: -4px;
-    background: currentColor;
-    clip-path: var(--px-arrow);
-    opacity: 0;
-    transition: opacity 0.15s;
-  }
-
-  .menu-cursor:hover::before,
-  .menu-cursor[aria-current="page"]::before {
-    opacity: 1;
-  }
 
   /* ===== 英字見出しのフォント ===== */
   .font-pixel {
@@ -347,16 +311,12 @@
   );
 }
 
-/* スマホでは装飾を控えめに（角を小さく、隅のドット・走査線・見出し右の点線をなくす） */
+/* スマホでは装飾を控えめに（角を小さく、隅のドット・走査線をなくす） */
 @media (max-width: 639px) {
   :root {
     --px-step-box: 3px;
     --px-dot: transparent;
     --px-scan: transparent;
-  }
-
-  .pixel-heading::after {
-    display: none;
   }
 
   .pixel-heading::before {

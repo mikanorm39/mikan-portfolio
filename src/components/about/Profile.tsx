@@ -12,10 +12,10 @@ const infoCards = [
 
 export function Profile() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <SectionHeading title="Profile" emoji="😺" />
+    <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
+      <SectionHeading title="Profile" />
       <Reveal className="pixel-box bg-card p-6 sm:p-8">
-        <p className="font-heading text-lg font-bold text-primary">{profile.affiliation}</p>
+        <p className="font-heading text-h3 font-bold text-primary">{profile.affiliation}</p>
         <p className="mt-3 leading-loose">{profile.intro}</p>
       </Reveal>
       <RevealGroup as="ul" className="mt-6 grid gap-4 sm:grid-cols-3">

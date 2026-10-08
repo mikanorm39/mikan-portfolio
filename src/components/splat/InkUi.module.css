@@ -1,0 +1,84 @@
+/*
+ * 文字の後ろに付く小さいインク（ホバー・選択中の目印、ナビの選択中の表示）。動かすのは transform と opacity だけ。
+ * 「動きを減らす」設定では globals.css の指定で動きが一瞬になり、インクが表示されるだけになる。
+ */
+
+.root {
+  /* 着弾の時間と勢い（行き過ぎて 1.2 倍くらいまで広がってから戻るイージング） */
+  --ink-pop-ms: 0.28s;
+  --ink-pop-ease: cubic-bezier(0.34, 1.9, 0.64, 1);
+  /* インクが文字よりどれだけ大きいか（上下・左右） */
+  --ink-pad-y: 3px;
+  --ink-pad-x: 10px;
+}
+
+/* 文字を包む入れ物（インクをこの中の後ろに重ねる） */
+.wrap {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+}
+
+/* ===== ホバー・フォーカス・選択中の目印（文字の真ん中の後ろ） ===== */
+.behind,
+.navInk {
+  position: absolute;
+  /* 文字より一回り大きく、文字の中央に重なる */
+  inset: calc(var(--ink-pad-y) * -1) calc(var(--ink-pad-x) * -1);
+  z-index: -1;
+  pointer-events: none;
+  transform: scale(0);
+  opacity: 0;
+  /* 消えるときは縮んで消える */
+  transition:
+    transform 0.2s ease-in,
+    opacity 0.2s ease-in;
+}
+
+/* ホバー・キーボードのフォーカス・選択中（data-selected）で、ぴちゃっと着弾 */
+:global(.ink-cursor-host):hover .behind,
+:global(.ink-cursor-host):focus-visible .behind,
+:global(.ink-cursor-host)[data-selected="true"] .behind {
+  transform: scale(1);
+  opacity: 1;
+  transition:
+    transform var(--ink-pop-ms) var(--ink-pop-ease),
+    opacity 0.1s;
+}
+
+/* ===== ナビの選択中（今いるページ）：着弾して残る ===== */
+.navInkOn {
+  transform: scale(1);
+  opacity: 1;
+  transition:
+    transform var(--ink-pop-ms) var(--ink-pop-ease),
+    opacity 0.1s;
+}
+
+/* ナビのホバー・フォーカス：小さく半透明でプレビュー */
+:global(.ink-nav-host):hover .navInk:not(.navInkOn),
+:global(.ink-nav-host):focus-visible .navInk:not(.navInkOn) {
+  transform: scale(0.75);
+  opacity: 0.45;
+  transition:
+    transform 0.2s ease-out,
+    opacity 0.2s;
+}
+
+/* ===== 周りの水滴：着弾と同時に中心から外へ飛ぶ ===== */
+.behind [data-ink-drop],
+.navInk [data-ink-drop] {
+  opacity: 0;
+  transform: translate(var(--dx), var(--dy)) scale(0.3);
+  transition:
+    transform 0.35s cubic-bezier(0.12, 0.9, 0.3, 1) 0.06s,
+    opacity 0.2s 0.06s;
+}
+
+:global(.ink-cursor-host):hover .behind [data-ink-drop],
+:global(.ink-cursor-host):focus-visible .behind [data-ink-drop],
+:global(.ink-cursor-host)[data-selected="true"] .behind [data-ink-drop],
+.navInkOn [data-ink-drop] {
+  opacity: 1;
+  transform: none;
+}

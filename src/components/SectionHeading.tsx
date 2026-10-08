@@ -3,7 +3,6 @@ import { Reveal } from "@/components/motion/Reveal";
 
 type Props = {
   title: string;
-  emoji?: string;
   description?: string;
   /** 見出しの右側に置くもの（「すべて見る」リンクなど） */
   action?: React.ReactNode;
@@ -11,22 +10,18 @@ type Props = {
   className?: string;
 };
 
-export function SectionHeading({ title, emoji, description, action, as: Tag = "h2", className }: Props) {
+/** 章見出し。文字サイズ（text-h1 / text-h2）と下の余白（mb-heading）は globals.css のタイプスケールを使う */
+export function SectionHeading({ title, description, action, as: Tag = "h2", className }: Props) {
   return (
-    <Reveal className={cn("mb-8 flex flex-wrap items-end justify-between gap-4", className)}>
+    <Reveal className={cn("mb-heading flex flex-wrap items-end justify-between gap-4", className)}>
       <div>
         <Tag
           className={cn(
-            "pixel-heading font-heading font-extrabold tracking-wide",
-            Tag === "h1" ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl",
+            "pixel-heading font-heading leading-tight font-extrabold tracking-wide",
+            Tag === "h1" ? "text-h1" : "text-h2",
           )}
         >
           <span className="ink-heading font-section">{title}</span>
-          {emoji && (
-            <span className="ml-2 inline-block hover:animate-wiggle" aria-hidden="true">
-              {emoji}
-            </span>
-          )}
         </Tag>
         {description && <p className="mt-2 text-on-bg-muted">{description}</p>}
       </div>

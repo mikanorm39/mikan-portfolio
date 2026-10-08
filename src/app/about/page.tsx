@@ -22,17 +22,20 @@ export default function AboutPage() {
 
   return (
     <>
-      <div className="mx-auto max-w-6xl px-4 pt-12 sm:px-6 sm:pt-16">
-        <SectionHeading as="h1" title="About" emoji="😺" description={description} className="mb-0" />
+      <div className="mx-auto max-w-6xl px-4 pt-section sm:px-6">
+        <SectionHeading as="h1" title="About" description={description} className="mb-0" />
       </div>
       <Profile />
       <Vision />
-      <section className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-        <SectionHeading title="Career" emoji="🏆" description="学業・コミュニティ・イベント・受賞などを時系列で。" />
+      {/* 見出しの左端をほかのセクションとそろえ、タイムラインは読みやすい幅にする */}
+      <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
+        <SectionHeading title="Career" description="学業・コミュニティ・イベント・受賞などを時系列で。" />
         {/* クエリ（?tag=）を読むのはクライアント側。静的生成時は全件を出しておく */}
-        <Suspense fallback={<CareerTimeline items={items} />}>
-          <CareerExplorer items={items} />
-        </Suspense>
+        <div className="max-w-4xl">
+          <Suspense fallback={<CareerTimeline items={items} />}>
+            <CareerExplorer items={items} />
+          </Suspense>
+        </div>
       </section>
       <Links />
     </>

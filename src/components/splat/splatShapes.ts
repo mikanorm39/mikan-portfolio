@@ -48,6 +48,8 @@ export const SPLAT_SHAPE_COUNT = VARIANTS.length;
 
 /** SVG の表示範囲（中心は 100,100。枝・水滴・ドリップがはみ出さない広さ） */
 export const SPLAT_VIEWBOX = { x: -45, y: -45, w: 290, h: 330 };
+/** 中心の塊だけがちょうど収まる表示範囲（小さいインク用。枝や水滴は外にはみ出して見える） */
+export const SPLAT_VIEWBOX_CROP = { x: 40, y: 40, w: 120, h: 120 };
 
 const CX = 100;
 const CY = 100;
@@ -163,5 +165,15 @@ function build(v: Variant): SplatShape {
 
 /** すべての形（モジュール読み込み時に1回だけ作る） */
 export const SPLAT_SHAPES: SplatShape[] = VARIANTS.map(build);
+
+/**
+ * 小さいインク用の形（カーソルやナビの背景）。枝を少なく太く、水滴も少なくして、小さくてもインクに見えるようにする。
+ */
+const SMALL_VARIANTS: Variant[] = [
+  { seed: 5, arms: [4, 4], armLen: [1.25, 1.5], armW: [20, 26], drops: [3, 3], drips: 0 },
+  { seed: 19, arms: [5, 5], armLen: [1.2, 1.45], armW: [18, 24], drops: [3, 4], drips: 0 },
+  { seed: 33, arms: [3, 4], armLen: [1.3, 1.55], armW: [22, 28], drops: [2, 3], drips: 0 },
+];
+export const SPLAT_SHAPES_SM: SplatShape[] = SMALL_VARIANTS.map(build);
 
 export { CX as SPLAT_CX, CY as SPLAT_CY };

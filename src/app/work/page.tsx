@@ -18,8 +18,8 @@ export default function WorkPage() {
   const projects = getSortedProjects();
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-      <SectionHeading as="h1" title="Work" emoji="🎨" description={description} />
+    <div className="mx-auto max-w-6xl px-4 py-section sm:px-6">
+      <SectionHeading as="h1" title="Work" description={description} />
       {/* クエリ（?category=）を読むのはクライアント側。静的生成時は全件を出しておく */}
       <Suspense fallback={<ProjectGrid projects={projects} />}>
         <ProjectsExplorer projects={projects} />

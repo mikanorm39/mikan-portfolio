@@ -8,10 +8,10 @@ import { MoreLink } from "./MoreLink";
 /** トップ用の短い自己紹介。詳しい内容は /about にまとめる */
 export function AboutPreview() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <SectionHeading title="About" emoji="😺" action={<MoreLink href="/about" />} />
+    <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
+      <SectionHeading title="About" action={<MoreLink href="/about" />} />
       <Reveal className="pixel-box bg-card p-6 sm:p-8">
-        <p className="font-heading text-lg font-bold text-primary">{profile.affiliation}</p>
+        <p className="font-heading text-h3 font-bold text-primary">{profile.affiliation}</p>
         <p className="mt-3 leading-loose">{profile.catchCopy}</p>
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <ul className="flex flex-wrap gap-2" aria-label="肩書き">

@@ -35,6 +35,18 @@
   --color-pop-foreground: var(--pop-foreground);
   --color-award: var(--award);
   --color-award-foreground: var(--award-foreground);
+  /* 文字サイズの階層（text-title / text-h1 / text-h2 / text-h3 / text-lead / text-nav / text-button） */
+  --text-title: var(--fs-title);
+  --text-h1: var(--fs-h1);
+  --text-h2: var(--fs-h2);
+  --text-h3: var(--fs-h3);
+  --text-lead: var(--fs-lead);
+  --text-nav: var(--fs-nav);
+  --text-button: var(--fs-button);
+  /* 余白（py-section / mb-heading など） */
+  --spacing-section: var(--space-section);
+  --spacing-heading: var(--space-heading);
+
   /* 紫の背景に直接のる文字（text-on-bg / text-on-bg-muted） */
   --color-on-bg: var(--on-bg);
   --color-on-bg-muted: var(--on-bg-muted);
@@ -82,6 +94,20 @@
 
 :root {
   --radius: 1rem;
+
+  /* ===== 文字サイズの階層（タイプスケール）：スマホ〜PC で clamp() により可変 ===== */
+  --fs-title: clamp(3rem, 1.6rem + 6vw, 6.5rem); /* トップのタイトル */
+  --fs-h1: clamp(2.25rem, 1.75rem + 2.4vw, 3.5rem); /* ページの大見出し */
+  --fs-h2: clamp(1.875rem, 1.5rem + 1.6vw, 2.75rem); /* 章見出し */
+  --fs-h3: clamp(1.125rem, 1rem + 0.4vw, 1.375rem); /* カードの見出し・小見出し */
+  --fs-lead: clamp(1.125rem, 1rem + 0.8vw, 1.5rem); /* サブタイトル・強調の文 */
+  --fs-nav: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem); /* ナビ */
+  --fs-button: 1rem; /* ボタン */
+  /* 本文は 1rem（16px）、補足は 0.875rem（text-sm） */
+
+  /* ===== 余白 ===== */
+  --space-section: clamp(3.5rem, 2.5rem + 4vw, 6rem); /* セクションの上下 */
+  --space-heading: clamp(1.5rem, 1.25rem + 1vw, 2.25rem); /* 見出しと中身の間 */
 
   /* ===== サイト共通の背景とインクの色（背景・インク・記号・ローディング画面で共通に使う） ===== */
   --site-bg: #a066ee; /* 鮮やかな紫 */

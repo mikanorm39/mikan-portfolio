@@ -41,7 +41,7 @@ export default function NotFound() {
         <LostMikan />
       </div>
       <p className="ink-heading mt-8 font-pixel text-6xl">404</p>
-      <h1 className="text-on-bg mt-3 font-heading text-2xl font-extrabold sm:text-3xl">ページが見つかりませんでした</h1>
+      <h1 className="text-on-bg mt-3 font-heading text-h2 font-extrabold">ページが見つかりませんでした</h1>
       <p className="mt-3 text-on-bg-muted">
         URL が間違っているか、ページが移動・削除されたのかもしれません。
       </p>

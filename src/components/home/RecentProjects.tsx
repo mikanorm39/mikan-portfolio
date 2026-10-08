@@ -13,8 +13,8 @@ export function RecentProjects() {
   const recent = getSortedProjects().slice(0, RECENT_COUNT);
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <SectionHeading title="Work" emoji="🎨" action={<MoreLink href="/work" />} />
+    <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
+      <SectionHeading title="Work" action={<MoreLink href="/work" />} />
       <RevealGroup as="ul" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {recent.map((p) => (
           <RevealItem as="li" key={p.slug}>
@@ -29,7 +29,7 @@ export function RecentProjects() {
             <span className="pixel-circle bg-pop-gradient inline-flex size-14 items-center justify-center">
               <Plus className="size-7 group-hover:animate-wiggle" aria-hidden="true" />
             </span>
-            <span className="font-pixel text-lg">MORE</span>
+            <span className="font-pixel text-h3">MORE</span>
           </Link>
         </RevealItem>
       </RevealGroup>

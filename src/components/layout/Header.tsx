@@ -3,11 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
 import { House } from "lucide-react";
 import { profile } from "@/data/profile";
 import { cn } from "@/lib/utils";
-import { navPillTransition } from "@/lib/motion";
+import { NavInk } from "@/components/splat/InkUi";
 import { MobileNav } from "./MobileNav";
 import { ThemeToggle } from "./ThemeToggle";
 import { isActivePath, navItems } from "./nav";
@@ -57,19 +56,16 @@ export function Header() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "menu-cursor font-pixel relative isolate inline-flex items-center px-4 py-2 font-bold transition hover:-translate-y-0.5 active:scale-95",
-                        // 選択中は淡い水色の背景に青い文字（立体文字は中が空洞なので、濃い背景だと文字の中に色が透けて読みにくい）
-                        active ? "text-primary" : "text-foreground hover:text-primary",
+                        "ink-nav-host font-pixel text-nav relative inline-flex items-center px-4 py-2 font-bold transition hover:-translate-y-0.5 active:scale-95",
+                        // 選択中はインクの上に濃い紫の文字（インクは明るい色なので読みやすい）
+                        active ? "text-pop-foreground" : "text-foreground",
                       )}
                     >
-                      {active && (
-                        <motion.span
-                          layoutId="nav-pill"
-                          className="pixel-chip bg-secondary absolute inset-0 -z-10"
-                          transition={navPillTransition}
-                        />
-                      )}
-                      {item.label}
+                      {/* 文字の後ろに、選択中だけインクがびちゃっと付く */}
+                      <span className="relative isolate">
+                        <NavInk color={item.ink} active={active} shape={item.href.length} />
+                        {item.label}
+                      </span>
                     </Link>
                   </li>
                 );

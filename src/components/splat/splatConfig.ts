@@ -43,13 +43,18 @@ export type SplatItem = {
   /** 回転（度） */
   rotate: number;
   mobile?: boolean;
+  /** トップページだけに出す／トップ以外のページだけに出す（ページの見出しに被らないように出し分ける） */
+  homeOnly?: boolean;
+  subOnly?: boolean;
 };
 
 /** インク（上から順に。近くに置いた2つは重なって見える） */
 export const SPLATS: SplatItem[] = [
   // ---- ファーストビュー（ローディングが開けた直後に順番に着弾） ----
-  { id: "tl", shape: 0, color: "yellow", top: "-3vh", left: "-10vw", size: "clamp(130px, 30vw, 440px)", rotate: 10, mobile: true },
-  { id: "tl2", shape: 3, color: "pink", top: "-4vh", left: "9vw", size: "clamp(80px, 14vw, 210px)", rotate: -20 },
+  { id: "tl", shape: 0, color: "yellow", top: "-3vh", left: "-10vw", size: "clamp(130px, 30vw, 440px)", rotate: 10, mobile: true, homeOnly: true },
+  { id: "tl2", shape: 3, color: "pink", top: "-4vh", left: "9vw", size: "clamp(80px, 14vw, 210px)", rotate: -20, homeOnly: true },
+  // トップ以外のページ：左上の大見出しに被らないよう、小さめのインクを上の方に
+  { id: "tl-sub", shape: 2, color: "yellow", top: "-12vh", left: "-11vw", size: "clamp(100px, 20vw, 290px)", rotate: 30, mobile: true, subOnly: true },
   { id: "tr", shape: 2, color: "mint", top: "-1vh", right: "-8vw", size: "clamp(110px, 20vw, 300px)", rotate: 160, mobile: true },
   { id: "br", shape: 1, color: "cyan", top: "58vh", right: "-11vw", size: "clamp(140px, 30vw, 440px)", rotate: -15, mobile: true },
   { id: "br2", shape: 4, color: "pink", top: "80vh", right: "5vw", size: "clamp(90px, 16vw, 240px)", rotate: 200 },

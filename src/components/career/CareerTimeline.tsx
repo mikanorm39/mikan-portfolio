@@ -70,7 +70,7 @@ export function CareerTimeline({ items }: { items: CareerItem[] }) {
                 <time dateTime={item.date} className="text-sm font-bold text-muted-foreground sm:hidden">
                   {formatDate(item.date)}
                 </time>
-                <h2 className="font-heading text-lg font-extrabold">
+                <h2 className="font-heading text-h3 font-extrabold">
                   {award && (
                     <span className="mr-1" role="img" aria-label="受賞">
                       🏆

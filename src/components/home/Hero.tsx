@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { useRevealGate } from "@/components/opening/OpeningContext";
 import { navItems } from "@/components/layout/nav";
+import { InkBehind } from "@/components/splat/InkUi";
 import { heroContainer, heroItem } from "@/lib/motion";
 import styles from "./Hero.module.css";
 
@@ -70,16 +71,16 @@ export function Hero() {
                     links.current[i] = el;
                   }}
                   href={m.href}
-                  className={`pixel-chip ${styles.item}`}
+                  className={`ink-cursor-host ${styles.item}`}
                   data-selected={selected === i}
                   onPointerEnter={() => setSelected(i)}
                   onPointerDown={() => setSelected(i)}
                   onFocus={() => setSelected(i)}
                 >
-                  <span className={styles.cursor} aria-hidden="true">
-                    ➤
-                  </span>
-                  <span className={styles.label}>{m.label}</span>
+                  {/* 選択中（ホバー・↑↓・Tab）に、文字の後ろへインクがぴちゃっと着弾する */}
+                  <InkBehind color={m.ink}>
+                    <span className={styles.label}>{m.label}</span>
+                  </InkBehind>
                 </Link>
               </li>
             ))}
