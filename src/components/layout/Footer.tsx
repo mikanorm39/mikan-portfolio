@@ -33,8 +33,7 @@ export function Footer() {
           </p>
           <a
             href={`mailto:${profile.email}`}
-            // メールアドレスは小文字のまま見せる（本文の英字フォント Bello Caps は大文字だけなので、ここは Zen Maru Gothic）
-            className="mt-1 inline-block font-[family-name:var(--font-zen-maru)] text-base text-muted-foreground sm:text-lg underline-offset-4 transition hover:text-primary hover:underline"
+            className="mt-1 inline-block text-base text-muted-foreground sm:text-lg underline-offset-4 transition hover:text-primary hover:underline"
           >
             {profile.email}
           </a>

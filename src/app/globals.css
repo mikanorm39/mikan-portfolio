@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  /* 本文：英字・数字は Adobe Fonts の Bello Caps、日本語は TA-ことだま（Bello Caps に日本語はないので自動でこちらになる）。
+  /* 本文：英字・日本語とも Adobe Fonts の M PLUS Rounded 1c（太さ 400 と 700）。
      読み込み前や、まだ読み込んでいない文字は Zen Maru Gothic で表示 */
-  --font-sans: "bello-caps", "ta-kotodama-r", var(--font-zen-maru), ui-rounded, "Hiragino Maru Gothic ProN", sans-serif;
+  --font-sans: "m-plus-rounded-1c", var(--font-zen-maru), ui-rounded, "Hiragino Maru Gothic ProN", sans-serif;
   /* 見出し：英字・数字は Bello Caps、日本語は M PLUS Rounded 1c */
   --font-heading: "bello-caps", var(--font-mplus-rounded), var(--font-zen-maru), ui-rounded, sans-serif;
   --color-ring: var(--ring);
@@ -208,7 +208,7 @@
   }
   html {
     @apply font-sans;
-    /* 本文フォント（TA-ことだま）は太さが1種類だけ。太字を疑似的に太らせると小さい文字がつぶれるので、太らせない */
+    /* 太字は用意された太さ（M PLUS Rounded 1c の 700 など）だけを使い、ブラウザが疑似的に太らせることはしない */
     font-synthesis-weight: none;
     scroll-padding-top: 5rem;
   }
@@ -216,7 +216,7 @@
     @apply bg-background text-foreground antialiased;
     overflow-x: clip;
   }
-  /* 見出しは M PLUS Rounded 1c（800）。それ以外（太字のラベル・ボタンなども）は本文フォント（TA-ことだま） */
+  /* 見出しは M PLUS Rounded 1c（800）。それ以外（太字のラベル・ボタンなども）は本文フォント（M PLUS Rounded 1c） */
   h1,
   h2,
   h3,

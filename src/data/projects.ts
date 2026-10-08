@@ -1,4 +1,5 @@
-export type ProjectCategory = "web" | "native" | "game" | "graphic" | "article" | "lecture" | "video";
+/** 作品の種類（Work ページの「種類」の絞り込みもこの4つ） */
+export type ProjectCategory = "game" | "web" | "graphic" | "article";
 
 export type Project = {
   slug: string;
@@ -13,14 +14,12 @@ export type Project = {
   featured?: boolean;
 };
 
+/** 種類の表示名。ここに書いた順番が、Work ページの絞り込みボタンの並び順になる（先頭に「すべて」が付く） */
 export const projectCategoryLabels: Record<ProjectCategory, string> = {
-  web: "Web",
-  native: "ネイティブ",
   game: "ゲーム",
+  web: "Web",
   graphic: "グラフィック",
   article: "記事",
-  lecture: "講座資料",
-  video: "動画",
 };
 
 export const projectCategories = Object.keys(projectCategoryLabels) as ProjectCategory[];
@@ -74,7 +73,7 @@ export const projects: Project[] = [
     title: "ドット絵ガーデン",
     description: "ドット絵の素材集と、それを並べて遊べる小さなツール。チームの新入生向け講座でも使いました。",
     date: "2026-04",
-    categories: ["graphic", "lecture"],
+    categories: ["graphic"],
     team: "solo",
     tech: ["Aseprite", "JavaScript"],
     thumbnail: "/images/projects/pixel-garden.svg",

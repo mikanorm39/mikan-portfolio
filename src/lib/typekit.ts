@@ -1,8 +1,8 @@
 /**
  * Adobe Fonts（Typekit）のキット。
  * - bello-pro：トップのタイトル「Mikan Nishioka」
- * - bello-caps：それ以外の英字・数字すべて（見出し・本文・ヘッダー・メニュー・ボタンなど）
- * - ta-kotodama-r：日本語の本文（ダイナミックサブセット＝ページにある文字だけ読み込む）
+ * - bello-caps：章見出し・ヘッダー・メニュー・MORE などの英字
+ * - m-plus-rounded-1c：本文（英字・日本語とも。ダイナミックサブセット＝ページにある文字だけ読み込む）
  * 日本語フォントのダイナミックサブセットは CSS の <link> では使えないので、公式の JS 埋め込みコードで読み込む。
  */
 export const TYPEKIT_KIT_ID = "kfd7xzg";

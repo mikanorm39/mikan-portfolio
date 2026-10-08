@@ -1,13 +1,6 @@
-import { CodeXml, ExternalLink, FileText } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatYearMonth, projectCategoryLabels, projectTeamLabels, type Project } from "@/data/projects";
 import { ProjectThumbnail } from "./ProjectThumbnail";
-
-const linkMeta = [
-  { key: "site", label: "サイト", Icon: ExternalLink },
-  { key: "code", label: "コード", Icon: CodeXml },
-  { key: "article", label: "記事", Icon: FileText },
-] as const;
 
 /** headingLevel: 一覧ページでは h1 の直下なので h2、トップでは h2 セクション内なので h3 */
 type Props = { project: Project; headingLevel?: "h2" | "h3"; priority?: boolean };
@@ -42,26 +35,6 @@ export function ProjectCard({ project, headingLevel = "h3", priority = false }: 
             </li>
           ))}
         </ul>
-
-        <div className="mt-auto flex flex-wrap gap-2 pt-2">
-          {linkMeta.map(({ key, label, Icon }) => {
-            const href = project.links[key];
-            if (!href) return null;
-            return (
-              <a
-                key={key}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${project.title} の${label}を開く（新しいタブ）`}
-                className="pixel-button group/link inline-flex items-center gap-1.5 border px-3.5 py-1.5 text-sm font-bold text-primary hover:bg-secondary"
-              >
-                <Icon className="size-4 group-hover/link:animate-wiggle" aria-hidden="true" />
-                {label}
-              </a>
-            );
-          })}
-        </div>
       </div>
     </article>
   );
