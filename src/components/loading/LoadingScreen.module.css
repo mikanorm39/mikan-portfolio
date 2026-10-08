@@ -4,13 +4,19 @@
  */
 
 .root {
-  /* ---- 色はここで調整 ---- */
-  --ls-color-base: #7dd3fc; /* 背景の水色 */
-  --ls-color-wifi-empty: rgb(255 255 255 / 0.45); /* WiFi マーク（未充填） */
-  --ls-color-wifi-fill: #0284c7; /* WiFi マーク（充填） */
-  --ls-color-bolt: #fde047; /* 雷マーク */
-  --ls-color-bolt-stroke: #ffffff; /* 雷マークのふち */
-  --ls-color-glow: rgb(255 255 255 / 0.95); /* 光るときの色 */
+  /* ---- 色はここで調整（すべてサイト共通の変数 globals.css を参照。直書きしない） ---- */
+  --ls-color-base: var(--site-bg); /* 背景：サイトと同じ紫 */
+  --ls-color-wifi-empty: color-mix(in srgb, var(--ink-highlight) 45%, transparent); /* WiFi マーク（未充填）：白の半透明 */
+  /* WiFi マーク（充填）：下から 点 → 小 → 中 → 大 の順にインクの色が切り替わる */
+  --ls-color-fill-dot: var(--ink-yellow);
+  --ls-color-fill-small: var(--ink-pink);
+  --ls-color-fill-mid: var(--ink-mint);
+  --ls-color-fill-big: var(--ink-cyan);
+  --ls-color-bolt: var(--ink-yellow); /* 雷マーク（基本の色。1つずつの色は loadingConfig.ts の color） */
+  --ls-color-bolt-stroke: var(--ink-highlight); /* 雷マークのふち */
+  /* 満タンで光るときの色（充填の色に合わせて黄色と水色の2色） */
+  --ls-color-glow-a: var(--ink-yellow);
+  --ls-color-glow-b: var(--ink-cyan);
 
   /* ---- サイズ ---- */
   /* 横幅基準。スマホ横向きなど高さが低い画面では高さ基準でも小さくする */
@@ -83,8 +89,21 @@
   color: var(--ls-color-wifi-empty);
 }
 
-.wifiFill {
-  color: var(--ls-color-wifi-fill);
+/* 充填のインク色（部分ごと） */
+.wifiFill .segDot {
+  color: var(--ls-color-fill-dot);
+}
+
+.wifiFill .segSmall {
+  color: var(--ls-color-fill-small);
+}
+
+.wifiFill .segMid {
+  color: var(--ls-color-fill-mid);
+}
+
+.wifiFill .segBig {
+  color: var(--ls-color-fill-big);
 }
 
 /* 塗りの高さ（scaleY 0 → 1）。下端を基準に伸ばす */
@@ -133,7 +152,7 @@
   }
   35% {
     transform: scale(1.15);
-    filter: drop-shadow(0 0 16px var(--ls-color-glow)) drop-shadow(0 0 40px var(--ls-color-glow));
+    filter: drop-shadow(0 0 16px var(--ls-color-glow-a)) drop-shadow(0 0 40px var(--ls-color-glow-b));
   }
   100% {
     transform: scale(1);
@@ -161,11 +180,11 @@
   width: var(--ls-bolt-w);
   height: var(--ls-bolt-w);
   opacity: 0;
-  fill: var(--ls-color-bolt);
+  fill: var(--ls-bolt-color, var(--ls-color-bolt));
   stroke: var(--ls-color-bolt-stroke);
   stroke-width: 1.5;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 4px rgb(255 255 255 / 0.8));
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--ink-highlight) 80%, transparent));
 }
 
 .charging .bolt {

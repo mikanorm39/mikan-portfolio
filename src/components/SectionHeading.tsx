@@ -21,14 +21,14 @@ export function SectionHeading({ title, emoji, description, action, as: Tag = "h
             Tag === "h1" ? "text-3xl sm:text-4xl" : "text-2xl sm:text-3xl",
           )}
         >
-          <span className="text-pop-gradient font-pixel">{title}</span>
+          <span className="ink-heading font-section">{title}</span>
           {emoji && (
             <span className="ml-2 inline-block hover:animate-wiggle" aria-hidden="true">
               {emoji}
             </span>
           )}
         </Tag>
-        {description && <p className="mt-2 text-muted-foreground">{description}</p>}
+        {description && <p className="mt-2 text-on-bg-muted">{description}</p>}
       </div>
       {action}
     </Reveal>

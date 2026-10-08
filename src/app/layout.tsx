@@ -3,6 +3,7 @@ import { M_PLUS_Rounded_1c, Zen_Maru_Gothic } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { LoadingGate } from "@/components/loading/LoadingGate";
+import { SplatBackground } from "@/components/splat/SplatBackground";
 import { Providers } from "@/components/Providers";
 import { profile, siteUrl } from "@/data/profile";
 import { OPENING } from "@/lib/motion";
@@ -51,8 +52,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f2f9ff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e1626" },
+    { media: "(prefers-color-scheme: light)", color: "#a066ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#2a1650" },
   ],
 };
 
@@ -65,7 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="ja" className={`${mplusRounded.variable} ${zenMaru.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: openingScript }} />
-        {/* Adobe Fonts（英字見出し：Strenuous、日本語本文：TA-ことだま）。接続を先に始めて読み込みを早める */}
+        {/* Adobe Fonts（タイトル：Bello Pro、英字・数字：Bello Caps、日本語本文：TA-ことだま）。接続を先に始めて読み込みを早める */}
         <link rel="preconnect" href="https://use.typekit.net" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: typekitScript }} />
@@ -73,7 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <style>{`[data-opening-overlay]{display:none}`}</style>
         </noscript>
       </head>
-      <body className="pixel-bg flex min-h-dvh flex-col">
+      <body className="pixel-bg relative flex min-h-dvh flex-col">
         <Providers>
           <a
             href="#main"
@@ -83,6 +84,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </a>
           {/* ページを開いたときのローディング（ON/OFF は components/loading/loadingConfig.ts） */}
           <LoadingGate />
+          {/* 背景のインクと記号（コンテンツの後ろ。スクロールで画面に入るとびちゃっと着弾） */}
+          <SplatBackground />
           <Header />
           <main id="main" className="flex-1 pt-16">
             {children}

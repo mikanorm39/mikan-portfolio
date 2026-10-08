@@ -10,7 +10,7 @@ import styles from "./Hero.module.css";
 
 // ===== 書き換え用の定数（タイトル・サブタイトル） =====
 /** タイトル。単語ごとに分けておくと、スマホで入りきらないときに単語の区切りで2行になる */
-const TITLE_WORDS = ["MIKAN", "NISHIOKA"];
+const TITLE_WORDS = ["Mikan", "Nishioka"];
 const SUBTITLE = "Portfolio";
 
 /** メニュー：ヘッダーと同じページのうち、今いるトップ以外（Work / About）。外部リンク（CLUB など）はヘッダーのメニュー ☰ の中 */
@@ -40,7 +40,7 @@ export function Hero() {
       {/* ローディングが終わったら、タイトル → サブタイトル → メニュー の順に出す */}
       <motion.div variants={heroContainer()} initial={false} animate={heroAnimate}>
         <motion.h1 data-reveal variants={item} className={styles.title}>
-          {/* 立体文字（Strenuous 3D）そのものに水色の縦グラデーションをかける */}
+          {/* 文字（Bello Pro）に水色の縦グラデーションをかける */}
           <span className={styles.titleText}>
             {TITLE_WORDS.map((w, i) => (
               <span key={w}>

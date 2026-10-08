@@ -39,16 +39,17 @@ export const WOBBLE = {
  * 雷の出発地点（画面中央からのずれ）。並び順 = 出てくる順。
  * vw / vh で指定しているので、どの画面サイズでも画面の端から出てくる。
  * size は雷の大きさの倍率（1 = 基本の大きさ。基本の大きさは CSS の --ls-bolt-size）。
+ * color は雷の色（インクの色の名前：yellow / pink / mint / cyan / orange。globals.css の --ink-○○）。
  */
 export const BOLT_STARTS = [
-  { x: "-48vw", y: "-46vh", size: 3 }, // 左上
-  { x: "52vw", y: "18vh", size: 1 }, // 右
-  { x: "0vw", y: "-54vh", size: 2 }, // 上
-  { x: "-46vw", y: "48vh", size: 1 }, // 左下
-  { x: "48vw", y: "-46vh", size: 1 }, // 右上
-  { x: "-54vw", y: "-14vh", size: 2.5 }, // 左
-  { x: "46vw", y: "48vh", size: 1.5 }, // 右下
-  { x: "0vw", y: "54vh", size: 1 }, // 下
-  { x: "54vw", y: "-14vh", size: 1 }, // 右（少し上）
-  { x: "-54vw", y: "20vh", size: 3 }, // 左（少し下）
+  { x: "-48vw", y: "-46vh", size: 3, color: "yellow" }, // 左上
+  { x: "52vw", y: "18vh", size: 1, color: "yellow" }, // 右
+  { x: "0vw", y: "-54vh", size: 2, color: "pink" }, // 上
+  { x: "-46vw", y: "48vh", size: 1, color: "yellow" }, // 左下
+  { x: "48vw", y: "-46vh", size: 1, color: "mint" }, // 右上
+  { x: "-54vw", y: "-14vh", size: 2.5, color: "yellow" }, // 左
+  { x: "46vw", y: "48vh", size: 1.5, color: "cyan" }, // 右下
+  { x: "0vw", y: "54vh", size: 1, color: "yellow" }, // 下
+  { x: "54vw", y: "-14vh", size: 1, color: "pink" }, // 右（少し上）
+  { x: "-54vw", y: "20vh", size: 3, color: "yellow" }, // 左（少し下）
 ] as const;

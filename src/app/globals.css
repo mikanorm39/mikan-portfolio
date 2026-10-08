@@ -7,9 +7,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  /* 本文：Adobe Fonts の TA-ことだま。読み込み前や、まだ読み込んでいない文字は Zen Maru Gothic で表示 */
-  --font-sans: "ta-kotodama-r", var(--font-zen-maru), ui-rounded, "Hiragino Maru Gothic ProN", sans-serif;
-  --font-heading: var(--font-mplus-rounded), var(--font-zen-maru), ui-rounded, sans-serif;
+  /* 本文：英字・数字は Adobe Fonts の Bello Caps、日本語は TA-ことだま（Bello Caps に日本語はないので自動でこちらになる）。
+     読み込み前や、まだ読み込んでいない文字は Zen Maru Gothic で表示 */
+  --font-sans: "bello-caps", "ta-kotodama-r", var(--font-zen-maru), ui-rounded, "Hiragino Maru Gothic ProN", sans-serif;
+  /* 見出し：英字・数字は Bello Caps、日本語は M PLUS Rounded 1c */
+  --font-heading: "bello-caps", var(--font-mplus-rounded), var(--font-zen-maru), ui-rounded, sans-serif;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -33,6 +35,9 @@
   --color-pop-foreground: var(--pop-foreground);
   --color-award: var(--award);
   --color-award-foreground: var(--award-foreground);
+  /* 紫の背景に直接のる文字（text-on-bg / text-on-bg-muted） */
+  --color-on-bg: var(--on-bg);
+  --color-on-bg-muted: var(--on-bg-muted);
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -78,70 +83,88 @@
 :root {
   --radius: 1rem;
 
-  /* ライト：とても薄い水色の背景 + 濃い紺の文字 */
-  --background: #f2f9ff;
-  --foreground: #0f2342;
-  --card: #ffffff;
-  --card-foreground: #0f2342;
-  --popover: #ffffff;
-  --popover-foreground: #0f2342;
-  --primary: #0277b6;
-  --primary-foreground: #ffffff;
-  --secondary: #e0f2fe;
-  --secondary-foreground: #0c4a6e;
-  --muted: #e8f3fb;
-  --muted-foreground: #4a5d78;
-  --accent: #cffafe;
-  --accent-foreground: #155e75;
-  --destructive: #dc2626;
-  --border: #d3e8f5;
-  --input: #c7e1f2;
-  --ring: #0ea5e9;
+  /* ===== サイト共通の背景とインクの色（背景・インク・記号・ローディング画面で共通に使う） ===== */
+  --site-bg: #a066ee; /* 鮮やかな紫 */
+  --ink-yellow: #f2c744;
+  --ink-pink: #f06ee0;
+  --ink-mint: #6ee8d2;
+  --ink-cyan: #5ed6fa;
+  --ink-orange: #f08a45;
+  --ink-highlight: #ffffff; /* インクのツヤ（白いハイライト） */
+  --ink-deep: #3b1680; /* 濃い紫（記号の硬い影・枠線） */
+  /* 紫の背景に直接のる文字 */
+  --on-bg: #ffffff;
+  --on-bg-muted: rgb(255 255 255 / 0.9);
 
-  --pop-from: #0277b6;
-  --pop-to: #0b7a99;
-  --pop-foreground: #ffffff;
-  --pop-shadow: rgb(14 165 233 / 0.22);
-  --pop-shadow-strong: rgb(14 165 233 / 0.38);
+  /* ライト：紫の背景 + 白いカード + 濃い紫の文字 */
+  --background: var(--site-bg);
+  --foreground: #241046;
+  --card: #ffffff;
+  --card-foreground: #241046;
+  --popover: #ffffff;
+  --popover-foreground: #241046;
+  --primary: #5b21b6;
+  --primary-foreground: #ffffff;
+  --secondary: #efe6ff;
+  --secondary-foreground: #4c1d95;
+  --muted: #f3edff;
+  --muted-foreground: #5b4a78;
+  --accent: #d9faf3;
+  --accent-foreground: #0f5b4f;
+  --destructive: #dc2626;
+  --border: #e4d6fb;
+  --input: #d9c6f7;
+  --ring: #1e0b45;
+
+  /* ボタン・アイコンの背景（黄色のインク）と、その上の文字 */
+  --pop-from: var(--ink-yellow);
+  --pop-to: #f7d76a;
+  --pop-foreground: #2a0f5c;
+  /* グラデーション文字（白い背景の上：ロゴ・カード内の強調） */
+  --pop-text-from: #7c3aed;
+  --pop-text-to: #4c1d95;
+  --pop-shadow: rgb(59 22 128 / 0.25);
+  --pop-shadow-strong: rgb(59 22 128 / 0.4);
 
   --award: #fef3c7;
   --award-foreground: #92400e;
 }
 
 .dark {
-  /* ダーク：濃い紺〜グレーの背景 + 明るめの水色 */
-  --background: #0e1626;
-  --foreground: #e6f1fb;
-  --card: #152036;
-  --card-foreground: #e6f1fb;
-  --popover: #152036;
-  --popover-foreground: #e6f1fb;
-  --primary: #38bdf8;
-  --primary-foreground: #062033;
-  --secondary: #1b2a44;
-  --secondary-foreground: #cfe8fb;
-  --muted: #1a2740;
-  --muted-foreground: #9fb3cc;
-  --accent: #123446;
-  --accent-foreground: #a5f3fc;
+  /* ダーク：深い紫の背景 + 暗い紫のカード + 明るい文字（インクの色は同じ） */
+  --site-bg: #2a1650;
+  --on-bg-muted: rgb(255 255 255 / 0.85);
+  --background: var(--site-bg);
+  --foreground: #f3eaff;
+  --card: #3a2168;
+  --card-foreground: #f3eaff;
+  --popover: #3a2168;
+  --popover-foreground: #f3eaff;
+  --primary: #c4a5ff;
+  --primary-foreground: #2a1650;
+  --secondary: #4a2a80;
+  --secondary-foreground: #efe6ff;
+  --muted: #36205e;
+  --muted-foreground: #cbb8ec;
+  --accent: #174a44;
+  --accent-foreground: #a7f3e4;
   --destructive: #f87171;
-  --border: #24344f;
-  --input: #2b3d5b;
-  --ring: #38bdf8;
+  --border: #4b2f7d;
+  --input: #563890;
+  --ring: #f2c744;
 
-  --pop-from: #38bdf8;
-  --pop-to: #22d3ee;
-  --pop-foreground: #062033;
-  --pop-shadow: rgb(56 189 248 / 0.18);
-  --pop-shadow-strong: rgb(56 189 248 / 0.32);
+  --pop-text-from: #e9d5ff;
+  --pop-text-to: #c4a5ff;
+  --pop-shadow: rgb(0 0 0 / 0.3);
+  --pop-shadow-strong: rgb(0 0 0 / 0.45);
 
-  --award: #3b2a0c;
+  --award: #4a3410;
   --award-foreground: #fcd34d;
 }
 
-/* グラデーション文字 */
+/* グラデーション文字（白い背景やカードの上で使う） */
 @utility text-pop-gradient {
-  background-image: linear-gradient(to right, var(--pop-from), var(--pop-to));
+  background-image: linear-gradient(to right, var(--pop-text-from), var(--pop-text-to));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

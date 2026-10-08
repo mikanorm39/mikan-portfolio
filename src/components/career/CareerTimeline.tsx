@@ -42,14 +42,14 @@ export function CareerTimeline({ items }: { items: CareerItem[] }) {
               {/* 日付（sm 以上は左の列に表示） */}
               <time
                 dateTime={item.date}
-                className="hidden pt-5 text-right text-sm font-bold text-muted-foreground sm:block"
+                className="hidden pt-5 text-right text-sm font-bold text-on-bg sm:block"
               >
                 {formatDate(item.date)}
               </time>
 
               {/* 線とドット */}
               <div className="relative flex justify-center" aria-hidden="true">
-                <span className={cn("absolute top-0 w-0.5 bg-border", last ? "h-6" : "h-full")} />
+                <span className={cn("absolute top-0 w-0.5 bg-white/50", last ? "h-6" : "h-full")} />
                 <span
                   className={cn(
                     "pixel-circle relative mt-4 inline-flex items-center justify-center",

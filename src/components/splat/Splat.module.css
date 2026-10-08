@@ -1,0 +1,142 @@
+/*
+ * 背景のインクと記号。動かすのは transform と opacity だけ（軽くするため）。
+ * 時間は splatConfig.ts の SPLAT_TIMING から CSS 変数（--hit-ms など）で受け取る。
+ */
+
+/* ページ全体に敷く層（コンテンツの後ろ・クリックや文字選択の邪魔をしない） */
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 置き場所（画面に入ったかの判定にも使う。ここ自体は動かさない） */
+.slot {
+  position: absolute;
+}
+
+.svg,
+.symbolSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* ===== インク ===== */
+.splat {
+  /* 着弾前は見えない */
+  transform: scale(0);
+  /* インクの中心（SVG の中心 100,100 の位置）を基準に広がる */
+  transform-origin: 50% 44%;
+}
+
+/* 1. 衝突：一瞬で広がり、少し潰れて戻る（縦横比をくずして squash & stretch） */
+.splat.hit {
+  animation: splat-hit var(--hit-ms) cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  animation-delay: var(--enter-delay);
+}
+
+@keyframes splat-hit {
+  0% {
+    transform: scale(0, 0);
+  }
+  45% {
+    transform: scale(1.24, 1.1);
+  }
+  72% {
+    transform: scale(0.9, 0.96);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+/* 2. 飛び散り：水滴が中心側から外へ勢いよく飛んで止まる（1つずつ時間差） */
+.drop {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.hit .drop {
+  animation: splat-drop var(--drop-ms) cubic-bezier(0.12, 0.9, 0.3, 1) both;
+  animation-delay: calc(var(--enter-delay) + var(--drops-delay) + var(--i) * var(--drop-stagger));
+}
+
+@keyframes splat-drop {
+  from {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 3. 垂れ：ドリップが上端から下へゆっくり伸びる */
+.drip {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+
+.hit .drip {
+  animation: splat-drip var(--drip-ms) cubic-bezier(0.45, 0, 0.3, 1) both;
+  animation-delay: calc(var(--enter-delay) + var(--drip-delay));
+}
+
+@keyframes splat-drip {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* ===== 記号：インクより少し遅れてポンッと弾む ===== */
+.symbol {
+  transform: scale(0);
+}
+
+.symbol.hit {
+  animation: splat-pop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  animation-delay: calc(var(--enter-delay) + var(--symbol-delay));
+}
+
+@keyframes splat-pop {
+  0% {
+    transform: scale(0) rotate(var(--rot));
+  }
+  100% {
+    transform: scale(1) rotate(var(--rot));
+  }
+}
+
+/* ===== スマホ：数を減らす（mobile: false のものは出さない） ===== */
+@media (max-width: 639px) {
+  .desktopOnly {
+    display: none;
+  }
+}
+
+/* ===== 動きを減らす設定：アニメーションなしで最初から表示 ===== */
+@media (prefers-reduced-motion: reduce) {
+  .splat,
+  .splat.hit,
+  .drop,
+  .hit .drop,
+  .drip,
+  .hit .drip {
+    animation: none;
+    transform: none;
+  }
+
+  .symbol,
+  .symbol.hit {
+    animation: none;
+    transform: rotate(var(--rot));
+  }
+}

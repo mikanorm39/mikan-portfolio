@@ -26,10 +26,11 @@ const BOLT_PATH = "M13 2 4 14h7l-1 8 10-13h-7z";
 function WifiShape() {
   return (
     <g fill="none" stroke="currentColor" strokeWidth={13} strokeLinecap="round">
-      <path d="M40.2 72.2A28 28 0 0 1 79.8 72.2" />
-      <path d="M21.8 53.8A54 54 0 0 1 98.2 53.8" />
-      <path d="M3.4 35.4A80 80 0 0 1 116.6 35.4" />
-      <circle cx={60} cy={92} r={9} fill="currentColor" stroke="none" />
+      {/* 部分ごとの class は、充填の色をインクの色で塗り分けるため */}
+      <path className={styles.segSmall} d="M40.2 72.2A28 28 0 0 1 79.8 72.2" />
+      <path className={styles.segMid} d="M21.8 53.8A54 54 0 0 1 98.2 53.8" />
+      <path className={styles.segBig} d="M3.4 35.4A80 80 0 0 1 116.6 35.4" />
+      <circle className={styles.segDot} cx={60} cy={92} r={9} fill="currentColor" stroke="none" />
     </g>
   );
 }
@@ -144,6 +145,7 @@ export function LoadingScreen({ onReveal, onComplete }: Props) {
                     "--ls-from-x": p.x,
                     "--ls-from-y": p.y,
                     "--ls-bolt-scale": p.size,
+                    "--ls-bolt-color": `var(--ink-${p.color})`,
                     "--ls-bolt-delay": `${T.boltStartDelayMs + T.boltIntervalMs * i}ms`,
                   } as React.CSSProperties
                 }

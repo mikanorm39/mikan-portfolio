@@ -21,7 +21,7 @@ export function ProjectsExplorer({ projects }: { projects: Project[] }) {
   return (
     <div className="flex flex-col gap-8">
       <ProjectFilter category={category} team={team} onCategoryChange={setCategory} onTeamChange={setTeam} />
-      <p className="text-sm text-muted-foreground" aria-live="polite">
+      <p className="text-sm text-on-bg-muted" aria-live="polite">
         {filtered.length} 件の作品
       </p>
       <ProjectGrid projects={filtered} />

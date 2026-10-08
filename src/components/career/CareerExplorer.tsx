@@ -17,7 +17,7 @@ export function CareerExplorer({ items }: { items: CareerItem[] }) {
   return (
     <div className="flex flex-col gap-8">
       <CareerFilter value={tag} onChange={setTag} />
-      <p className="text-sm text-muted-foreground" aria-live="polite">
+      <p className="text-sm text-on-bg-muted" aria-live="polite">
         {filtered.length} 件の活動
       </p>
       <CareerTimeline items={filtered} />

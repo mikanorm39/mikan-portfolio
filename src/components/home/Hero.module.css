@@ -4,19 +4,18 @@
  */
 
 .hero {
-  /* ---- タイトル（立体文字そのもの）の水色の縦グラデーション：上が淡く、下に向かって濃く ---- */
-  /* ライトテーマは背景が明るいので、全体を少し濃いめにして読めるようにしている */
-  --hero-title-top: #7dd3fc;
-  --hero-title-mid: #38bdf8;
-  --hero-title-bottom: #0284c7;
+  /* ---- タイトルの色：濃い紫の縦グラデーション（上が少し明るく、下に向かって濃く） ---- */
+  --hero-title-top: #5b21b6;
+  --hero-title-mid: #4c1d95;
+  --hero-title-bottom: var(--ink-deep);
 
-  /* ---- サブタイトル・メニューの色 ---- */
-  --hero-sub: #0284c7;
-  --hero-item: var(--muted-foreground);
-  --hero-item-active: #0369a1;
+  /* ---- サブタイトル・メニューの色（紫の背景の上なので白。選択中はインクの黄色） ---- */
+  --hero-sub: var(--on-bg);
+  --hero-item: var(--on-bg-muted);
+  --hero-item-active: var(--ink-yellow);
 
   /* ---- サイズ ---- */
-  /* スマホでは大きめにして「MIKAN / NISHIOKA」の2行に折り返す */
+  /* スマホでは大きめにして「Mikan / Nishioka」の2行に折り返す */
   --hero-title-size: clamp(2.5rem, 8vw, 5.5rem);
   --hero-sub-size: clamp(1rem, 2.6vw, 1.5rem);
   --hero-item-size: clamp(1rem, 2.4vw, 1.25rem);
@@ -36,12 +35,11 @@
   text-align: center;
 }
 
+/* ダークは背景も深い紫なので、タイトルは明るいラベンダーにして読めるようにする */
 :global(.dark) .hero {
-  --hero-title-top: #e0f7ff;
-  --hero-title-mid: #7dd3fc;
-  --hero-title-bottom: #0ea5e9;
-  --hero-sub: #7dd3fc;
-  --hero-item-active: #e0f7ff;
+  --hero-title-top: #f3e8ff;
+  --hero-title-mid: #d8b4fe;
+  --hero-title-bottom: #b794f6;
 }
 
 /* ごく薄い走査線（背景のドット模様は body の .pixel-bg） */
@@ -57,14 +55,16 @@
 /* ===== 1. タイトル ===== */
 .title {
   margin: 0;
-  font-family: var(--px-font);
+  /* タイトルだけ Bello Pro（pixel.css の --title-font） */
+  font-family: var(--title-font);
   font-size: var(--hero-title-size);
-  font-weight: 900;
+  font-weight: 400;
   line-height: 1.15;
-  letter-spacing: 0.04em;
+  /* 筆記体は文字がつながるので、文字間は空けない */
+  letter-spacing: 0;
 }
 
-/* 立体文字に縦グラデーションをかける（文字で切り抜く）。2行に折り返しても各行に同じグラデーションをかける */
+/* タイトルの文字に縦グラデーションをかける（文字で切り抜く）。2行に折り返しても各行に同じグラデーションをかける */
 .titleText {
   background-image: linear-gradient(
     to bottom,
@@ -79,7 +79,7 @@
   box-decoration-break: clone;
 }
 
-/* 「MIKAN」「NISHIOKA」は単語の途中で折り返さない（入りきらないときは2行になる） */
+/* 「Mikan」「Nishioka」は単語の途中で折り返さない（入りきらないときは2行になる） */
 .word {
   white-space: nowrap;
 }
@@ -87,7 +87,7 @@
 /* ===== 2. サブタイトル ===== */
 .subtitle {
   margin-top: 1rem;
-  /* タイトルと同じ Strenuous 3D（日本語は見出しフォントで表示） */
+  /* Bello Caps（pixel.css の --px-font） */
   font-family: var(--px-font);
   font-size: var(--hero-sub-size);
   font-weight: 900;
@@ -141,7 +141,7 @@
 /* 選択中：文字を明るくし、ホログラムの淡い光を後ろに敷く（角はピクセル角） */
 .item[data-selected="true"] {
   color: var(--hero-item-active);
-  text-shadow: 0 0 10px rgb(125 211 252 / 0.6);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--ink-yellow) 60%, transparent);
 }
 
 .item::after {
@@ -159,7 +159,7 @@
 }
 
 .label {
-  /* タイトルと同じ Strenuous 3D（日本語は見出しフォントで表示） */
+  /* Bello Caps（pixel.css の --px-font） */
   font-family: var(--px-font);
   white-space: nowrap;
 }

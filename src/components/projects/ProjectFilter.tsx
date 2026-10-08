@@ -31,11 +31,11 @@ export function ProjectFilter({ category, team, onCategoryChange, onTeamChange }
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3">
-        <span className="shrink-0 text-sm font-bold text-muted-foreground sm:w-20">種類</span>
+        <span className="shrink-0 text-sm font-bold text-on-bg sm:w-20">種類</span>
         <FilterPills label="種類" options={categoryOptions} value={category} onChange={onCategoryChange} />
       </div>
       <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3">
-        <span className="shrink-0 text-sm font-bold text-muted-foreground sm:w-20">開発形態</span>
+        <span className="shrink-0 text-sm font-bold text-on-bg sm:w-20">開発形態</span>
         <FilterPills label="開発形態" options={teamOptions} value={team} onChange={onTeamChange} />
       </div>
     </div>

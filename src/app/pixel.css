@@ -15,14 +15,19 @@
  *   .holo-hover    ホバー中だけ枠をホログラムにする
  *   .pixel-heading 見出し（左に ▶、右にドットの点線）
  *   .menu-cursor   ナビ・リンク（選択中／ホバー時に ▶ カーソル）
- *   .font-pixel    英字見出し用フォント（Adobe Fonts の Strenuous 3D）
+ *   .font-pixel    ヘッダー・メニュー・MORE などのフォント（Bello Caps）
+ *   .font-section  章見出し用フォント（Bello Caps）
  *   .pixel-bg      ページ背景のドット模様
  */
 
 /* ===== 調整用の変数（装飾の強さはここで変える） ===== */
 :root {
-  /* 英字見出しのフォント。日本語の文字は無いので、今の見出しフォントで表示される */
-  --px-font: "strenuous-3d", var(--font-heading);
+  /* ヘッダー・メニュー・MORE などのフォント：Bello Caps（日本語は見出しフォントで表示される） */
+  --px-font: "bello-caps", var(--font-heading);
+  /* 章見出し（WORK / ABOUT など）のフォント：Bello Caps */
+  --section-font: "bello-caps", var(--font-heading);
+  /* トップのタイトル「Mikan Nishioka」だけ Bello Pro */
+  --title-font: "bello-pro", var(--font-heading);
 
   /* ピクセル角の1段の大きさ（大きいほど角が大きく欠ける） */
   --px-step-box: 4px;
@@ -35,10 +40,10 @@
   --px-border-button: 2px;
   --px-border-button-bottom: 4px;
 
-  /* 枠の色 */
-  --px-frame-box: color-mix(in srgb, var(--primary) 30%, var(--card));
-  --px-frame-button: color-mix(in srgb, var(--primary) 50%, var(--card));
-  --px-frame-pop: color-mix(in srgb, var(--pop-from) 60%, #0f2342);
+  /* 枠の色（紫の背景に合わせて濃い紫） */
+  --px-frame-box: var(--ink-deep);
+  --px-frame-button: var(--ink-deep);
+  --px-frame-pop: var(--ink-deep);
 
   /* 隅のドット（1粒の大きさと色） */
   --px-dot-size: 3px;
@@ -47,21 +52,26 @@
   /* 走査線（細い横縞）の濃さ */
   --px-scan: color-mix(in srgb, var(--primary) 5%, transparent);
 
-  /* ホログラム（淡い虹色）とホバー時に横切る光 */
-  --holo: linear-gradient(120deg, #7dd3fc, #a5b4fc, #f0abfc, #a5f3fc, #7dd3fc);
+  /* ホログラム（インクの色の虹色）とホバー時に横切る光 */
+  --holo: linear-gradient(120deg, var(--ink-yellow), var(--ink-pink), var(--ink-mint), var(--ink-cyan), var(--ink-yellow));
   --holo-shine: rgb(255 255 255 / 0.45);
 
-  /* ページ背景のドット模様（色・間隔） */
-  --px-bg-dot: color-mix(in srgb, var(--primary) 10%, transparent);
+  /* ページ背景のドット模様（色・間隔）。紫の背景より少し濃い紫の点 */
+  --px-bg-dot: color-mix(in srgb, var(--ink-deep) 22%, transparent);
+
+  /* 紫の背景にのる見出しの硬い影（ぼかしなし） */
+  --px-heading-shadow: 3px 3px 0 var(--ink-deep);
   --px-bg-gap: 18px;
 }
 
 .dark {
-  --px-frame-box: color-mix(in srgb, var(--primary) 30%, var(--card));
-  --px-frame-pop: color-mix(in srgb, var(--pop-from) 45%, #062033);
+  /* ダークはカードも暗いので、枠を少し明るい紫にして輪郭を見せる */
+  --px-frame-box: #6b46b8;
+  --px-frame-button: #6b46b8;
   --px-scan: color-mix(in srgb, var(--primary) 6%, transparent);
   --holo-shine: rgb(255 255 255 / 0.12);
-  --px-bg-dot: color-mix(in srgb, var(--primary) 12%, transparent);
+  --px-bg-dot: rgb(0 0 0 / 0.22);
+  --px-heading-shadow: 3px 3px 0 #120628;
 }
 
 @layer components {
@@ -247,7 +257,7 @@
     width: 6px;
     height: 10px;
     margin-top: -5px;
-    background: var(--primary);
+    background: var(--ink-yellow);
     clip-path: var(--px-arrow);
   }
 
@@ -259,7 +269,8 @@
     width: 3.5rem;
     height: 4px;
     margin-top: -2px;
-    background: repeating-linear-gradient(90deg, var(--px-dot) 0 4px, transparent 0 8px);
+    background: repeating-linear-gradient(90deg, var(--on-bg-muted) 0 4px, transparent 0 8px);
+    opacity: 0.7;
   }
 
   /* ===== ナビ・リンク：選択中／ホバー時に ▶ カーソル ===== */
@@ -291,6 +302,24 @@
     font-family: var(--px-font);
     font-weight: 900;
     letter-spacing: 0.02em;
+  }
+
+  /* ===== 章見出しのフォント（Bello Pro） ===== */
+  .font-section {
+    font-family: var(--section-font);
+    font-weight: 400;
+  }
+
+  /* ===== 紫の背景に直接のる見出し：白い文字＋濃い紫の硬い影 ===== */
+  .ink-heading {
+    color: var(--on-bg);
+    text-shadow: var(--px-heading-shadow);
+  }
+
+  /* 紫の背景に直接のる小さい文字は、うっすら影を付けて読みやすくする */
+  .text-on-bg,
+  .text-on-bg-muted {
+    text-shadow: 0 1px 0 color-mix(in srgb, var(--ink-deep) 55%, transparent);
   }
 
   /* ===== ページ背景のドット模様 ===== */
