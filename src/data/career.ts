@@ -1,64 +1,124 @@
-export type CareerTag = "academic" | "community" | "event" | "dev" | "award" | "intern" | "license";
+/** 経歴の種類（About ページの Career の絞り込みもこの5つ） */
+export type CareerTag = "circle" | "event" | "dev" | "award" | "other";
 
 export type CareerItem = {
   date: string; // "2026-09-11"
   title: string;
-  description: string;
+  /** 説明文（なければ省略できる） */
+  description?: string;
+  /** 種類（どれにも当てはまらなければ空でよい。そのときは「すべて」のときだけ表示される） */
   tags: CareerTag[];
 };
 
+/** 種類の表示名。ここに書いた順番が、絞り込みボタンの並び順になる（先頭に「すべて」が付く） */
 export const careerTagLabels: Record<CareerTag, string> = {
-  academic: "学業",
-  community: "コミュニティ",
+  circle: "サークル",
   event: "イベント",
   dev: "開発",
   award: "受賞",
-  intern: "インターン",
-  license: "資格",
+  other: "その他",
 };
 
 export const careerTags = Object.keys(careerTagLabels) as CareerTag[];
 
 /**
  * 経歴を追加するときは、この配列に1件足すだけでOK（並び順は日付で自動ソート）。
- * ↓ここに入っているのはダミーデータです。
+ * description（説明文）は書かなくてもよい。tags は "circle" / "event" / "dev" / "award" / "other" から選ぶ。
  */
 export const career: CareerItem[] = [
   {
     date: "2025-04-01",
-    title: "情報工業大学 情報学部 入学",
-    description: "ゲーム制作を本格的に学びたくて入学しました。",
-    tags: ["academic"],
+    title: "福岡工業大学 情報工学部 入学",
+    tags: ["event"],
   },
   {
-    date: "2025-05-10",
-    title: "情報技術研究部（じょぎ）に入部",
-    description: "ゲーム班に所属し、先輩と一緒に初めてのチーム開発を経験しました。",
-    tags: ["community"],
+    date: "2025-04-04",
+    title: "情報技術研究部（じょぎ） 入部",
+    description: "サークルに入部しました。",
+    tags: ["circle"],
   },
   {
-    date: "2026-08-24",
-    title: "学内ゲームジャム 2026 で「企画賞」を受賞",
-    description: "「ふわふわジャンプ」で企画とレベルデザインを担当。ワンボタンでも気持ちよく遊べる点が評価されました。",
-    tags: ["event", "award", "dev"],
+    date: "2025-05-09",
+    title: "部内ハッカソン 初参加",
+    description: "サークル主催2日間開催のハッカソンに参加しました。",
+    tags: ["circle", "event", "dev"],
+  },
+  {
+    date: "2025-06-21",
+    title: "ハックツハッカソン（ギガノトカップ） 初参加",
+    description: "ハックツ主催、2日間開催のハッカソンに参加しました。企業賞（ヌーラボ賞）受賞しました。",
+    tags: ["event", "dev", "award"],
+  },
+  {
+    date: "2025-09-11",
+    title: "技育博 参加",
+    description: "東京で行われる、作品紹介を行うイベントに参加しました。",
+    tags: ["event"],
+  },
+  {
+    date: "2025-10-26",
+    title: "ITパスポート 取得",
+    tags: ["other"],
+  },
+  {
+    date: "2025-12-20",
+    title: "ハックツハッカソン（プテラカップ） 参加",
+    description: "ハックツ主催、2日間開催のハッカソンに参加しました。",
+    tags: ["event", "dev"],
+  },
+  {
+    date: "2026-01-17",
+    title: "技育キャンプ 参加",
+    description: "サポーターズ主催、2日間開催、オンラインのハッカソンに参加しました。",
+    tags: ["event", "dev"],
+  },
+  {
+    date: "2026-02-16",
+    title: "部内ハッカソン（トライ） 参加",
+    description: "サークル主催、3日間開催のハッカソンに参加しました。",
+    tags: ["circle", "event", "dev"],
+  },
+  {
+    date: "2026-02-25",
+    title: "ハックツハッカソン（Nulabカップ） 参加",
+    description: "ハックツ主催、2日間開催のハッカソンに参加しました。ヌーラボメンバーに挑戦し、勝利賞を受賞しました。",
+    tags: ["event", "dev", "award"],
+  },
+  {
+    date: "2026-05-23",
+    title: "部内ハッカソン（DDD） 参加",
+    description: "サークル主催、2日間開催のハッカソンに参加しました。初心者部門最優秀賞を受賞しました。",
+    tags: ["circle", "event", "dev", "award"],
+  },
+  {
+    date: "2026-06-20",
+    title: "技育祭 参加",
+    description: "サポーターズ主催、テックカンファレンスに参加しました。",
+    tags: ["event"],
+  },
+  {
+    date: "2026-08-29",
+    title: "ゲームジャム 初参加",
+    description: "福岡市主催、2日間開催のFUKUOKA GAME SPRINTに参加しました。",
+    tags: ["event", "dev"],
   },
   {
     date: "2026-09-11",
-    title: "ゲーム会社のサマーインターンに参加",
-    description: "プランナー職として、既存タイトルのイベント企画を3日間で提案しました。",
-    tags: ["intern"],
+    title: "じょぎ湯布院ハッカソン 参加",
+    description: "サークル主催、3日間開催のハッカソンに参加しました。",
+    tags: ["circle", "dev"],
   },
   {
-    date: "2026-03-15",
-    title: "基本情報技術者試験 合格",
-    description: "春休みに勉強して合格しました。",
-    tags: ["license"],
+    date: "2026-09-26",
+    title: "KitaQDXミライバトンラボ 参加",
+    description: "北九州市主催、9.26～11.28開催のDXリーダー育成プログラムに参加しました。",
+    tags: ["event"],
   },
 ];
 
-/** 新しい順に並べた経歴一覧 */
+/** 古い順（年表として上から時系列）に並べた経歴一覧。新しい順にしたいときは a と b を入れ替える */
 export function getSortedCareer() {
-  return [...career].sort((a, b) => b.date.localeCompare(a.date));
+  return [...career].sort((a, b) => a.date.localeCompare(b.date));
 }
 
 /** "2026-09-11" → "2026.09.11" */

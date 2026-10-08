@@ -10,8 +10,12 @@
   /* 本文：英字・日本語とも Adobe Fonts の M PLUS Rounded 1c（太さ 400 と 700）。
      読み込み前や、まだ読み込んでいない文字は Zen Maru Gothic で表示 */
   --font-sans: "m-plus-rounded-1c", var(--font-zen-maru), ui-rounded, "Hiragino Maru Gothic ProN", sans-serif;
-  /* 見出し：英字・数字は Bello Caps、日本語は M PLUS Rounded 1c */
-  --font-heading: "bello-caps", var(--font-mplus-rounded), var(--font-zen-maru), ui-rounded, sans-serif;
+  /*
+   * 日本語の見出し（作品名・経歴のタイトルなど）：英字・数字も日本語も M PLUS Rounded 1c でそろえる。
+   * Adobe Fonts の m-plus-rounded-1c（本文と同じキット・太さ 700 まで）を先に使い、
+   * 読み込めないときは next/font（Google Fonts）の M PLUS Rounded 1c で表示する
+   */
+  --font-heading: "m-plus-rounded-1c", var(--font-mplus-rounded), var(--font-zen-maru), ui-rounded, sans-serif;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);

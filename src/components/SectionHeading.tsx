@@ -10,8 +10,11 @@ type Props = {
   action?: React.ReactNode;
   as?: "h1" | "h2";
   className?: string;
-  /** 指定すると、見出しが画面に入ったとき（またはトップのメニューから飛んできたとき）に文字の後ろへインクが着弾する。id はセクションの id */
-  ink?: { id: string; color: InkColor };
+  /**
+   * 指定すると、文字の後ろへインクが着弾する。id はセクションの id。
+   * trigger: "view"（省略時）= 画面に入ったとき（またはトップのメニューから飛んできたとき）/ "tap" = 見出しを押したとき
+   */
+  ink?: { id: string; color: InkColor; trigger?: "view" | "tap" };
 };
 
 /** 章見出し。文字サイズ（text-h1 / text-h2）と下の余白（mb-heading）は globals.css のタイプスケールを使う */
@@ -27,8 +30,8 @@ export function SectionHeading({ title, description, action, as: Tag = "h2", cla
         >
           {ink ? (
             // インクを文字の後ろに重ねるための入れ物
-            <span className="heading-wobble relative isolate inline-block">
-              <HeadingInk id={ink.id} color={ink.color} />
+            <span className={cn("heading-wobble relative isolate inline-block", ink.trigger === "tap" && "cursor-pointer")}>
+              <HeadingInk id={ink.id} color={ink.color} trigger={ink.trigger} />
               <span className="ink-heading font-section">{title}</span>
             </span>
           ) : (

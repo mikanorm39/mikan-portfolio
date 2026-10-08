@@ -9,7 +9,8 @@ export function CareerTagBadge({ tag }: { tag: CareerTag }) {
         tag === "award" ? "bg-award text-award-foreground" : "bg-secondary text-secondary-foreground",
       )}
     >
-      {careerTagLabels[tag]}
+      {/* 種類はハッシュタグの形で表示する（例：#イベント） */}
+      #{careerTagLabels[tag]}
     </span>
   );
 }

@@ -78,14 +78,19 @@ export function CareerTimeline({ items }: { items: CareerItem[] }) {
                   )}
                   {item.title}
                 </h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
-                <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="タグ">
-                  {item.tags.map((t) => (
-                    <li key={t}>
-                      <CareerTagBadge tag={t} />
-                    </li>
-                  ))}
-                </ul>
+                {item.description && (
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.description}</p>
+                )}
+                {/* 種類がない経歴は、タグの行ごと出さない（余白が空かないように） */}
+                {item.tags.length > 0 && (
+                  <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="タグ">
+                    {item.tags.map((t) => (
+                      <li key={t}>
+                        <CareerTagBadge tag={t} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </article>
             </motion.li>
           );

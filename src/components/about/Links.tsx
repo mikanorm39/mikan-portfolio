@@ -7,7 +7,7 @@ import { RevealGroup, RevealItem } from "@/components/motion/RevealGroup";
 export function Links() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
-      <SectionHeading title="Links" />
+      <SectionHeading title="Links" ink={{ id: "links", color: "cyan", trigger: "tap" }} />
       <RevealGroup as="ul" className="grid gap-4 sm:grid-cols-3">
         {profile.social.map((s) => {
           const Icon = socialIcons[s.id];

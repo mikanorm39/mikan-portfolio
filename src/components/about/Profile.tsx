@@ -13,7 +13,7 @@ const infoCards = [
 export function Profile() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
-      <SectionHeading title="Profile" />
+      <SectionHeading title="Profile" ink={{ id: "profile", color: "yellow", trigger: "tap" }} />
       <Reveal className="pixel-box bg-card p-6 sm:p-8">
         <p className="font-heading text-h3 font-bold text-primary">{profile.affiliation}</p>
         <p className="mt-3 leading-loose">{profile.intro}</p>

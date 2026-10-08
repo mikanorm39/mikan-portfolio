@@ -30,7 +30,12 @@ export default function AboutPage() {
       <Vision />
       {/* 見出しの左端をほかのセクションとそろえ、タイムラインは読みやすい幅にする */}
       <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
-        <SectionHeading title="Career" description="学業・コミュニティ・イベント・受賞などを時系列で。" />
+        {/* About ページの章見出しは、タップするとインクが着弾する */}
+        <SectionHeading
+          title="Career"
+          description="サークル・イベント・開発・受賞などを時系列で。"
+          ink={{ id: "career", color: "mint", trigger: "tap" }}
+        />
         {/* クエリ（?tag=）を読むのはクライアント側。静的生成時は全件を出しておく */}
         <div className="max-w-4xl">
           <Suspense fallback={<CareerTimeline items={items} />}>

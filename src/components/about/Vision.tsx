@@ -5,7 +5,7 @@ import { Reveal } from "@/components/motion/Reveal";
 export function Vision() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
-      <SectionHeading title="Vision" />
+      <SectionHeading title="Vision" ink={{ id: "vision", color: "pink", trigger: "tap" }} />
       <Reveal className="pixel-box holo-border bg-card px-6 py-12 text-center sm:px-10">
         <p className="font-heading text-h2 leading-relaxed font-extrabold">
           <span className="text-pop-gradient">{profile.vision}</span>
