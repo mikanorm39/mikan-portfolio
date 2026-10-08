@@ -1,6 +1,8 @@
 /*
  * ローディング画面専用のスタイル（CSS Modules なのでクラス名はこのコンポーネントの中に閉じる）。
  * 時間・揺れの角度は loadingConfig.ts から CSS 変数（--ls-*-ms など）として渡している。
+ * 動きはすべて、画面に出た瞬間を 0 として時刻（animation-delay）を決めた CSS アニメーション。
+ * ページの JS の読み込みを待たずに動き出す（読み込みが遅くても止まって見えない）。
  */
 
 .root {
@@ -28,6 +30,8 @@
   inset: 0;
   z-index: 1000;
   overflow: hidden;
+  /* 幕が上に抜けたあとは、下のページを触れるように（幕そのものは操作を受け止める） */
+  pointer-events: none;
 }
 
 /* 水色の幕。WiFi マーク・雷・下端の波ごと上へ抜けていく */
@@ -35,14 +39,9 @@
   position: absolute;
   inset: 0;
   background: var(--ls-color-base);
-}
-
-.revealing {
-  pointer-events: none;
-}
-
-.revealing .curtain {
-  animation: ls-curtain-up var(--ls-reveal-ms) cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  pointer-events: auto;
+  /* 最後の雷が届いて光り終わったら（--ls-reveal-at-ms）、上へ抜ける */
+  animation: ls-curtain-up var(--ls-reveal-ms) cubic-bezier(0.65, 0, 0.35, 1) var(--ls-reveal-at-ms) both;
 }
 
 @keyframes ls-curtain-up {
@@ -106,20 +105,31 @@
   color: var(--ls-color-fill-big);
 }
 
-/* 塗りの高さ（scaleY 0 → 1）。下端を基準に伸ばす */
+/*
+ * 塗りの高さ（scaleY 0 → 1）。下端を基準に伸ばす。
+ * 雷が1つ届くたび（1つ目が届く時刻から、雷の間隔ごと）に、1段ずつ増える
+ */
 .fillRect {
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  transition: transform var(--ls-fill-ms) ease-out;
+  transform: scaleY(0);
+  animation: ls-fill calc(var(--ls-bolt-interval-ms) * var(--ls-bolt-count))
+    steps(var(--ls-bolt-count), jump-start) var(--ls-first-hit-ms) both;
 }
 
-/* 雷が届くたびの揺れ（根元を中心に素早く往復） */
+@keyframes ls-fill {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* 雷が届くたびの揺れ（根元を中心に素早く往復。雷の数だけくり返す） */
 .wobbleTarget {
   transform-origin: 50% 90%;
-}
-
-.wobble {
-  animation: ls-wobble var(--ls-wobble-ms) ease-out;
+  animation: ls-wobble var(--ls-bolt-interval-ms) ease-out var(--ls-first-hit-ms) var(--ls-bolt-count);
 }
 
 @keyframes ls-wobble {
@@ -140,9 +150,9 @@
   }
 }
 
-/* 満タンになったら一瞬パッと光る */
+/* 満タンになったら（最後の雷が届いたら）一瞬パッと光る */
 .full {
-  animation: ls-flash var(--ls-flash-ms) ease-out;
+  animation: ls-flash var(--ls-flash-ms) ease-out var(--ls-last-hit-ms) both;
 }
 
 @keyframes ls-flash {
@@ -187,9 +197,8 @@
   filter: drop-shadow(0 0 4px color-mix(in srgb, var(--ink-highlight) 80%, transparent));
 }
 
-.charging .bolt {
-  animation: ls-bolt var(--ls-bolt-travel-ms) ease-in both;
-  animation-delay: var(--ls-bolt-delay);
+.bolt {
+  animation: ls-bolt var(--ls-bolt-travel-ms) ease-in var(--ls-bolt-delay) both;
 }
 
 /* 回転・明滅しながら中央へ → 届いたら小さく光って消える */
@@ -221,24 +230,21 @@
   }
 }
 
-/* ---- 動きを減らす設定：短いフェードアウトだけ ---- */
-.reduced {
-  transition: opacity var(--ls-reduced-fade-ms) ease-out;
-}
-
-.reduced.revealing {
-  opacity: 0;
-}
-
+/* ---- 動きを減らす設定：動かさない（満タンの WiFi を少し見せて閉じる） ---- */
 @media (prefers-reduced-motion: reduce) {
   .bolt {
     display: none;
   }
 
   .wave,
-  .wobble,
+  .wobbleTarget,
   .full,
-  .revealing .curtain {
+  .curtain,
+  .fillRect {
     animation: none;
+  }
+
+  .fillRect {
+    transform: scaleY(1);
   }
 }

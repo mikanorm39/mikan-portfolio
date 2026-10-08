@@ -1,9 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "motion/react";
-import { useHydrated } from "@/components/opening/OpeningContext";
-import { cn } from "@/lib/utils";
+import { useCallback, useEffect, useRef } from "react";
 import { BOLT_STARTS, LOADING_TIMING as T, WOBBLE } from "./loadingConfig";
 import styles from "./LoadingScreen.module.css";
 
@@ -35,18 +32,19 @@ function WifiShape() {
   );
 }
 
+/** 雷が中央に届く時刻（表示を始めてから。1つ目と最後） */
+const FIRST_HIT_MS = T.boltStartDelayMs + T.boltTravelMs;
+const LAST_HIT_MS = FIRST_HIT_MS + T.boltIntervalMs * (BOLT_COUNT - 1);
+/** 幕が開け始める時刻（最後の雷が届いて、光り終わったら） */
+const REVEAL_AT_MS = LAST_HIT_MS + T.flashMs;
+
+/**
+ * 動き（雷・WiFi の充填・揺れ・光る・幕が開く）はすべて CSS のアニメーションで、時刻を決めて流している。
+ * ページの JS の読み込み（ハイドレーション）を待たずに、画面に出た瞬間から動き出すので、
+ * 読み込みが遅いときでも止まって見えない。JS は「いつ幕が開け始めたか・開けきったか」を知るためだけに使う。
+ */
 export function LoadingScreen({ onReveal, onComplete }: Props) {
-  // ハイドレーションが終わってから雷を飛ばす（届いたイベントを取りこぼさないため）
-  const hydrated = useHydrated();
-  const reduced = useReducedMotion() === true;
-  const charging = hydrated && !reduced;
-
-  const [hits, setHits] = useState(0);
-  const [revealing, setRevealing] = useState(false);
-  const full = reduced || hits >= BOLT_COUNT;
-  const fill = reduced ? 1 : Math.min(hits / BOLT_COUNT, 1);
-
-  const wobbleRef = useRef<HTMLDivElement>(null);
+  const curtainRef = useRef<HTMLDivElement>(null);
   const completed = useRef(false);
 
   const complete = useCallback(() => {
@@ -72,70 +70,55 @@ export function LoadingScreen({ onReveal, onComplete }: Props) {
     };
   }, []);
 
-  // 雷が届くたびに揺らす（class を付け外しして、連続でも毎回最初から再生）
+  // JS が動き出した時点で、幕のアニメーションがどこまで進んでいるかを見て
+  // 「開け始め（onReveal）」と「開けきり（onComplete）」の時刻を合わせる。
+  // 読み込みが遅くて、すでに開けきっていれば、すぐに両方を呼ぶ。
   useEffect(() => {
-    const el = wobbleRef.current;
-    if (!el || hits === 0 || reduced) return;
-    el.classList.remove(styles.wobble);
-    void el.offsetWidth; // 再描画させてアニメーションをリセット
-    el.classList.add(styles.wobble);
-  }, [hits, reduced]);
-
-  // 満タン → 光り終わったら幕を開ける（動きを減らす設定なら少し見せてからフェード）
-  useEffect(() => {
-    if (!hydrated || !full || revealing) return;
-    const timer = window.setTimeout(() => setRevealing(true), reduced ? T.reducedHoldMs : T.flashMs);
-    return () => window.clearTimeout(timer);
-  }, [hydrated, full, revealing, reduced]);
-
-  useEffect(() => {
-    if (revealing) onReveal?.();
-  }, [revealing, onReveal]);
-
-  // 念のため：何かでアニメーションの終了が来なくても、必ず閉じる
-  useEffect(() => {
-    const total =
-      T.boltStartDelayMs + T.boltIntervalMs * BOLT_COUNT + T.boltTravelMs + T.flashMs + T.revealMs + 2000;
-    const timer = window.setTimeout(complete, total);
-    return () => window.clearTimeout(timer);
-  }, [complete]);
+    const curtain = curtainRef.current;
+    if (!curtain) return;
+    const timers: number[] = [];
+    const anim = curtain.getAnimations()[0];
+    if (anim) {
+      const elapsed = Number(anim.currentTime ?? 0);
+      timers.push(window.setTimeout(() => onReveal?.(), Math.max(0, REVEAL_AT_MS - elapsed)));
+      anim.finished.then(complete, complete);
+    } else {
+      // 動きを減らす設定などでアニメーションがないとき：少し見せてから閉じる
+      onReveal?.();
+      timers.push(window.setTimeout(complete, T.reducedHoldMs));
+    }
+    // 念のため：何かでアニメーションの終了が来なくても、必ず閉じる
+    timers.push(window.setTimeout(complete, REVEAL_AT_MS + T.revealMs + 2000));
+    return () => timers.forEach((t) => window.clearTimeout(t));
+  }, [onReveal, complete]);
 
   // 時間・揺れは CSS 変数として渡す（CSS 側はこの値を読む）
   const vars = {
     "--ls-bolt-travel-ms": `${T.boltTravelMs}ms`,
-    "--ls-fill-ms": `${T.fillStepMs}ms`,
-    "--ls-wobble-ms": `${T.wobbleMs}ms`,
+    "--ls-first-hit-ms": `${FIRST_HIT_MS}ms`,
+    "--ls-last-hit-ms": `${LAST_HIT_MS}ms`,
+    "--ls-reveal-at-ms": `${REVEAL_AT_MS}ms`,
+    "--ls-bolt-interval-ms": `${T.boltIntervalMs}ms`,
+    "--ls-bolt-count": BOLT_COUNT,
     "--ls-flash-ms": `${T.flashMs}ms`,
     "--ls-reveal-ms": `${T.revealMs}ms`,
     "--ls-wave-ms": `${T.waveCycleMs}ms`,
-    "--ls-reduced-fade-ms": `${T.reducedFadeMs}ms`,
     "--ls-wobble-angle": `${WOBBLE.angleDeg}deg`,
     "--ls-wobble-scale": WOBBLE.scale,
   } as React.CSSProperties;
 
   return (
     <div
-      // 2回目以降は <head> のスクリプト + globals.css で最初から非表示になる
+      // 動きを減らす設定なら <head> のスクリプト + globals.css で最初から非表示になる
       data-opening-overlay
       role="status"
       aria-label="読み込み中"
-      className={cn(styles.root, charging && styles.charging, revealing && styles.revealing, reduced && styles.reduced)}
+      className={styles.root}
       style={vars}
-      onTransitionEnd={(e) => {
-        // 動きを減らす設定のフェードアウトが終わった
-        if (reduced && revealing && e.target === e.currentTarget) complete();
-      }}
     >
-      <div
-        className={styles.curtain}
-        onAnimationEnd={(e) => {
-          // 幕が上に抜けきった
-          if (e.target === e.currentTarget) complete();
-        }}
-      >
+      <div ref={curtainRef} className={styles.curtain}>
         {/* 画面端から飛んでくる雷 */}
-        {!reduced &&
-          BOLT_STARTS.map((p, i) => (
+        {BOLT_STARTS.map((p, i) => (
             <div key={i} className={styles.boltSlot} aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
@@ -149,7 +132,6 @@ export function LoadingScreen({ onReveal, onComplete }: Props) {
                     "--ls-bolt-delay": `${T.boltStartDelayMs + T.boltIntervalMs * i}ms`,
                   } as React.CSSProperties
                 }
-                onAnimationEnd={() => setHits((h) => h + 1)}
               >
                 <path d={BOLT_PATH} />
               </svg>
@@ -158,8 +140,8 @@ export function LoadingScreen({ onReveal, onComplete }: Props) {
 
         {/* 中央の WiFi マーク：未充填の形の上に、下から伸びる clipPath で切り抜いた塗りを重ねる */}
         <div className={styles.center}>
-          <div className={cn(full && !reduced && styles.full)}>
-            <div ref={wobbleRef} className={styles.wobbleTarget}>
+          <div className={styles.full}>
+            <div className={styles.wobbleTarget}>
               <svg viewBox="-6 2 132 102" className={styles.wifi} aria-hidden="true">
                 <defs>
                   <clipPath id="ls-wifi-fill">
@@ -169,7 +151,6 @@ export function LoadingScreen({ onReveal, onComplete }: Props) {
                       width={132}
                       height={102}
                       className={styles.fillRect}
-                      style={{ transform: `scaleY(${fill})` }}
                     />
                   </clipPath>
                 </defs>

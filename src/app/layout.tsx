@@ -7,7 +7,6 @@ import { LoadingGate } from "@/components/loading/LoadingGate";
 import { SplatBackground } from "@/components/splat/SplatBackground";
 import { Providers } from "@/components/Providers";
 import { profile, siteUrl } from "@/data/profile";
-import { OPENING } from "@/lib/motion";
 import { typekitScript } from "@/lib/typekit";
 import "./globals.css";
 // ゲーム風のドット装飾（共通クラスと調整用の CSS 変数）
@@ -58,9 +57,10 @@ export const viewport: Viewport = {
   ],
 };
 
-// 描画前に実行し、表示済み（または動きを減らす設定）なら <html data-opening="done"> を付ける。
-// CSS がそれを見てオープニングを最初から非表示にするので、2回目以降に一瞬映ることがない。
-const openingScript = `(function(){var d=document.documentElement;try{if(sessionStorage.getItem("${OPENING.storageKey}")||matchMedia("(prefers-reduced-motion: reduce)").matches)d.dataset.opening="done"}catch(e){d.dataset.opening="done"}})()`;
+// 描画前に実行し、動きを減らす設定なら <html data-opening="done"> を付ける。
+// CSS がそれを見てオープニングを最初から非表示にするので、一瞬映ることがない。
+// （それ以外は、URL を開いたとき・再読み込みしたときに毎回ローディングを出す。サイト内のページ移動では出ない）
+const openingScript = `(function(){var d=document.documentElement;try{if(matchMedia("(prefers-reduced-motion: reduce)").matches)d.dataset.opening="done"}catch(e){}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

@@ -179,7 +179,7 @@ export function InkLoadingScreen({ onReveal, onComplete }: Props) {
 
   return (
     <div
-      // 2回目以降は <head> のスクリプト + globals.css で最初から非表示になる（既存のローディングと同じ仕組み）
+      // 動きを減らす設定なら <head> のスクリプト + globals.css で最初から非表示になる（既存のローディングと同じ仕組み）
       data-opening-overlay
       role="status"
       aria-label="読み込み中"

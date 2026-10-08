@@ -17,23 +17,18 @@ export const LOADING_VARIANT: "wifi" | "ink" = "wifi";
 export const LOADING_TIMING = {
   /** 表示してから最初の雷が出るまで */
   boltStartDelayMs: 200,
-  /** 雷を1つずつ出す間隔 */
+  /** 雷を1つずつ出す間隔（雷が届くたびの WiFi マークの揺れも、この長さ） */
   boltIntervalMs: 140,
   /** 雷が画面端から中央に届くまで */
   boltTravelMs: 650,
-  /** 雷が届いたときに WiFi マークの色が増える時間 */
-  fillStepMs: 220,
-  /** 雷が届いたときの揺れ */
-  wobbleMs: 300,
   /** 満タンになったときに光る時間（この後に画面が開ける） */
   flashMs: 450,
   /** 波線の境目が下から上へ抜けていく時間 */
   revealMs: 950,
   /** 波が横に1周揺れる時間 */
   waveCycleMs: 1400,
-  /** 動きを減らす設定のとき：表示しておく時間とフェードアウトの時間 */
+  /** 動きを減らす設定のとき：表示しておく時間 */
   reducedHoldMs: 500,
-  reducedFadeMs: 400,
 } as const;
 
 /** 雷が届いたときの揺れ（-角度 → +角度 → -角度/2 → 0 と往復する） */

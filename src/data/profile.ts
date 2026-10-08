@@ -8,13 +8,26 @@ export type SocialLink = {
 
 export const profile = {
   name: "mikan",
+  /** 本名（トップの About に表示） */
+  fullName: "西岡 未栞",
+  /** 本名のふりがな（姓・名ごとに漢字の上へ振る） */
+  fullNameRuby: [
+    { text: "西岡", ruby: "にしおか" },
+    { text: "未栞", ruby: "みかん" },
+  ],
+  university: "福岡工業大学",
+  department: "情報工学部 情報工学科",
+  graduationYear: "2029年",
+  teamDevCount: "9回",
+  /** トップの About の「一言」 */
+  oneLiner: "「このゲーム面白そう」をもらえるゲームプランナーを目指しています！",
   /** 連絡先（フッターの Contact に表示） */
   email: "mikanorm@outlook.jp",
   displayName: "Mikan",
   siteTitle: "Mikan's Portfolio",
   catchCopy: "作ることが好きなゲームプランナ―を目指す学生です",
   affiliation: "情報工業大学 情報学部 2年",
-  club: "情報技術研究部（通称：じょぎ）",
+  club: "情報技術研究部（通称じょぎ）",
   intro:
     "情報工業大学 情報学部の2年生です。情報技術研究部（じょぎ）に所属し、仲間とゲームを作ったりゲームジャムに参加したりしています。アイデアを形にして、遊んだ人の反応を見るのがいちばんの楽しみです。",
   fields: "ゲームがメイン。Web も少し",

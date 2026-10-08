@@ -2,32 +2,23 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useOpening } from "@/components/opening/OpeningContext";
-import { OPENING } from "@/lib/motion";
 import { InkLoadingScreen } from "./InkLoadingScreen";
 import { LoadingScreen } from "./LoadingScreen";
 import { LOADING_VARIANT, SHOW_LOADING } from "./loadingConfig";
 
 /**
  * ローディング画面の出し入れ（layout.tsx に置く）。
- * タブごとに初回だけ表示し、onComplete で外す。幕が開け始めたらヒーローの出現アニメーションを始める。
+ * URL を開いたとき・再読み込みしたときに毎回表示し、onComplete で外す（サイト内のページ移動では layout が作り直されないので出ない）。
+ *幕が開け始めたらヒーローの出現アニメーションを始める。
  */
 export function LoadingGate() {
   const { skipped, finish } = useOpening();
   const [visible, setVisible] = useState(true);
 
+  // ローディングを出さない設定なら、すぐにページ本体の出現アニメーションを始める
   useEffect(() => {
-    // ローディングを出さない設定なら、すぐにページ本体の出現アニメーションを始める
-    if (!SHOW_LOADING) {
-      finish();
-      return;
-    }
-    if (skipped) return;
-    try {
-      sessionStorage.setItem(OPENING.storageKey, "1");
-    } catch {
-      // プライベートモードなどで保存できなくても表示は続ける
-    }
-  }, [skipped, finish]);
+    if (!SHOW_LOADING) finish();
+  }, [finish]);
 
   const handleComplete = useCallback(() => {
     document.documentElement.dataset.opening = "done";

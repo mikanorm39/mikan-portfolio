@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
 
 type OpeningState = {
-  /** オープニングを今回は出さない（表示済み or 動きを減らす設定） */
+  /** オープニングを今回は出さない（動きを減らす設定） */
   skipped: boolean;
   /** オープニングが終わった（または出さない）ので、ヒーローの出現を始めてよい */
   done: boolean;
@@ -13,7 +13,7 @@ type OpeningState = {
 const OpeningContext = createContext<OpeningState>({ skipped: true, done: true, finish: () => {} });
 
 const subscribe = () => () => {};
-// <head> のスクリプトが、表示済みなら <html data-opening="done"> を付けている
+// <head> のスクリプトが、動きを減らす設定なら <html data-opening="done"> を付けている
 const getSnapshot = () => document.documentElement.dataset.opening === "done";
 const getServerSnapshot = () => false;
 
@@ -44,7 +44,7 @@ export function useHydrated() {
  * 出現アニメーションの開始タイミングをそろえるためのフック。
  *
  * - サーバーの HTML では要素を「見えている状態」で出す（初回はオープニングの幕の下にあるので見えないが、
- *   LCP として早く計測される）。2回目以降は CSS（[data-reveal]）で描画前に隠しているので、ちらつかない。
+ *   LCP として早く計測される）。オープニングを出さないときは CSS（[data-reveal]）で描画前に隠しているので、ちらつかない。
  * - ハイドレーション後に一瞬で "hidden" にし、オープニングが終わってから "show" にする。
  */
 export function useRevealGate() {

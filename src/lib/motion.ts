@@ -14,10 +14,6 @@ export const DURATION = {
 } as const;
 
 // ---------- ① ローディング（本体は components/loading） ----------
-export const OPENING = {
-  /** タブごとに初回だけ表示するための sessionStorage のキー */
-  storageKey: "opening-shown",
-} as const;
 
 // ---------- ② ヒーロー ----------
 export const HERO_STAGGER = 0.12;
