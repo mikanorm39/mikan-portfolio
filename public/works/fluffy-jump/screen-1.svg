@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bae6fd"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs>
-  <rect width="1280" height="720" fill="url(#g)"/>
-  <g fill="#fff" opacity="0.9">
-    <ellipse cx="300" cy="520" rx="170" ry="48"/><ellipse cx="760" cy="400" rx="150" ry="42"/><ellipse cx="1080" cy="260" rx="130" ry="38"/>
-  </g>
-  <text x="640" y="150" text-anchor="middle" font-family="sans-serif" font-size="64" font-weight="800" fill="#3b1680">ゲーム画面（サンプル）</text>
-  <text x="640" y="220" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="700" fill="#3b1680" opacity="0.7">雲から雲へジャンプ！</text>
-</svg>
