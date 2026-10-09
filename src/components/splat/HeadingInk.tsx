@@ -5,25 +5,10 @@ import { useOpening } from "@/components/opening/OpeningContext";
 import { NavInk } from "./InkUi";
 import type { InkColor } from "./splatConfig";
 
-/** 見出しにもう一度インクを着弾させる合図のイベント名 */
-const HEADING_INK_EVENT = "heading-ink";
-
-/** スクロールが止まるのを待つ最大時間（scrollend が来ないブラウザ用の保険） */
-const SCROLL_WAIT_MS = 900;
-
-/**
- * id の見出しへインクを着弾し直す（トップのメニューを押したときに呼ぶ）。
- * 見出しはいったんインクを消し、スクロールが止まってからもう一度着弾する。
- */
-export function splashHeading(id: string) {
-  window.dispatchEvent(new CustomEvent(HEADING_INK_EVENT, { detail: id }));
-}
-
 /**
  * 見出しの文字の後ろに付くインク。
  * - スクロールで見出しが画面に入ったら（ページを開いたときに最初から見えていれば、すぐに）着弾して、そのまま残る
  * - ローディング画面が出ているあいだは待ち、開けてから着弾する
- * - splashHeading(id) が呼ばれたら、スクロールが止まったあとにもう一度着弾する
  * - trigger="tap" のときは、画面に入っても着弾せず、見出しをタップ（クリック）したときに着弾する（もう一度押すと着弾し直す）
  * 親の要素には relative と isolate を付ける（インクを文字の後ろに重ねるため）。
  */
@@ -31,11 +16,9 @@ export function splashHeading(id: string) {
 const RETAP_MS = 90;
 
 export function HeadingInk({
-  id,
   color,
   trigger = "view",
 }: {
-  id: string;
   color: InkColor;
   /** "view" = 画面に入ったら着弾 / "tap" = 見出しを押したら着弾 */
   trigger?: "view" | "tap";
@@ -85,28 +68,6 @@ export function HeadingInk({
       host.removeEventListener("pointerdown", onTap);
     };
   }, [trigger]);
-
-  // メニューから呼ばれたら：いったん消して、スクロールが止まったらもう一度着弾
-  useEffect(() => {
-    let timer = 0;
-    const replay = () => {
-      window.clearTimeout(timer);
-      window.removeEventListener("scrollend", replay);
-      setHit(true);
-    };
-    const onSplash = (e: Event) => {
-      if ((e as CustomEvent<string>).detail !== id) return;
-      setHit(false);
-      window.addEventListener("scrollend", replay, { once: true });
-      timer = window.setTimeout(replay, SCROLL_WAIT_MS);
-    };
-    window.addEventListener(HEADING_INK_EVENT, onSplash);
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener("scrollend", replay);
-      window.removeEventListener(HEADING_INK_EVENT, onSplash);
-    };
-  }, [id]);
 
   return (
     <span ref={ref} className="absolute inset-0 -z-10" aria-hidden="true">

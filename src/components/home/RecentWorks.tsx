@@ -10,10 +10,10 @@ export async function RecentWorks() {
   // 作品は microCMS から取得（ビルド時）
   const recent = await getHomeWorks(RECENT_COUNT);
 
-  // id="work"：トップのメニューの WORK からここへスクロールする
+  // id="work"：/#work でこのセクションを直接開ける目印
   return (
     <section id="work" className="mx-auto max-w-6xl px-4 py-section sm:px-6">
-      <SectionHeading title="Work" ink={{ id: "work", color: "pink" }} />
+      <SectionHeading title="Work" ink={{ color: "pink" }} />
       {/* 作品は横スクロールで見る（カードを押すと詳細ページ、最後に「＋ MORE」カード）。右下に、作品一覧ページへの「MORE →」 */}
       <WorkCarousel works={recent} moreHref="/work" footer={<MoreButton href="/work" className="flex" />} />
     </section>

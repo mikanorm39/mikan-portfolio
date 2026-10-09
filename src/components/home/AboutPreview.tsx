@@ -14,10 +14,10 @@ const facts = [
 
 /** トップ用の短い自己紹介。詳しい内容は /about にまとめる */
 export function AboutPreview() {
-  // id="about"：トップのメニューの ABOUT からここへスクロールする
+  // id="about"：/#about でこのセクションを直接開ける目印
   return (
     <section id="about" className="mx-auto max-w-6xl px-4 py-section sm:px-6">
-      <SectionHeading title="About" ink={{ id: "about", color: "mint" }} />
+      <SectionHeading title="About" ink={{ color: "mint" }} />
       <Reveal className="pixel-box bg-card p-6 sm:p-8">
         {/* 名前（姓・名それぞれの上にふりがな） */}
         <p className="font-heading text-h2 font-bold text-primary">

@@ -21,7 +21,7 @@ export default async function WorkPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-section sm:px-6">
       {/* ページを開いたら、大見出しにピンクのインクが着弾する */}
-      <SectionHeading as="h1" title="Work" description={description} ink={{ id: "work-page", color: "pink" }} />
+      <SectionHeading as="h1" title="Work" description={description} ink={{ color: "pink" }} />
       {/* クエリ（?category=）を読むのはクライアント側。静的生成時は全件を出しておく */}
       <Suspense fallback={<WorkGrid works={works} />}>
         <WorksExplorer works={works} />

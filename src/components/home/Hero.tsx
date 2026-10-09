@@ -1,10 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { useRevealGate } from "@/components/opening/OpeningContext";
 import { navItems } from "@/components/layout/nav";
-import { splashHeading } from "@/components/splat/HeadingInk";
 import { InkBehind } from "@/components/splat/InkUi";
 import { heroContainer, heroItem } from "@/lib/motion";
 import styles from "./Hero.module.css";
@@ -15,13 +15,11 @@ const TITLE_WORDS = ["Mikan", "Nishioka"];
 const SUBTITLE = "Portfolio";
 
 /**
- * メニュー：Work / About（表示名と色はヘッダーと同じ）。
- * 押すとページは移動せず、このページ内の同じ名前のセクション（id="work" / "about"）へスクロールし、見出しにインクが着弾する。
+ * メニュー：Work / About（表示名・色・移動先はヘッダーと同じ）。
+ * 押すとそれぞれの専用ページ（/work・/about）へ移動する（移動先のページを開くと、大見出しにインクが着弾する）。
  * 外部リンク（CLUB など）はヘッダーのメニュー ☰ の中。
  */
-const MENU = navItems
-  .filter((item) => item.href !== "/")
-  .map((item) => ({ ...item, section: item.href.slice(1) }));
+const MENU = navItems.filter((item) => item.href !== "/");
 
 /** トップのファーストビュー。ゲームのタイトル画面風に、タイトル → サブタイトル → メニューを中央に並べる */
 export function Hero() {
@@ -32,16 +30,6 @@ export function Hero() {
   // ↑↓キーで移動するための、今フォーカスしているメニューの番号（インクはホバー・フォーカス・押した瞬間だけ出る）
   const [selected, setSelected] = useState(0);
   const links = useRef<(HTMLAnchorElement | null)[]>([]);
-
-  // メニューを押したら：そのセクションへスクロールして、見出しにインクを着弾させる
-  // （セクションが見つからなければ、ふつうのリンクとして動く）
-  const goToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    const target = document.getElementById(id);
-    if (!target) return;
-    e.preventDefault();
-    target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-    splashHeading(id);
-  };
 
   // ↑↓キーで選択を移動（メニューにフォーカスがあるとき）。Enter はリンク本来の動きで決定になる
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -96,20 +84,19 @@ export function Hero() {
           <ul className={styles.menu} onKeyDown={onKeyDown}>
             {MENU.map((m, i) => (
               <li key={m.href}>
-                <a
+                <Link
                   ref={(el) => {
                     links.current[i] = el;
                   }}
-                  href={`#${m.section}`}
+                  href={m.href}
                   className={`ink-cursor-host ${styles.item}`}
                   onFocus={() => setSelected(i)}
-                  onClick={(e) => goToSection(e, m.section)}
                 >
                   {/* カーソルを合わせている間・キーボードで選んだとき・押した瞬間だけ、文字の後ろへインクがぴちゃっと着弾する */}
                   <InkBehind color={m.ink}>
                     <span className={styles.label}>{m.label}</span>
                   </InkBehind>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

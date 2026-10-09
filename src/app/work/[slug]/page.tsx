@@ -67,7 +67,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/work/[slug]
 
       {/* 2. タイトル・種類・制作年（ページを開いたら、作品名にピンクのインクが着弾する） */}
       <header className="mt-heading">
-        <SectionHeading as="h1" title={work.title} ink={{ id: `work-${work.slug}`, color: "pink" }} className="mb-4" />
+        <SectionHeading as="h1" title={work.title} ink={{ color: "pink" }} className="mb-4" />
         {(work.categories.length > 0 || work.year) && (
           <div className="flex flex-wrap items-center gap-2">
             {work.categories.map((c) => (
@@ -120,7 +120,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/work/[slug]
       {/* 5. 説明文（microCMS のリッチエディタ） */}
       {work.descriptionHtml && (
         <section className="mt-section">
-          <SectionHeading title="Story" ink={{ id: "work-story", color: "yellow", trigger: "tap" }} />
+          <SectionHeading title="Story" ink={{ color: "yellow", trigger: "tap" }} />
           <Reveal className="pixel-box bg-card p-6 sm:p-8">
             <WorkRichText html={work.descriptionHtml} />
           </Reveal>
@@ -130,7 +130,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/work/[slug]
       {/* 6. 画像ギャラリー（押すと拡大） */}
       {work.images.length > 0 && (
         <section className="mt-section">
-          <SectionHeading title="Gallery" ink={{ id: "work-gallery", color: "mint", trigger: "tap" }} />
+          <SectionHeading title="Gallery" ink={{ color: "mint", trigger: "tap" }} />
           <WorkGallery images={work.images} />
         </section>
       )}
@@ -138,7 +138,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/work/[slug]
       {/* 7. 動画（押されてから読み込む） */}
       {work.video && (
         <section className="mt-section">
-          <SectionHeading title="Movie" ink={{ id: "work-movie", color: "orange", trigger: "tap" }} />
+          <SectionHeading title="Movie" ink={{ color: "orange", trigger: "tap" }} />
           <WorkVideo url={work.video} title={work.title} />
         </section>
       )}
@@ -146,7 +146,7 @@ export default async function WorkDetailPage({ params }: PageProps<"/work/[slug]
       {/* 8. 外部リンク */}
       {work.links.length > 0 && (
         <section className="mt-section">
-          <SectionHeading title="Links" ink={{ id: "work-links", color: "cyan", trigger: "tap" }} />
+          <SectionHeading title="Links" ink={{ color: "cyan", trigger: "tap" }} />
           <WorkLinks links={work.links} />
         </section>
       )}

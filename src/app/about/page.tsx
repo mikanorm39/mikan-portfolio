@@ -28,7 +28,7 @@ export default async function AboutPage() {
     <>
       <div className="mx-auto max-w-6xl px-4 pt-section sm:px-6">
         {/* ページを開いたら、大見出しにミントのインクが着弾する */}
-        <SectionHeading as="h1" title="About" ink={{ id: "about-page", color: "mint" }} />
+        <SectionHeading as="h1" title="About" ink={{ color: "mint" }} />
         {/* 紹介文は、ほかのセクションと同じ白い枠の中に（大きめ・太字） */}
         <Reveal className="pixel-box bg-card p-6 sm:p-8">
           <p className="text-lg font-bold sm:text-xl">{intro}</p>
@@ -42,7 +42,7 @@ export default async function AboutPage() {
         <SectionHeading
           title="Career"
           description="サークル・イベント・開発・受賞などを時系列で。"
-          ink={{ id: "career", color: "mint", trigger: "tap" }}
+          ink={{ color: "mint", trigger: "tap" }}
         />
         {/* クエリ（?tag=）を読むのはクライアント側。静的生成時は全件を出しておく */}
         <div className="max-w-4xl">
