@@ -1,4 +1,4 @@
-import { careerTagLabels, type CareerTag } from "@/data/career";
+import { careerTagLabels, type CareerTag } from "@/lib/career";
 import { cn } from "@/lib/utils";
 
 export function CareerTagBadge({ tag }: { tag: CareerTag }) {

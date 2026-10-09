@@ -1,7 +1,7 @@
 "use client";
 
 import { FilterPills, type FilterOption } from "@/components/FilterPills";
-import { careerTagLabels, careerTags, type CareerTag } from "@/data/career";
+import { careerTagLabels, careerTags, type CareerTag } from "@/lib/career";
 
 export type CareerFilterValue = CareerTag | "all";
 

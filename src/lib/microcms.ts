@@ -66,6 +66,28 @@ export const getAllWorkContents = cache(async (): Promise<MicroCMSWork[]> => {
   return getClient().getAllContents<MicroCMSWork>({ endpoint: ENDPOINT, queries: { orders: "order" } });
 });
 
+/** microCMS の career（リスト形式）の1件。空の項目は、項目ごと届かないことがある */
+export type MicroCMSCareer = MicroCMSListContent & {
+  title: string;
+  /** 日時（日付のみ）。世界標準時で届く（日本時間の 0:00 → 前の日の 15:00Z） */
+  date: string;
+  /** 日時（日付のみ） */
+  endDate?: string | null;
+  /** 真偽値 */
+  ongoing?: boolean;
+  /** テキストエリア */
+  description?: string;
+  /** セレクト・複数選択（"サークル" / "イベント" / "開発" / "受賞" / "その他"） */
+  tags?: string[];
+  /** 同じ日付の経歴の並び順の調整 */
+  order?: number | null;
+};
+
+/** 経歴を全件取得する（date の古い順）。取りに行くタイミングは作品と同じ */
+export const getAllCareerContents = cache(async (): Promise<MicroCMSCareer[]> => {
+  return getClient().getAllContents<MicroCMSCareer>({ endpoint: "career", queries: { orders: "date" } });
+});
+
 /** slug で1件取得する。見つからなければ undefined */
 export const getWorkContentBySlug = cache(async (slug: string): Promise<MicroCMSWork | undefined> => {
   // slug は英数字とハイフンだけ（それ以外の文字が来たら、問い合わせずに「見つからない」にする）

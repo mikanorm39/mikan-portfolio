@@ -6,15 +6,17 @@
 - Tailwind CSS v4 / shadcn/ui / lucide-react
 - Motion（`motion/react`）/ next-themes
 - フォント：M PLUS Rounded 1c（見出し・太字）、Zen Maru Gothic（本文）
-- 全ページ静的生成（SSG）。作品サムネイル取得用の `/api/og` のみサーバー実行
+- 作品・経歴は microCMS で管理（`microcms-js-sdk`）
+- 全ページ静的生成（SSG）。microCMS のデータはビルド時に取得
 
 ## ページ
 
 | パス | 内容 |
 | --- | --- |
-| `/` | ヒーロー / Profile / Vision / 最近の作品 / 最近の活動 / 関連リンク |
-| `/projects` | 作品一覧。`?category=web&team=solo` のように URL で絞り込み状態を共有できる |
-| `/career` | 経歴タイムライン。`?tag=award` で絞り込み |
+| `/` | タイトル画面 / Work（作品の横スクロール）/ About（自己紹介） |
+| `/work` | 作品一覧。`?category=web&team=solo` のように URL で絞り込み状態を共有できる |
+| `/work/作品のslug` | 作品の詳細ページ |
+| `/about` | プロフィール / Vision / Career（経歴タイムライン。`?tag=award` で絞り込み）/ 関連リンク |
 | それ以外 | 404 ページ |
 
 ## 必要なもの
@@ -28,6 +30,13 @@ npm install
 npm run dev      # http://localhost:3000
 ```
 
+作品・経歴は microCMS から読むので、プロジェクト直下に `.env.local` を作り、接続情報を書いておきます（GitHub には上がりません）。
+
+```bash
+MICROCMS_SERVICE_DOMAIN=サービスのドメイン   # https://〇〇.microcms.io の 〇〇
+MICROCMS_API_KEY=APIキー
+```
+
 公開前のチェック：
 
 ```bash
@@ -38,42 +47,16 @@ npm run start    # ビルドしたものを http://localhost:3000 で確認
 
 ## 作品・経歴を追加する
 
-配列に1件足すだけで、トップ・一覧・絞り込みに反映されます（並び順は日付から自動）。
+作品・経歴は **microCMS** の管理画面から追加・編集します（コードの変更は不要）。
 
-**作品** … `src/data/projects.ts` の `projects` 配列
+- **作品** … microCMS の `works`。手順は [WORKS_GUIDE.md](WORKS_GUIDE.md)
+- **経歴** … microCMS の `career`。手順は [CAREER_GUIDE.md](CAREER_GUIDE.md)、API の設計は [CAREER_SCHEMA.md](CAREER_SCHEMA.md)
 
-```ts
-{
-  slug: "my-game",                // 重複しない英数字
-  title: "新しいゲーム",
-  description: "ひとことで説明",
-  date: "2026-11",                // 年-月
-  categories: ["game"],           // web / native / game / graphic / article / lecture / video
-  team: "solo",                   // solo / team
-  tech: ["Unity", "C#"],
-  thumbnail: "/images/projects/my-game.png", // 省略すると links.site の OGP 画像 → 無ければ作品名入りのグラデーション
-  links: { site: "https://...", code: "https://github.com/...", article: "https://..." },
-},
-```
-
-サムネイル画像は `public/images/projects/` に置きます。
-
-**経歴** … `src/data/career.ts` の `career` 配列
-
-```ts
-{
-  date: "2026-11-03",
-  title: "○○ハッカソンで最優秀賞",
-  description: "ひとことで説明",
-  tags: ["event", "award"],       // academic / community / event / dev / award / intern / license
-},
-```
-
-`award` タグを付けると 🏆 マークと強調色で表示されます。
+公開中のサイトには、Vercel の再デプロイで反映されます。`npm run dev` ではページを再読み込みするとすぐ反映されます。
 
 **プロフィール・SNS** … `src/data/profile.ts`（`social` の URL は仮の値なので、公開前に自分のものへ書き換えてください）
 
-アバター画像は `public/images/avatar.svg`（仮の図形）を差し替えます。ファイル名を変える場合は `profile.avatar` も変更してください。favicon は `src/app/icon.svg` です。
+アバター画像は `public/images/avatar.svg`（仮の図形）を差し替えます。ファイル名を変える場合は `profile.avatar` も変更してください。
 
 ## Vercel にデプロイする
 
@@ -92,11 +75,13 @@ npm run start    # ビルドしたものを http://localhost:3000 で確認
 3. Framework Preset が **Next.js** になっていることを確認して **Deploy**（ビルド設定は既定のままで OK）
 4. 公開後、`main` ブランチに push するたびに自動で再デプロイされます。ほかのブランチやプルリクエストにはプレビュー URL が発行されます
 
-### 環境変数（任意）
+### 環境変数
 
 | 名前 | 用途 |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | 独自ドメインを使う場合に設定（例：`https://mikan.example.com`）。OGP・sitemap・robots の URL に使われます。未設定なら Vercel の本番 URL を自動で使います |
+| `MICROCMS_SERVICE_DOMAIN` | **必須**。microCMS のサービスのドメイン |
+| `MICROCMS_API_KEY` | **必須**。microCMS の API キー（`NEXT_PUBLIC_` は付けない。ブラウザには出ない）。未設定だとビルドがエラーで止まる |
+| `NEXT_PUBLIC_SITE_URL` | 任意。独自ドメインを使う場合に設定（例：`https://mikan.example.com`）。OGP・sitemap・robots の URL に使われます。未設定なら Vercel の本番 URL を自動で使います |
 
 Vercel の **Project → Settings → Environment Variables** で設定し、再デプロイしてください。
 
@@ -108,10 +93,10 @@ Vercel の **Project → Settings → Environment Variables** で設定し、再
 
 ## 仕組みのメモ
 
-- **オープニング**（`src/components/opening/`）：タブで最初に開いたときだけ表示。`sessionStorage` の `opening-shown` で判定し、`<head>` の小さなスクリプトが `<html data-opening="done">` を付けて CSS で最初から隠す。スキップボタンか任意のキーで閉じる。OS の「視差効果を減らす」設定では表示しない
+- **ローディング**（`src/components/loading/`）：URL を開いたとき・再読み込みしたときに毎回表示（サイト内のページ移動では出ない）。動きは CSS だけで流すので、JS の読み込みが遅くても止まらない。OS の「視差効果を減らす」設定では表示しない
 - **出現アニメーション**：設定値は `src/lib/motion.ts` にまとめてある。サーバーの HTML では要素を見える状態で出し（初回はオープニングの幕の下）、ハイドレーション後に隠してからアニメーションする。2回目以降の訪問は CSS で描画前から隠すのでちらつかない
 - **ダークモード**：next-themes（選択は `localStorage` に保存）
-- **`/api/og`**：作品の `links.site` から `og:image` を取得して 1 日キャッシュ。`projects.ts` に載っている URL 以外は受け付けない
+- **microCMS**（`src/lib/microcms.ts`）：作品・経歴をビルド時に取得。画像は microCMS の画像 API で表示サイズに合わせた WebP にして配る
 
 ## 注意：OneDrive などの同期フォルダ
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import type { CareerItem } from "@/data/career";
+import type { CareerItem } from "@/lib/career";
 import { useQueryState } from "@/lib/useQueryState";
 import { CareerFilter, careerFilterValues } from "./CareerFilter";
 import { CareerTimeline } from "./CareerTimeline";

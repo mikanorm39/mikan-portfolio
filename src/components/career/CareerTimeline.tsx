@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useRevealGate } from "@/components/opening/OpeningContext";
-import { formatDate, type CareerItem } from "@/data/career";
+import { formatCareerPeriod, type CareerItem } from "@/lib/career";
 import { layoutTransition, listItem, REVEAL_VIEWPORT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { CareerTagBadge } from "./CareerTagBadge";
@@ -29,7 +29,7 @@ export function CareerTimeline({ items }: { items: CareerItem[] }) {
           const last = i === items.length - 1;
           return (
             <motion.li
-              key={`${item.date}-${item.title}`}
+              key={item.id}
               layout
               data-reveal
               variants={variants}
@@ -39,12 +39,12 @@ export function CareerTimeline({ items }: { items: CareerItem[] }) {
               transition={{ layout: layoutTransition }}
               className="grid grid-cols-[2rem_1fr] gap-x-3 sm:grid-cols-[7rem_2.5rem_1fr] sm:gap-x-4"
             >
-              {/* 日付（sm 以上は左の列に表示） */}
+              {/* 日付（sm 以上は左の列に表示）。期間・継続中なら「2025.04.04 〜 現在」のように表示 */}
               <time
                 dateTime={item.date}
                 className="hidden pt-5 text-right text-sm font-bold text-on-bg sm:block"
               >
-                {formatDate(item.date)}
+                {formatCareerPeriod(item)}
               </time>
 
               {/* 線とドット */}
@@ -68,7 +68,7 @@ export function CareerTimeline({ items }: { items: CareerItem[] }) {
                 )}
               >
                 <time dateTime={item.date} className="text-sm font-bold text-muted-foreground sm:hidden">
-                  {formatDate(item.date)}
+                  {formatCareerPeriod(item)}
                 </time>
                 <h2 className="font-heading text-h3 font-extrabold">
                   {award && (

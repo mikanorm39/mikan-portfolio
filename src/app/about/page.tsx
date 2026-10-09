@@ -7,7 +7,7 @@ import { CareerExplorer } from "@/components/career/CareerExplorer";
 import { CareerTimeline } from "@/components/career/CareerTimeline";
 import { Reveal } from "@/components/motion/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
-import { getSortedCareer } from "@/data/career";
+import { getSortedCareer } from "@/lib/getCareer";
 
 const description = "プロフィール・目指していること・これまでの活動をまとめています。";
 /** ページに表示する紹介文（句点なし） */
@@ -20,8 +20,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
-export default function AboutPage() {
-  const items = getSortedCareer();
+export default async function AboutPage() {
+  // 経歴は microCMS から取得（ビルド時）
+  const items = await getSortedCareer();
 
   return (
     <>
