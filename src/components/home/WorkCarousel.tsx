@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { Plus } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
-import { ProjectCard } from "@/components/projects/ProjectCard";
-import type { Project } from "@/data/projects";
+import { WorkCard } from "@/components/works/WorkCard";
+import type { Work } from "@/lib/works";
 import { cn } from "@/lib/utils";
 
 /**
@@ -15,32 +14,22 @@ import { cn } from "@/lib/utils";
  * - 動かした位置でそのまま止まる（カードの端に吸い付かせない）
  * - 下のスクロールバー、スワイプ、トラックパッド、Shift＋ホイール、キーボードの ←→ で動かせる
  * - マウスでカードの上を押したまま（右クリックでも左クリックでも）横にドラッグして動かせる
- * - カードを普通にクリック（ドラッグしないで押して離す）すると cardHref（作品一覧ページ）へ移動する
+ * - カードを普通にクリック（ドラッグしないで押して離す）すると、その作品の詳細ページへ移動する
  * - moreHref を渡すと、一番最後に「＋ MORE」のカード（一覧ページへのリンク）を置く
  * - footer（MORE ボタンなど）は一覧の下の右側に置く
  */
-export function ProjectCarousel({
-  projects,
+export function WorkCarousel({
+  works,
   moreHref,
-  cardHref,
   footer,
 }: {
-  projects: Project[];
+  works: Work[];
   moreHref?: string;
-  /** カードを普通にクリックしたときの移動先 */
-  cardHref?: string;
   footer?: React.ReactNode;
 }) {
   const list = useRef<HTMLUListElement>(null);
-  const router = useRouter();
+  // ドラッグしたあとのクリック（カードのリンクが開く）は useDragScroll が止める
   useDragScroll(list);
-
-  // カードの何もない所をクリック → 作品一覧ページへ（カードの中のリンクやボタンを押したときは、そちらを優先）
-  // ドラッグしたあとのクリックは useDragScroll が止めるので、ここには来ない
-  const openCard = (e: React.MouseEvent) => {
-    if (!cardHref || (e.target as Element).closest("a, button")) return;
-    router.push(cardHref);
-  };
 
   // 1枚の幅（スマホ 1つ・タブレット 2つ・PC 3つが見える幅）
   const item = "w-[85%] shrink-0 sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]";
@@ -61,9 +50,9 @@ export function ProjectCarousel({
           "cursor-grab data-[dragging=true]:cursor-grabbing data-[dragging=true]:select-none",
         )}
       >
-        {projects.map((p) => (
-          <li key={p.slug} className={item} onClick={openCard}>
-            <ProjectCard project={p} />
+        {works.map((w) => (
+          <li key={w.slug} className={item}>
+            <WorkCard work={w} />
           </li>
         ))}
         {/* 一番最後：作品一覧ページへの「＋ MORE」カード（高さはほかのカードにそろう） */}

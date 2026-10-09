@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { House } from "lucide-react";
+import { House, LayoutGrid } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "ページが見つかりません",
@@ -45,13 +45,20 @@ export default function NotFound() {
       <p className="mt-3 text-on-bg-muted">
         URL が間違っているか、ページが移動・削除されたのかもしれません。
       </p>
-      <Link
-        href="/"
-        className="pixel-button bg-pop-gradient group mt-8 inline-flex items-center gap-2 px-6 py-3 font-bold"
-      >
-        <House className="size-4 group-hover:animate-wiggle" aria-hidden="true" />
-        トップへ戻る
-      </Link>
+      {/* 作品の URL が間違っていたとき用に、Work 一覧へのボタンも並べる */}
+      <div className="mt-8 flex flex-wrap justify-center gap-4">
+        <Link
+          href="/"
+          className="pixel-button bg-pop-gradient group inline-flex items-center gap-2 px-6 py-3 font-bold"
+        >
+          <House className="size-4 group-hover:animate-wiggle" aria-hidden="true" />
+          トップへ戻る
+        </Link>
+        <Link href="/work" className="pixel-button group inline-flex items-center gap-2 bg-card px-6 py-3 font-bold">
+          <LayoutGrid className="size-4 group-hover:animate-wiggle" aria-hidden="true" />
+          Work 一覧へ
+        </Link>
+      </div>
     </div>
   );
 }

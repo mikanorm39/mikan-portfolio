@@ -1,30 +1,30 @@
 "use client";
 
 import { useMemo } from "react";
-import type { Project } from "@/data/projects";
+import type { Work } from "@/lib/works";
 import { useQueryState } from "@/lib/useQueryState";
-import { categoryFilterValues, ProjectFilter, teamFilterValues } from "./ProjectFilter";
-import { ProjectGrid } from "./ProjectGrid";
+import { categoryFilterValues, teamFilterValues, WorkFilter } from "./WorkFilter";
+import { WorkGrid } from "./WorkGrid";
 
-export function ProjectsExplorer({ projects }: { projects: Project[] }) {
+export function WorksExplorer({ works }: { works: Work[] }) {
   const [category, setCategory] = useQueryState("category", categoryFilterValues, "all");
   const [team, setTeam] = useQueryState("team", teamFilterValues, "all");
 
   const filtered = useMemo(
     () =>
-      projects.filter(
-        (p) => (category === "all" || p.categories.includes(category)) && (team === "all" || p.team === team),
+      works.filter(
+        (w) => (category === "all" || w.categories.includes(category)) && (team === "all" || w.team === team),
       ),
-    [projects, category, team],
+    [works, category, team],
   );
 
   return (
     <div className="flex flex-col gap-8">
-      <ProjectFilter category={category} team={team} onCategoryChange={setCategory} onTeamChange={setTeam} />
+      <WorkFilter category={category} team={team} onCategoryChange={setCategory} onTeamChange={setTeam} />
       <p className="text-sm text-on-bg-muted" aria-live="polite">
         {filtered.length} 件の作品
       </p>
-      <ProjectGrid projects={filtered} />
+      <WorkGrid works={filtered} />
     </div>
   );
 }

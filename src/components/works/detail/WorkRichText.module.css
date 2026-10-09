@@ -1,0 +1,119 @@
+/*
+ * 作品の説明文（microCMS のリッチエディタの HTML）のスタイル。
+ * サイトの本文（白い枠の中の文章）に合わせて、見出し・段落・リスト・リンク・画像などを整える。
+ */
+.body {
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+
+/* 段落・リスト・画像などの間隔（先頭と最後には余白を付けない） */
+.body > :global(*) + :global(*) {
+  margin-top: 1em;
+}
+
+/* ---- 見出し（サイトの見出しフォント・濃い紫） ---- */
+.body :global(:is(h1, h2, h3, h4, h5)) {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  line-height: 1.5;
+  color: var(--primary);
+}
+
+.body :global(:is(h1, h2)) {
+  font-size: var(--fs-h3);
+  margin-top: 1.75em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px dashed color-mix(in srgb, var(--primary) 30%, transparent);
+}
+
+.body :global(:is(h3, h4, h5)) {
+  font-size: 1.125rem;
+  margin-top: 1.5em;
+}
+
+.body > :global(:first-child) {
+  margin-top: 0;
+}
+
+/* ---- リスト ---- */
+.body :global(ul) {
+  list-style: disc;
+  padding-left: 1.5em;
+}
+
+.body :global(ol) {
+  list-style: decimal;
+  padding-left: 1.5em;
+}
+
+.body :global(li) + :global(li) {
+  margin-top: 0.25em;
+}
+
+.body :global(li)::marker {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* ---- 強調・リンク ---- */
+.body :global(strong) {
+  font-weight: 700;
+}
+
+.body :global(a) {
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.body :global(a):hover {
+  text-decoration-color: var(--ink-pink);
+}
+
+/* ---- 画像（枠の幅いっぱいまで。縦横の比率はそのまま） ---- */
+.body :global(img) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.body :global(figure) :global(figcaption) {
+  margin-top: 0.5em;
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+/* ---- 引用・コード・区切り線 ---- */
+.body :global(blockquote) {
+  padding: 0.5em 1em;
+  border-left: 4px solid var(--ink-mint);
+  background: color-mix(in srgb, var(--ink-mint) 12%, transparent);
+}
+
+.body :global(code) {
+  padding: 0.1em 0.4em;
+  font-size: 0.9em;
+  background: var(--secondary);
+}
+
+.body :global(pre) {
+  overflow-x: auto;
+  padding: 1em;
+  line-height: 1.6;
+  background: var(--secondary);
+}
+
+.body :global(pre) :global(code) {
+  padding: 0;
+  background: none;
+}
+
+.body :global(hr) {
+  border: 0;
+  border-top: 2px dashed color-mix(in srgb, var(--primary) 30%, transparent);
+}

@@ -1,12 +1,12 @@
 import { AboutPreview } from "@/components/home/AboutPreview";
 import { Hero } from "@/components/home/Hero";
-import { RecentProjects } from "@/components/home/RecentProjects";
+import { RecentWorks } from "@/components/home/RecentWorks";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <RecentProjects />
+      <RecentWorks />
       <AboutPreview />
     </>
   );

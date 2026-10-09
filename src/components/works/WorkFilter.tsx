@@ -1,23 +1,23 @@
 "use client";
 
 import { FilterPills, type FilterOption } from "@/components/FilterPills";
-import { projectCategories, projectCategoryLabels, projectTeamLabels, type ProjectCategory } from "@/data/projects";
+import { workCategories, workCategoryLabels, workTeamLabels, type WorkCategory, type WorkTeam } from "@/lib/works";
 
-export type CategoryFilter = ProjectCategory | "all";
-export type TeamFilter = "solo" | "team" | "all";
+export type CategoryFilter = WorkCategory | "all";
+export type TeamFilter = WorkTeam | "all";
 
-export const categoryFilterValues: CategoryFilter[] = ["all", ...projectCategories];
+export const categoryFilterValues: CategoryFilter[] = ["all", ...workCategories];
 export const teamFilterValues: TeamFilter[] = ["all", "solo", "team"];
 
 const categoryOptions: FilterOption<CategoryFilter>[] = [
   { value: "all", label: "すべて" },
-  ...projectCategories.map((c) => ({ value: c, label: projectCategoryLabels[c] })),
+  ...workCategories.map((c) => ({ value: c, label: workCategoryLabels[c] })),
 ];
 
 const teamOptions: FilterOption<TeamFilter>[] = [
   { value: "all", label: "どちらも" },
-  { value: "solo", label: projectTeamLabels.solo },
-  { value: "team", label: projectTeamLabels.team },
+  { value: "solo", label: workTeamLabels.solo },
+  { value: "team", label: workTeamLabels.team },
 ];
 
 type Props = {
@@ -27,7 +27,7 @@ type Props = {
   onTeamChange: (v: TeamFilter) => void;
 };
 
-export function ProjectFilter({ category, team, onCategoryChange, onTeamChange }: Props) {
+export function WorkFilter({ category, team, onCategoryChange, onTeamChange }: Props) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3">

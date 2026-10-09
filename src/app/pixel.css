@@ -12,7 +12,7 @@
  *   .pixel-chip    小さいタグ・ピル（ピクセル角だけ）
  *   .pixel-circle  丸アイコンをドット絵の丸にする
  *   .holo-border   枠をホログラム（淡い虹色）にする（.pixel-box / .pixel-button と併用）
- *   .holo-hover    ホバー中だけ枠をホログラムにする
+ *   .holo-hover    ホバー中（キーボードのフォーカス中も）だけ枠をホログラムにする
  *   .pixel-heading 章見出し（幅を文字に合わせる）
  *   .font-pixel    ヘッダー・メニュー・MORE などのフォント（Bello Caps）
  *   .font-section  章見出し用フォント（Bello Caps）
@@ -242,7 +242,8 @@
 
   /* ===== ホログラム ===== */
   .holo-border,
-  .holo-hover:hover {
+  .holo-hover:hover,
+  .holo-hover:focus-visible {
     --px-frame: var(--holo);
   }
 
@@ -289,10 +290,14 @@
     letter-spacing: 0.02em;
   }
 
-  /* ===== 章見出しのフォント（Bello Pro） ===== */
+  /* ===== 章見出しのフォント（Bello Caps） ===== */
+  /*
+   * 太さは 700 を指定する。Bello Caps は太さが1種類だけなので見た目は変わらず（太字の合成は globals.css で止めている）、
+   * 日本語（作品名など、Bello Caps にない文字）は見出しフォントの太字で表示される。
+   */
   .font-section {
     font-family: var(--section-font);
-    font-weight: 400;
+    font-weight: 700;
   }
 
   /* ===== 紫の背景に直接のる見出し：白い文字＋濃い紫の硬い影 ===== */
