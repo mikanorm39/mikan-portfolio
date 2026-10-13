@@ -39,8 +39,8 @@ export const profile = {
   avatar: "/images/avatar.svg",
   social: [
     { id: "github", label: "GitHub", href: "https://github.com/mikanorm39", note: "コードを公開しています" },
-    { id: "qiita", label: "Qiita", href: "https://qiita.com/your-qiita-id", note: "技術記事を書いています" },
-    { id: "x", label: "X", href: "https://x.com/your-x-id", note: "日々の制作ログ" },
+    { id: "qiita", label: "Qiita", href: "https://qiita.com/mikanorm39", note: "技術記事を書いています" },
+    { id: "x", label: "X", href: "https://x.com/mikan513424963", note: "日々の制作ログ" },
   ] satisfies SocialLink[],
 } as const;
 

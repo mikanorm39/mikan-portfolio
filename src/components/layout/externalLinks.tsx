@@ -5,14 +5,14 @@ import type { InkColor } from "@/components/splat/splatConfig";
 import clubIcon from "../../../public/images/club/jyogi_sky.png";
 
 // ===== 書き換え用の定数（メニュー ☰ に出す外部リンク） =====
-/** 所属サークル（表示名とリンク先）。URL は仮 */
+/** 所属サークル（表示名とリンク先） */
 const CLUB_NAME = "CLUB";
-const CLUB_URL = "https://example.com/";
+const CLUB_URL = "https://www.jyogi.net/";
 const GITHUB_URL = "https://github.com/mikanorm39";
-/** Qiita のリンク先（仮） */
-const QIITA_URL = "https://qiita.com/your-qiita-id";
-/** X のリンク先（仮） */
-const X_URL = "https://x.com/your-x-id";
+/** Qiita のリンク先 */
+const QIITA_URL = "https://qiita.com/mikanorm39";
+/** X のリンク先 */
+const X_URL = "https://x.com/mikan513424963";
 
 /** メニュー（☰）の外部リンク。icon は文字の左に出すアイコン（どれも同じ大きさの枠に入れる）、ink はカーソルのインクの色 */
 export const externalLinks: { label: string; href: string; icon: React.ReactNode; ink: InkColor }[] = [
