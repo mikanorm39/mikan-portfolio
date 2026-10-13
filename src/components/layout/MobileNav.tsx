@@ -6,7 +6,7 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { profile } from "@/data/profile";
 import { cn } from "@/lib/utils";
-import { InkBehind, NavInk } from "@/components/splat/InkUi";
+import { InkBehind, InkUnderline, NavInk } from "@/components/splat/InkUi";
 import { externalLinks } from "./externalLinks";
 import { isActivePath, navItems } from "./nav";
 
@@ -59,8 +59,9 @@ export function MobileNav({ pathname }: { pathname: string }) {
 
         {/* ページの下に、外部リンク（CLUB / GitHub / SNS）をアイコン付きで並べる */}
         <nav aria-labelledby="menu-links-title" className="mt-2 border-t border-dashed border-primary/30 px-4 pt-4">
-          <p id="menu-links-title" className="font-pixel px-5 text-sm font-bold text-muted-foreground">
-            Links
+          <p id="menu-links-title" className="font-pixel px-5 text-lg font-bold text-foreground">
+            {/* 見出しの下にインクのアンダーラインを引いて目立たせる */}
+            <InkUnderline color="cyan">Links</InkUnderline>
           </p>
           <ul className="mt-2 flex flex-col gap-2">
             {externalLinks.map((link) => (
@@ -88,8 +89,8 @@ export function MobileNav({ pathname }: { pathname: string }) {
 
         {/* いちばん下に連絡先。メールアドレスは押すとメールソフトが開く */}
         <section aria-labelledby="menu-contact-title" className="mt-auto border-t border-dashed border-primary/30 px-4 pt-4 pb-6">
-          <p id="menu-contact-title" className="font-pixel px-5 text-sm font-bold text-muted-foreground">
-            Contact
+          <p id="menu-contact-title" className="font-pixel px-5 text-lg font-bold text-foreground">
+            <InkUnderline color="pink">Contact</InkUnderline>
           </p>
           <a
             href={`mailto:${profile.email}`}
