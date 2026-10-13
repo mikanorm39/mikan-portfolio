@@ -21,8 +21,8 @@ export const profile = {
   teamDevCount: "9回",
   /** トップの About の「一言」 */
   oneLiner: "「このゲーム面白そう」をもらえるゲームプランナーを目指しています！",
-  /** 連絡先（フッターの Contact に表示） */
-  email: "mikanorm@outlook.jp",
+  /** 連絡先（フッターとメニュー ☰ の Contact に表示） */
+  email: "access@mikanorm.jp",
   displayName: "Mikan",
   siteTitle: "Mikan's Portfolio",
   catchCopy: "作ることが好きなゲームプランナ―を目指す学生です",
@@ -34,6 +34,8 @@ export const profile = {
   activities: "ゲーム制作・ゲームジャム参加・Web 制作",
   vision: "顧客にうけるゲームを作れるプランナー",
   titles: ["ゲームプランナー見習い", "ゲーム開発", "Web もちょっと"],
+  /** 使用したことのあるソフト（About の Profile に表示）。必要に応じて書き換える */
+  software: ["Unity", "Visual Studio", "Visual Studio Code", "Git / GitHub", "Figma", "Aseprite"],
   avatar: "/images/avatar.svg",
   social: [
     { id: "github", label: "GitHub", href: "https://github.com/mikanorm39", note: "コードを公開しています" },

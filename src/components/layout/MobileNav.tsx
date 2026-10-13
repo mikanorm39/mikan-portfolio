@@ -25,7 +25,7 @@ export function MobileNav({ pathname }: { pathname: string }) {
           <Menu className="size-5" aria-hidden="true" />
         </button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-72 rounded-l-3xl border-none">
+      <SheetContent side="right" className="w-72 overflow-y-auto rounded-l-3xl border-none">
         <SheetHeader className="pt-6">
           <SheetTitle className="text-pop-gradient font-pixel text-xl">{profile.siteTitle}</SheetTitle>
           <SheetDescription className="font-pixel">ページを選んでください</SheetDescription>
@@ -58,8 +58,11 @@ export function MobileNav({ pathname }: { pathname: string }) {
         </nav>
 
         {/* ページの下に、外部リンク（CLUB / GitHub / SNS）をアイコン付きで並べる */}
-        <nav aria-label="外部リンク" className="mt-2 border-t border-dashed border-primary/30 px-4 pt-4">
-          <ul className="flex flex-col gap-2">
+        <nav aria-labelledby="menu-links-title" className="mt-2 border-t border-dashed border-primary/30 px-4 pt-4">
+          <p id="menu-links-title" className="font-pixel px-5 text-sm font-bold text-muted-foreground">
+            Links
+          </p>
+          <ul className="mt-2 flex flex-col gap-2">
             {externalLinks.map((link) => (
               <li key={link.label}>
                 <a
@@ -82,6 +85,19 @@ export function MobileNav({ pathname }: { pathname: string }) {
             ))}
           </ul>
         </nav>
+
+        {/* いちばん下に連絡先。メールアドレスは押すとメールソフトが開く */}
+        <section aria-labelledby="menu-contact-title" className="mt-auto border-t border-dashed border-primary/30 px-4 pt-4 pb-6">
+          <p id="menu-contact-title" className="font-pixel px-5 text-sm font-bold text-muted-foreground">
+            Contact
+          </p>
+          <a
+            href={`mailto:${profile.email}`}
+            className="mt-2 block px-5 py-2 text-base break-all text-foreground underline-offset-4 transition hover:text-primary hover:underline"
+          >
+            {profile.email}
+          </a>
+        </section>
       </SheetContent>
     </Sheet>
   );

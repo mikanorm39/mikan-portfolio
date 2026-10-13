@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { GitHubIcon, XIcon } from "@/components/icons/BrandIcons";
+import { GitHubIcon, QiitaIcon, XIcon } from "@/components/icons/BrandIcons";
 import type { InkColor } from "@/components/splat/splatConfig";
 // 所属サークルのアイコン画像（public 内）。import で読み込むと、画像を差し替えたときに自動で新しい画像が表示される
 import clubIcon from "../../../public/images/club/jyogi_sky.png";
@@ -9,6 +9,8 @@ import clubIcon from "../../../public/images/club/jyogi_sky.png";
 const CLUB_NAME = "CLUB";
 const CLUB_URL = "https://example.com/";
 const GITHUB_URL = "https://github.com/mikanorm39";
+/** Qiita のリンク先（仮） */
+const QIITA_URL = "https://qiita.com/your-qiita-id";
 /** X のリンク先（仮） */
 const X_URL = "https://x.com/your-x-id";
 
@@ -22,5 +24,6 @@ export const externalLinks: { label: string; href: string; icon: React.ReactNode
     ink: "cyan",
   },
   { label: "GitHub", href: GITHUB_URL, icon: <GitHubIcon className="size-6" />, ink: "orange" },
+  { label: "Qiita", href: QIITA_URL, icon: <QiitaIcon className="size-6" />, ink: "mint" },
   { label: "SNS", href: X_URL, icon: <XIcon className="size-6" />, ink: "pink" },
 ];
