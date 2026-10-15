@@ -87,14 +87,3 @@ export type MicroCMSCareer = MicroCMSListContent & {
 export const getAllCareerContents = cache(async (): Promise<MicroCMSCareer[]> => {
   return getClient().getAllContents<MicroCMSCareer>({ endpoint: "career", queries: { orders: "date" } });
 });
-
-/** slug で1件取得する。見つからなければ undefined */
-export const getWorkContentBySlug = cache(async (slug: string): Promise<MicroCMSWork | undefined> => {
-  // slug は英数字とハイフンだけ（それ以外の文字が来たら、問い合わせずに「見つからない」にする）
-  if (!/^[a-zA-Z0-9-_]+$/.test(slug)) return undefined;
-  const res = await getClient().getList<MicroCMSWork>({
-    endpoint: ENDPOINT,
-    queries: { filters: `slug[equals]${slug}`, limit: 1 },
-  });
-  return res.contents[0];
-});

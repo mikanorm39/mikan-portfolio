@@ -4,7 +4,7 @@
  */
 import "server-only";
 import { cache } from "react";
-import { getAllWorkContents, getWorkContentBySlug, type MicroCMSWork } from "./microcms";
+import { getAllWorkContents, type MicroCMSWork } from "./microcms";
 import {
   workCategoryLabels,
   workTeamLabels,
@@ -51,7 +51,8 @@ function toWork(raw: MicroCMSWork): Work {
   const images: WorkImage[] = (raw.images ?? []).map((img, i) => ({ ...img, alt: `${raw.title} の画像 ${i + 1}` }));
 
   return {
-    slug: raw.slug,
+    // 入力ミスで前後に空白が入っていると URL が合わず 404 になるので取り除く
+    slug: raw.slug.trim(),
     title: raw.title,
     thumbnail,
     categories,
@@ -90,10 +91,12 @@ export async function getHomeWorks(count: number) {
   return [...sorted.filter((w) => w.featured), ...sorted.filter((w) => !w.featured)].slice(0, count);
 }
 
-/** slug で1件。見つからなければ undefined */
+/**
+ * slug で1件。見つからなければ undefined。
+ * microCMS の slug に前後の空白が入っていても見つかるように、整えたあとの一覧から探す
+ */
 export async function getWork(slug: string) {
-  const raw = await getWorkContentBySlug(slug);
-  return raw ? toWork(raw) : undefined;
+  return (await getSortedWorks()).find((w) => w.slug === slug);
 }
 
 /** 詳細ページの「前の作品 / 次の作品」（一覧の並び順で前後。端の作品は片方だけ） */
