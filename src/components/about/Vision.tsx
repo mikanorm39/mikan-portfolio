@@ -2,11 +2,16 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { profile } from "@/data/profile";
 import { Reveal } from "@/components/motion/Reveal";
 
-/** 文節ごとに折り返さないかたまり（inline-block）にして並べる。改行は文節と文節の間でだけ起こる */
-function Phrases({ phrases }: { phrases: readonly string[] }) {
-  return phrases.map((p) => (
+/**
+ * 文節ごとに折り返さないかたまり（inline-block）にして並べる。改行は文節と文節の間でだけ起こる。
+ * wrap を渡すと、最初と最後の文節の外側に付ける（「～」など。文節と同じかたまりに入れて、それだけで改行されないように）
+ */
+function Phrases({ phrases, wrap }: { phrases: readonly string[]; wrap?: React.ReactNode }) {
+  return phrases.map((p, i) => (
     <span key={p} className="inline-block">
+      {i === 0 && wrap}
       {p}
+      {i === phrases.length - 1 && wrap}
     </span>
   ));
 }
@@ -19,7 +24,15 @@ export function Vision() {
         {/* 上に大きく見出し、下に目指していること（どちらも文節の区切りでだけ改行し、行の長さをそろえる） */}
         <p className="font-heading text-h2 leading-relaxed font-extrabold text-balance">
           <span className="text-pop-gradient">
-            <Phrases phrases={profile.visionTitle} />
+            {/* 両端の「～」は PC・タブレットだけ（スマホでは出さない） */}
+            <Phrases
+              phrases={profile.visionTitle}
+              wrap={
+                <span className="hidden sm:inline" aria-hidden="true">
+                  ～
+                </span>
+              }
+            />
           </span>
         </p>
         <p className="mt-6 text-lead leading-relaxed font-bold text-balance text-foreground">
