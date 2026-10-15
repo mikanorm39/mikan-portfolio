@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Links } from "@/components/about/Links";
 import { Profile } from "@/components/about/Profile";
 import { Skills } from "@/components/about/Skills";
 import { Vision } from "@/components/about/Vision";
@@ -53,7 +52,6 @@ export default async function AboutPage() {
           </Suspense>
         </div>
       </section>
-      <Links />
     </>
   );
 }
