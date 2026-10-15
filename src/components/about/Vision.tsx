@@ -22,7 +22,14 @@ export function Vision() {
       <SectionHeading title="Vision" ink={{ color: "pink", trigger: "tap" }} />
       <Reveal className="pixel-box holo-border bg-card px-6 py-12 text-center sm:px-10">
         {/* 上に大きく見出し、下に目指していること（どちらも文節の区切りでだけ改行し、行の長さをそろえる） */}
-        <p className="font-heading text-h2 leading-relaxed font-extrabold text-balance">
+        {/*
+          スマホでは見出しを1行に収める：文字数（--title-chars）で画面の幅を割って文字の大きさを決める
+          （6rem = セクションと枠の左右の余白。PC・タブレットの大きさ text-h2 を上限にする）
+        */}
+        <p
+          className="font-heading text-h2 leading-relaxed font-extrabold text-balance max-sm:text-[length:min(var(--text-h2),calc((100vw-6rem)/var(--title-chars)))] max-sm:whitespace-nowrap"
+          style={{ "--title-chars": profile.visionTitle.join("").length } as React.CSSProperties}
+        >
           <span className="text-pop-gradient">
             {/* 両端の「～」は PC・タブレットだけ（スマホでは出さない） */}
             <Phrases
