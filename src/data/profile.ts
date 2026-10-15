@@ -32,8 +32,9 @@ export const profile = {
     "情報工業大学 情報学部の2年生です。情報技術研究部（じょぎ）に所属し、仲間とゲームを作ったりゲームジャムに参加したりしています。アイデアを形にして、遊んだ人の反応を見るのがいちばんの楽しみです。",
   fields: "ゲームがメイン。Web も少し",
   activities: "ゲーム制作・ゲームジャム参加・Web 制作",
-  vision: "顧客にうけるゲームを作れるプランナー",
-  titles: ["ゲームプランナー見習い", "ゲーム開発", "Web もちょっと"],
+  /** About の Vision（上の見出しと、その下の文） */
+  visionTitle: "～ゲーム業界に入りたい！～",
+  vision: "「面白い」を形にして、プレイヤーに届けられるゲームプランナーを目指しています！",
   /** 使用したことのあるソフト（About の Profile に表示）。必要に応じて書き換える */
   software: ["Unity", "Visual Studio", "Visual Studio Code", "Git / GitHub", "Figma", "Aseprite"],
   avatar: "/images/avatar.svg",
