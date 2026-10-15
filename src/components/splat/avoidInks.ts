@@ -1,5 +1,6 @@
 /**
  * ドット絵の記号がインクと重ならないように、記号をずらす量を計算する。
+ * また、文字のエリア（data-ink-avoid を付けた要素）にインクが重ならないよう、インクを左右の端へよける量も計算する。
  * 記号もインクも画面の幅・高さに合わせて位置と大きさが変わるので、表示したあとに実際の位置で計算する。
  */
 import { SPLAT_CX, SPLAT_CY, SPLAT_VIEWBOX as VB } from "./splatShapes";
@@ -16,8 +17,35 @@ export type Nudges = Record<string, { x: number; y: number } | null>;
 
 type Circle = { x: number; y: number; r: number };
 
+/** インクごとの、左右へよける量（px）。よけないインクは入らない */
+export type InkPushes = Record<string, number>;
+
+const isVisible = (el: HTMLElement) => el.offsetParent !== null; // スマホで非表示のものは除く
+const inkElements = (layer: HTMLElement) =>
+  [...layer.querySelectorAll<HTMLElement>("[data-splat-id]:not([data-kind])")].filter(isVisible);
+
+/**
+ * よける前の、元の位置のインクの範囲の円。
+ * offsetLeft / offsetTop は translate の影響を受けないので、今よけている量に関係なく元の位置が分かる
+ */
+function baseInkCircle(el: HTMLElement, layerRect: DOMRect): Circle {
+  return inkCircle({
+    left: layerRect.left + el.offsetLeft,
+    top: layerRect.top + el.offsetTop,
+    width: el.offsetWidth,
+    height: el.offsetHeight,
+  });
+}
+
+/** 円と四角が重なっているか */
+function circleHitsRect(c: Circle, r: DOMRect) {
+  const nx = Math.min(Math.max(c.x, r.left), r.right);
+  const ny = Math.min(Math.max(c.y, r.top), r.bottom);
+  return Math.hypot(c.x - nx, c.y - ny) < c.r;
+}
+
 /** インクの置き場所（要素の四角）→ インクの範囲の円 */
-function inkCircle(rect: DOMRect): Circle {
+function inkCircle(rect: { left: number; top: number; width: number; height: number }): Circle {
   const ux = rect.width / VB.w; // 形データ1単位あたりの px
   return {
     x: rect.left + (SPLAT_CX - VB.x) * ux,
@@ -27,14 +55,44 @@ function inkCircle(rect: DOMRect): Circle {
 }
 
 /**
+ * 文字のエリア（data-ink-avoid）に重なるインクを、近い方の画面の端へ横にずらす量を求める。
+ * 重なっていないインクは動かさない。ずらした先が画面の外になっても、端から少し覗くだけになる。
+ * インクの位置は、よける前の元の位置で考える（何度計算し直しても同じ結果になるように）。
+ */
+export function computeInkPushes(layer: HTMLElement): InkPushes {
+  const areas = [...document.querySelectorAll<HTMLElement>("[data-ink-avoid]")].map((el) => el.getBoundingClientRect());
+  if (areas.length === 0) return {};
+  const layerRect = layer.getBoundingClientRect();
+  const result: InkPushes = {};
+
+  for (const el of inkElements(layer)) {
+    const id = el.dataset.splatId!;
+    const base = baseInkCircle(el, layerRect);
+
+    let dx = 0;
+    for (const area of areas) {
+      if (!circleHitsRect({ ...base, x: base.x + dx }, area)) continue;
+      // エリアの中心より右にあるインクは右の外へ、左にあるインクは左の外へ
+      const toRight = base.x >= (area.left + area.right) / 2;
+      dx = toRight ? area.right + base.r + GAP - base.x : area.left - base.r - GAP - base.x;
+    }
+    if (dx !== 0) result[id] = Math.round(dx);
+  }
+  return result;
+}
+
+/**
  * layer の中のインク（data-splat-id）と記号（data-kind="symbol"）の位置から、記号をずらす量を求める。
  * current は今ずらしている量（計算のときは元の位置に戻して考える）。
+ * inkPushes は computeInkPushes の結果（まだ画面に反映される前なので、よけたあとのインクの位置で考える）。
  */
-export function computeNudges(layer: HTMLElement, current: Nudges): Nudges {
-  const visible = (el: HTMLElement) => el.offsetParent !== null; // スマホで非表示のものは除く
-  const inks = [...layer.querySelectorAll<HTMLElement>("[data-splat-id]:not([data-kind])")]
-    .filter(visible)
-    .map((el) => inkCircle(el.getBoundingClientRect()));
+export function computeNudges(layer: HTMLElement, current: Nudges, inkPushes: InkPushes = {}): Nudges {
+  const visible = isVisible;
+  const layerRect = layer.getBoundingClientRect();
+  const inks = inkElements(layer).map((el) => {
+    const c = baseInkCircle(el, layerRect);
+    return { ...c, x: c.x + (inkPushes[el.dataset.splatId!] ?? 0) };
+  });
   const width = layer.clientWidth;
   const result: Nudges = {};
 

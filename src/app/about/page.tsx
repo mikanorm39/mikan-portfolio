@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Links } from "@/components/about/Links";
 import { Profile } from "@/components/about/Profile";
+import { Skills } from "@/components/about/Skills";
 import { Vision } from "@/components/about/Vision";
 import { CareerExplorer } from "@/components/career/CareerExplorer";
 import { CareerTimeline } from "@/components/career/CareerTimeline";
@@ -36,6 +37,7 @@ export default async function AboutPage() {
       </div>
       <Profile />
       <Vision />
+      <Skills />
       {/* 見出しの左端をほかのセクションとそろえ、タイムラインは読みやすい幅にする */}
       <section className="mx-auto max-w-6xl px-4 py-section sm:px-6">
         {/* About ページの章見出しは、タップするとインクが着弾する */}

@@ -1,0 +1,61 @@
+/*
+ * Skills（使えるツール）を、背景のインクの上でも読みやすくするための見た目。
+ * 影の色・ずらす量・下地の濃さは、ここの変数で調整する。
+ */
+.root {
+  /* 硬い影（ぼかしなし）の色と、右下へずらす量 */
+  --skills-shadow-color: var(--ink-deep);
+  --skills-shadow-offset: 1.5px;
+  /* 星の輪郭線の太さ */
+  --skills-outline: 1px;
+  /* セクション全体の下地（濃い紫を半透明に。インクがうっすら透ける） */
+  --skills-plate: color-mix(in srgb, var(--ink-deep) 40%, transparent);
+  /* 下地のピクセル角の1段の大きさ */
+  --skills-plate-step: 8px;
+
+  position: relative;
+  isolation: isolate;
+}
+
+/* ダークは背景がもともと暗いので、下地は黒っぽく、影は少し濃く */
+:global(.dark) .root {
+  --skills-shadow-color: #120628;
+  --skills-plate: rgb(0 0 0 / 0.28);
+}
+
+/* 下地（カードではなく、セクションの後ろに1枚だけ敷く。角はピクセル風に欠く） */
+.plate {
+  --s: var(--skills-plate-step);
+  position: absolute;
+  z-index: -1;
+  inset: calc(var(--space-section) * 0.5) 0.5rem;
+  background: var(--skills-plate);
+  pointer-events: none;
+  clip-path: polygon(
+    calc(2 * var(--s)) 0, calc(100% - 2 * var(--s)) 0, calc(100% - 2 * var(--s)) var(--s),
+    calc(100% - var(--s)) var(--s), calc(100% - var(--s)) calc(2 * var(--s)), 100% calc(2 * var(--s)),
+    100% calc(100% - 2 * var(--s)), calc(100% - var(--s)) calc(100% - 2 * var(--s)),
+    calc(100% - var(--s)) calc(100% - var(--s)), calc(100% - 2 * var(--s)) calc(100% - var(--s)),
+    calc(100% - 2 * var(--s)) 100%, calc(2 * var(--s)) 100%, calc(2 * var(--s)) calc(100% - var(--s)),
+    var(--s) calc(100% - var(--s)), var(--s) calc(100% - 2 * var(--s)), 0 calc(100% - 2 * var(--s)),
+    0 calc(2 * var(--s)), var(--s) calc(2 * var(--s)), var(--s) var(--s), calc(2 * var(--s)) var(--s)
+  );
+}
+
+/* ツール名・説明文・カテゴリ名：硬い影 */
+.text {
+  text-shadow: var(--skills-shadow-offset) var(--skills-shadow-offset) 0 var(--skills-shadow-color);
+}
+
+/* 頭文字のアイコン（ロゴが見つからないツールの代用）：硬い影。公式ロゴには付けない */
+.fallbackIcon {
+  filter: drop-shadow(var(--skills-shadow-offset) var(--skills-shadow-offset) 0 var(--skills-shadow-color));
+}
+
+/* 星：上下左右に輪郭線＋右下に硬い影（黄色のインクの上でも形が分かるように） */
+.star {
+  --o: var(--skills-outline);
+  filter: drop-shadow(var(--o) 0 0 var(--skills-shadow-color)) drop-shadow(calc(-1 * var(--o)) 0 0 var(--skills-shadow-color))
+    drop-shadow(0 var(--o) 0 var(--skills-shadow-color)) drop-shadow(0 calc(-1 * var(--o)) 0 var(--skills-shadow-color))
+    drop-shadow(var(--skills-shadow-offset) var(--skills-shadow-offset) 0 var(--skills-shadow-color));
+}

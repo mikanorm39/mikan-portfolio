@@ -89,3 +89,44 @@ microCMS で経歴を追加・編集すると、About ページのタイムラ�
 | Career の見出し・説明文 | `src/app/about/page.tsx` |
 
 環境変数は作品（works）と同じものを使います（追加なし）。microCMS に接続できないときは、ビルドがエラーで止まります。
+
+---
+
+## 使えるツール（Skills）の追加・編集
+
+About ページの「Skills」は microCMS ではなく、**`src/data/skills.ts` の1ファイル**で管理しています。
+
+### ツールを1件追加する手順
+
+1. ロゴを用意して `public/images/skills/` に入れる（例：`blender.svg`）
+   - まず [Devicon](https://devicon.dev) で探し、カラー版（`original`）の SVG を使う
+   - Devicon に無ければ、そのツールの公式サイトのブランドページ・プレスキットから入手する
+   - **ロゴの形・色・比率は加工しない**。どこにも無ければ自作せず、`icon: null` にする（頭文字の四角いアイコンになる）
+2. `src/data/skills.ts` の上の方で読み込み、`skills` に1行追記する
+   ```ts
+   import blenderLogo from "../../public/images/skills/blender.svg";
+   // …
+   { name: "Blender", icon: { src: blenderLogo }, category: "tool", level: 1, description: "3Dモデルの勉強中" },
+   ```
+   - 黒っぽくて紫の背景で見えにくいロゴは `icon: { src: blenderLogo, backing: true }` にする（後ろに白い角丸の下地が付く）
+3. 保存すると反映される（公開中のサイトは push して再デプロイ）
+4. 下の「ロゴの入手元」の表に1行足しておく
+
+| 項目 | 書き方 |
+|---|---|
+| `name` | ツール名 |
+| `icon` | 公式ロゴ `{ src, backing? }`（無ければ `null`） |
+| `category` | `"dev"` = 開発（ゲーム・Web） / `"tool"` = デザイン・制作ツール |
+| `level` | `3` = よく使う（★★★） / `2` = 使ったことがある（★★☆） / `1` = 勉強中（★☆☆） |
+| `description` | ひとことの説明。**1行・20字前後**で「何に使っているか」だけ（作品名・数字は入れない） |
+
+**並び順はカテゴリ内で習熟度の高い順に自動で整います**（同じ習熟度は書いた順）。
+編集・削除は、その行を書き換える・消すだけです。見た目は `src/components/about/Skills.tsx` で変えられます。
+
+### ロゴの入手元
+
+| ツール | 入手元 | ファイル |
+|---|---|---|
+| Unity / Flutter / React / Next.js / TypeScript / JavaScript / VS Code / GitHub / Illustrator / Photoshop | [Devicon](https://devicon.dev) v2.17.0 の `original`（カラー版） | `unity.svg` など |
+| Phaser.js | [Phaser 公式のロゴ配布ページ](https://phaser.io/download/logo)（Phaser planet） | `phaser.png` |
+| Claude Code | [Anthropic 公式プレスキット](https://www.anthropic.com/press-kit)（Claude logos › Claude Spark – Clay） | `claude-code.svg` |

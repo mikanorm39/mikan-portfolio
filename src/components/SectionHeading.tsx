@@ -6,6 +6,8 @@ import type { InkColor } from "@/components/splat/splatConfig";
 type Props = {
   title: string;
   description?: string;
+  /** 説明文の横に並べるもの（凡例など） */
+  descriptionAside?: React.ReactNode;
   /** 見出しの右側に置くもの（「すべて見る」リンクなど） */
   action?: React.ReactNode;
   as?: "h1" | "h2";
@@ -18,7 +20,7 @@ type Props = {
 };
 
 /** 章見出し。文字サイズ（text-h1 / text-h2）と下の余白（mb-heading）は globals.css のタイプスケールを使う */
-export function SectionHeading({ title, description, action, as: Tag = "h2", className, ink }: Props) {
+export function SectionHeading({ title, description, descriptionAside, action, as: Tag = "h2", className, ink }: Props) {
   return (
     <Reveal className={cn("mb-heading flex flex-wrap items-end justify-between gap-4", className)}>
       <div>
@@ -39,7 +41,15 @@ export function SectionHeading({ title, description, action, as: Tag = "h2", cla
             <span className="heading-wobble ink-heading font-section">{title}</span>
           )}
         </Tag>
-        {description && <p className="mt-2 text-on-bg-muted">{description}</p>}
+        {descriptionAside ? (
+          // 説明文の横に並べるもの（Skills の凡例など）。スマホで入りきらなければ下に折り返す
+          <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-2">
+            {description && <p className="text-on-bg-muted">{description}</p>}
+            {descriptionAside}
+          </div>
+        ) : (
+          description && <p className="mt-2 text-on-bg-muted">{description}</p>
+        )}
       </div>
       {action}
     </Reveal>

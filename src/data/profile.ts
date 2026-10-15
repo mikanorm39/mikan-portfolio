@@ -35,8 +35,6 @@ export const profile = {
   /** About の Vision（上の見出しと、その下の文） */
   visionTitle: "～ゲーム業界に入りたい！～",
   vision: "「面白い」を形にして、プレイヤーに届けられるゲームプランナーを目指しています！",
-  /** 使用したことのあるソフト（About の Profile に表示）。必要に応じて書き換える */
-  software: ["Unity", "Visual Studio", "Visual Studio Code", "Git / GitHub", "Figma", "Aseprite"],
   avatar: "/images/avatar.svg",
   social: [
     { id: "github", label: "GitHub", href: "https://github.com/mikanorm39", note: "コードを公開しています" },

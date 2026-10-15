@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useOpening } from "@/components/opening/OpeningContext";
 import { cn } from "@/lib/utils";
-import { computeNudges, type Nudges } from "./avoidInks";
+import { computeInkPushes, computeNudges, type InkPushes, type Nudges } from "./avoidInks";
 import { InkSplat } from "./InkSplat";
 import { PixelSymbol } from "./PixelSymbol";
 import { SPLATS, SPLAT_TIMING as T, SYMBOLS } from "./splatConfig";
@@ -39,6 +39,8 @@ function SplatLayer({ isHome }: { isHome: boolean }) {
   // ドット絵の記号をインクと重ならない位置へずらす量（表示したあと・画面サイズが変わったときに計算し直す）
   const [nudges, setNudges] = useState<Nudges>({});
   const nudgesRef = useRef<Nudges>({});
+  // 文字のエリア（data-ink-avoid）に重なるインクを、左右の端へよける量
+  const [inkPushes, setInkPushes] = useState<InkPushes>({});
 
   useEffect(() => {
     const root = layer.current;
@@ -47,16 +49,26 @@ function SplatLayer({ isHome }: { isHome: boolean }) {
     const update = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const next = computeNudges(root, nudgesRef.current);
+        // 先にインクをよける量を決めてから、そのインクの位置で記号をずらす
+        const pushes = computeInkPushes(root);
+        setInkPushes(pushes);
+
+        const next = computeNudges(root, nudgesRef.current, pushes);
         nudgesRef.current = next;
         setNudges(next);
       });
     };
     update();
     window.addEventListener("resize", update);
+    // ページの中身の高さが変わったとき（画像・フォントの読み込みなど）と、ページ遷移のアニメーションが終わったあとにも計算し直す
+    const ro = new ResizeObserver(update);
+    ro.observe(document.body);
+    const settle = window.setTimeout(update, 600);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", update);
+      ro.disconnect();
+      window.clearTimeout(settle);
     };
   }, []);
 
@@ -108,7 +120,8 @@ function SplatLayer({ isHome }: { isHome: boolean }) {
             key={s.id}
             data-splat-id={s.id}
             className={cn(styles.slot, !s.mobile && styles.desktopOnly)}
-            style={place(s)}
+            // 文字のエリアに重なるインクは、左右の端へよける
+            style={{ ...place(s), translate: inkPushes[s.id] ? `${inkPushes[s.id]}px 0` : undefined }}
           >
             <div
               className={cn(styles.splat, delay !== undefined && styles.hit)}
